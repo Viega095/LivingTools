@@ -1,0 +1,161 @@
+# LivingTools Configuration
+# Version: 1.0
+
+# General Settings
+debug-mode: false
+language: "es"
+
+# Experience Settings
+xp:
+  mining-multiplier: 1.0
+  combat-multiplier: 5.0
+  level-scaling: 100 # Base XP needed for level 2 (Level * Scaling)
+
+# Ability Settings
+abilities:
+  veinminer:
+    max-blocks: 64
+    cooldown: 5 # Seconds
+  magnet:
+    radius: 5.0
+  lightning:
+    chance: 10 # Percentage
+    damage: 5.0
+  inferno:
+    duration: 5 # Seconds
+  glacial:
+    duration: 3 # Seconds
+  
+  # Active Abilities
+  blink:
+    cooldown: 10 # Seconds
+    max-range: 8 # Base range in blocks
+    charges: 1 # Number of charges (1-3 based on tool level)
+    charge-regen-time: 5 # Seconds per charge regeneration
+    particle-density: 20 # Particles per effect
+    durability-cost-enabled: true
+    durability-cost: 5 # Durability consumed per use
+    safe-fall-duration: 30 # Ticks (1.5 seconds)
+    knockback-power: 1.5
+    invulnerability-duration: 10 # Ticks (0.5 seconds)
+    damage-bonus: 0.15 # 15% damage boost for next attack
+    damage-bonus-window: 40 # Ticks (2 seconds)
+    level-scaling:
+      range-per-level: 0.5 # Additional blocks per tool level
+      prestige-bonus: 2.0 # Additional blocks per prestige
+  
+  shadowstep:
+    cooldown: 20 # Seconds
+    max-range: 6
+    invisibility-duration: 60 # Ticks (3 seconds)
+    particle-density: 30
+  
+  recall:
+    cooldown: 60 # Seconds
+    save-interval: 100 # Ticks (5 seconds) - auto-save frequency
+    restore-health: true
+    restore-food: false
+  
+  swap:
+    cooldown: 25 # Seconds
+    max-range: 15
+    works-on-players: true
+    works-on-mobs: true
+  
+  blinkstrike:
+    cooldown: 15 # Seconds
+    max-range: 8
+    damage: 4.0 # Base AoE damage
+    radius: 3.0 # AoE radius
+    knockback-power: 2.0
+  
+  vortex:
+    cooldown: 30
+    max-range: 15
+    radius: 5.0
+    duration: 100 # Ticks (5 seconds)
+  
+  thunderstep:
+    cooldown: 18
+    max-range: 10
+    lightning-strike-damage: 3.0
+    lightning-radius: 2.0
+  
+  phaseshift:
+    cooldown: 45
+    duration: 60 # Ticks (3 seconds)
+  
+  infernoleap:
+    cooldown: 20
+    damage: 6.0
+    radius: 4.0
+    fire-duration: 100 # Ticks
+
+  timefreeze:
+    cooldown: 60
+    radius: 10.0
+    duration: 60 # Ticks (3 seconds)
+  
+  dimensionalrift:
+    cooldown: 45
+    portal-duration: 600 # Ticks (30 seconds)
+    max-distance: 50
+  
+  bloodsacrifice:
+    cooldown: 30
+    health-cost: 0.5 # 50% of current health
+    damage-multiplier: 2.0 # 2x damage (+100%)
+    duration: 200 # Ticks (10 seconds)
+  
+  soulharvest:
+    cooldown: 40
+    max-souls: 3
+    soul-duration: 300 # Ticks (15 seconds)
+    soul-damage: 2.0
+
+# Mastery System
+mastery:
+  enabled: true
+  xp-per-use: 1
+  combo-xp-bonus: 5
+
+# Combo System
+combos:
+  enabled: true
+  time-window: 3000 # Milliseconds
+  show-notifications: true
+
+# Performance
+performance:
+  auto-optimize: true
+  min-tps-particles: 18
+  min-tps-bars: 12
+
+# Boss Settings
+bosses:
+  living-boss:
+    health: 500
+    damage: 10.0
+  seraphim:
+    health: 750
+    damage: 15.0
+  titan:
+    health: 1000
+    damage: 20.0
+
+# Social Settings
+social:
+  trading-enabled: true
+  voice-chance: 0.05 # 5% chance to speak
+
+discord:
+  webhook-url: "YOUR_WEBHOOK_URL_HERE"
+  events:
+    boss-kill: true
+    level-up: true
+    server-event: true
+
+# Update Checker
+update-checker:
+  enabled: true
+  repository: "Viega095/LivingTools"

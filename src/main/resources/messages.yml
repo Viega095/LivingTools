@@ -1,0 +1,82 @@
+# LivingTools Messages
+# Version: 1.0
+
+prefix: "&8[&6LivingTools&8] &r"
+
+# General
+no_permission: "&cNo tienes permiso para hacer esto."
+player_not_found: "&cJugador no encontrado."
+only_players: "&cSolo los jugadores pueden usar este comando."
+reload_success: "&aConfiguración recargada correctamente."
+command_help: "&7Usa &e/livingtool help&7 para ver los comandos disponibles."
+
+# Tools
+tool_bound: "&a¡Herramienta vinculada a tu alma!"
+tool_given: "&a¡Herramienta entregada con éxito!"
+tool_broken: "&c¡Tu herramienta se ha roto! Repárala pronto."
+tool_repaired: "&a¡Tu herramienta ha sido reparada!"
+not_living_tool: "&cEso no es una Herramienta Viva."
+
+# Trading
+trade_sent: "&aSolicitud de comercio enviada a &e%player%&a."
+trade_received: "&e%player% &ate ha enviado una solicitud de comercio. Usa &6/livingtool trade accept&a."
+trade_accepted: "&aComercio aceptado."
+trade_cancelled: "&cComercio cancelado."
+trade_completed: "&a¡Intercambio completado con éxito!"
+
+# Bosses
+boss_spawned: "&c¡Un %boss% ha aparecido en %location%!"
+boss_defeated: "&6¡%player% ha derrotado a %boss%!"
+
+# GUI Titles
+gui_trade: "&0Comercio: "
+gui_forge: "&4&lForja de Jefes"
+gui_altar: "&0Altar Ancestral"
+gui_assembly: "&8Mesa de Ensamblaje"
+gui_recipes_main: "&6✦ &lLiving Tools - Menú &6✦"
+
+# Recetas
+recipes_opened: "&aAbriendo menú de recetas..."
+recipes_assembly_hint: "&7Usa &e/livingtool structure assembly &7para ver la estructura 3x3."
+recipes_forge_hint: "&7Usa &e/livingtool structure bossforge &7para ver la forja en cruz."
+recipes_crafted_success: "&a¡Objeto forjado con éxito!"
+recipes_inventory_full: "&cInventario lleno."
+
+dashboard_title: "Menú de Herramienta"
+stats_title: "Árbol de Habilidades"
+armor_title: "Armadura Viviente"
+history_title: "Historial de Herramienta"
+help_title: "Ayuda"
+
+dashboard_stats_desc:
+  - "&7Abre el árbol de habilidades."
+  - "&7Revisa niveles y progresión."
+dashboard_history_desc:
+  - "&7Mira el origen y recorrido."
+  - "&7Consulta kills, XP y más."
+dashboard_help_desc:
+  - "&7Lee una guía rápida de uso."
+  - "&7Aprende los comandos básicos."
+
+# Skill Tree / Runes / Ritual
+awakening_desc: "&7Desbloquea la capacidad de crecer y aprender."
+click_to_remove: "&eClick para retirar."
+click_to_unlock: "&eClick para desbloquear."
+drag_rune_here: "&7Arrastra una runa aquí."
+level_required: "&7Nivel requerido: &e%level%"
+locked: "&cBloqueado"
+ritual_guide_disabled: "&cLa guía ritual está deshabilitada."
+ritual_invalid_structure: "&cLa estructura del ritual no es válida."
+rune_slot_empty: "&7Ranura vacía"
+rune_slot_locked: "&cRanura bloqueada"
+unlocked: "&aDesbloqueado"
+unlocks_at_level: "&7Se desbloquea al nivel &e%level%"
+
+# System Actions
+must_hold_tool: "&cNecesitas sostener una Herramienta Viva en tu mano principal."
+rune_equipped: "&aRuna &e%rune% &aequipada con éxito!"
+rune_removed: "&aRuna removida de la herramienta."
+ability_unlocked: "&a¡Habilidad &e%ability% &adesbloqueada!"
+insufficient_level: "&cNo tienes suficiente nivel para esta habilidad."
+no_armor_equipped: "&cNo tienes ninguna Armadura Viviente equipada."
+infusion_unlocked: "&d¡Fusión de alma completada! Desbloqueaste la habilidad %ability%."

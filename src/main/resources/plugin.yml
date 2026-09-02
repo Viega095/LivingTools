@@ -1,0 +1,54 @@
+name: LivingTools
+version: '${project.version}'
+main: com.livingtools.LivingToolsPlugin
+api-version: 1.20
+authors: [Viega095]
+description: Tools that evolve and have personalities.
+commands:
+  living:
+    description: Alias principal para Living Tools
+    usage: /living <subcommand>
+  livingtool:
+    description: Main command for Living Tools
+    usage: /livingtool <subcommand>
+  livingtoolstats:
+    description: View tool stats
+    usage: /livingtoolstats
+  ltmenu:
+    description: Open Living Tools category menu
+    usage: /ltmenu
+  ltability:
+    description: Manage abilities (admin command)
+    usage: /ltability [subcommand]
+    aliases: [ability, lta]
+permissions:
+  livingtools.admin:
+    description: Full access to all LivingTools admin commands
+    default: op
+  livingtools.give:
+    description: Allows giving living tools
+    default: op
+  livingtools.bind:
+    description: Allows binding a tool to life
+    default: op
+  livingtools.rename:
+    description: Allows renaming a living tool
+    default: true
+  livingtools.command.help:
+    description: Access to help command
+    default: true
+  livingtools.command.stats:
+    description: View own tool stats
+    default: true
+  livingtools.command.stats.others:
+    description: View other players' tool stats
+    default: op
+  livingtools.command.top:
+    description: View leaderboard
+    default: true
+  livingtools.command.recipes:
+    description: View recipes
+    default: true
+  livingtools.command.social:
+    description: Access to social commands (trade, duel, bond)
+    default: true
