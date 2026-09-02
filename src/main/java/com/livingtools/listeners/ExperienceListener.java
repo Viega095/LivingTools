@@ -93,6 +93,9 @@ public class ExperienceListener implements Listener {
 
             long finalXP = (long) (baseXP * multiplier);
 
+            // Daily first-use bonus (runs once per tool per day)
+            com.livingtools.manager.DailyBonusManager.checkAndGrant(player, tool);
+
             if (finalXP > 0) {
                 tool.addXP(player, finalXP);
 
@@ -166,13 +169,26 @@ public class ExperienceListener implements Listener {
             // Hunger Check
             com.livingtools.manager.FeedingManager.checkHunger(player, tool);
 
-            // Phase 34: Rune Geode Drop
-            if (block.getType() == org.bukkit.Material.DEEPSLATE || block.getType() == org.bukkit.Material.STONE) {
-                if (Math.random() < 0.005) { // 0.5% chance
+            // Phase 34: Rune Geode Drop (chance increased by Rune Storm event)
+            if (block.getType() == org.bukkit.Material.DEEPSLATE || block.getType() == org.bukkit.Material.STONE
+                    || block.getType() == org.bukkit.Material.DEEPSLATE_DIAMOND_ORE
+                    || block.getType() == org.bukkit.Material.DIAMOND_ORE) {
+                double geodaMult = com.livingtools.manager.ServerEventManager.getGeodaDropMultiplier(player.getWorld());
+                double geodaChance = 0.005 * geodaMult; // 0.5% base, up to 2% during Rune Storm
+                if (Math.random() < geodaChance) {
                     ItemStack geode = com.livingtools.runes.RuneManager.createGeode();
                     player.getWorld().dropItemNaturally(block.getLocation(), geode);
-                    player.sendMessage(org.bukkit.ChatColor.LIGHT_PURPLE + "¡Has encontrado una Geoda Rúnica!");
+                    String eventMsg = geodaMult > 1 ? org.bukkit.ChatColor.LIGHT_PURPLE + "⚡ [Tormenta de Runas] " : org.bukkit.ChatColor.LIGHT_PURPLE + "";
+                    player.sendMessage(eventMsg + "¡Has encontrado una Geoda Rúnica!");
                     player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1, 1);
+                }
+            }
+
+            // Corrupted Night — Shard of Darkness drop (2% chance)
+            if (com.livingtools.manager.ServerEventManager.getActiveEvent(player.getWorld())
+                    == com.livingtools.manager.ServerEventManager.WorldEvent.CORRUPTED_NIGHT) {
+                if (Math.random() < 0.02) {
+                    // Drop from mobs, not blocks — handled in EntityDeath. Skip here.
                 }
             }
 
@@ -211,11 +227,26 @@ public class ExperienceListener implements Listener {
                 com.livingtools.manager.CorruptionManager.checkCorruption(killer, tool);
             }
 
-            // Combat XP — base 5, scaled by weather and config
+            // Combat XP — base 5, scaled by weather, config, and world event
             double combatMult = com.livingtools.manager.ConfigManager.getCombatXPMultiplier()
-                    * com.livingtools.manager.WeatherBonusManager.getWeatherMultiplier(killer, item.getType());
+                    * com.livingtools.manager.WeatherBonusManager.getWeatherMultiplier(killer, item.getType())
+                    * com.livingtools.manager.ServerEventManager.getCombatXPMultiplier(killer.getWorld());
             long killXP = Math.max(1L, (long)(5 * combatMult));
             tool.addXP(killer, killXP);
+
+            // Daily first-use bonus
+            com.livingtools.manager.DailyBonusManager.checkAndGrant(killer, tool);
+
+            // Corrupted Night: Shard of Darkness drop (3% chance per mob)
+            if (!(event.getEntity() instanceof Player)
+                    && com.livingtools.manager.ServerEventManager.getActiveEvent(killer.getWorld())
+                       == com.livingtools.manager.ServerEventManager.WorldEvent.CORRUPTED_NIGHT
+                    && Math.random() < 0.03) {
+                org.bukkit.inventory.ItemStack shard = com.livingtools.manager.ServerEventManager.createShardOfDarkness();
+                killer.getWorld().dropItemNaturally(event.getEntity().getLocation(), shard);
+                com.livingtools.utils.MessageUtils.sendActionBar(killer,
+                        org.bukkit.ChatColor.DARK_PURPLE + "☠ ¡Shard of Darkness!");
+            }
 
             // Kill Tracking
             if (event.getEntity() instanceof Player) {

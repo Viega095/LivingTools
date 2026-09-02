@@ -436,6 +436,9 @@ public class LivingTool {
         player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "¡ASCENSIÓN COMPLETADA!");
         player.sendMessage(ChatColor.YELLOW + "Tu herramienta ha renacido con mayor poder.");
 
+        // Server-wide announcement
+        com.livingtools.manager.AnnouncementManager.announcePrestige(player, this, data.getPrestige());
+
         updateLore();
     }
 

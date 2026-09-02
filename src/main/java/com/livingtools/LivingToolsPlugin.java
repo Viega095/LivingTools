@@ -110,6 +110,16 @@ public class LivingToolsPlugin extends JavaPlugin {
                 // WeatherBonusManager — climate and time-of-day XP bonuses
                 getServer().getPluginManager().registerEvents(new com.livingtools.manager.WeatherBonusManager(), this);
 
+                // TrailManager — particle trails for high-level tools
+                getServer().getPluginManager().registerEvents(new com.livingtools.manager.TrailManager(), this);
+
+                // ServerEventManager — Corrupted Night + Rune Storm world events
+                getServer().getPluginManager().registerEvents(new com.livingtools.manager.ServerEventManager(), this);
+                com.livingtools.manager.ServerEventManager.startEventScheduler();
+
+                // DailyBonusManager — first-use-of-day XP streak bonus
+                com.livingtools.manager.DailyBonusManager.startDailyReset();
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

@@ -140,6 +140,9 @@ public class MilestoneManager {
         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
         player.spawnParticle(Particle.TOTEM, player.getLocation().add(0, 1, 0), 50, 0.5, 0.5, 0.5, 0.1);
         player.spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(0, 2, 0), 20, 1, 1, 1, 0);
+
+        // Server-wide broadcast for major milestones
+        AnnouncementManager.announceMilestone(player, tool, m);
     }
 
     // -----------------------------------------------------------------------
