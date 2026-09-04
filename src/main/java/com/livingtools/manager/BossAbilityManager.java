@@ -46,8 +46,23 @@ public class BossAbilityManager implements Listener {
 
     @EventHandler
     public void onBossDeath(org.bukkit.event.entity.EntityDeathEvent event) {
-        if (bossArenas.containsKey(event.getEntity().getUniqueId())) {
-            removeArena(event.getEntity().getUniqueId());
+        if (!bossArenas.containsKey(event.getEntity().getUniqueId())) return;
+        removeArena(event.getEntity().getUniqueId());
+        // Announce boss kill to server
+        Player killer = event.getEntity().getKiller();
+        if (killer != null) {
+            String bossName = event.getEntity().getCustomName() != null
+                    ? org.bukkit.ChatColor.stripColor(event.getEntity().getCustomName())
+                    : event.getEntity().getType().name().replace("_", " ");
+            org.bukkit.inventory.ItemStack held = killer.getInventory().getItemInMainHand();
+            if (com.livingtools.data.LivingTool.isLivingTool(held)) {
+                com.livingtools.data.LivingTool kt = new com.livingtools.data.LivingTool(held);
+                AnnouncementManager.announceBossKill(killer, bossName, kt);
+                DailyChallengeManager.onKill(killer, kt, event.getEntityType());
+            } else {
+                Bukkit.broadcastMessage(org.bukkit.ChatColor.RED + "☠ " + killer.getName()
+                        + org.bukkit.ChatColor.GRAY + " derrotó a " + org.bukkit.ChatColor.RED + bossName + "!");
+            }
         }
     }
 

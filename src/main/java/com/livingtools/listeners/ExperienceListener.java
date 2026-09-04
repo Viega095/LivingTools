@@ -25,6 +25,12 @@ public class ExperienceListener implements Listener {
                 return;
             }
 
+            // Naming Ceremony — first use of tool
+            com.livingtools.manager.NamingCeremonyManager.tryStartCeremony(player, tool);
+
+            // Daily Challenge progress — block mined
+            com.livingtools.manager.DailyChallengeManager.onBlockMined(player, tool, block.getType());
+
             // Phase 53: Sentience (Refusal)
             if (com.livingtools.manager.SentienceManager.shouldRefuseWork(player, tool)) {
                 event.setCancelled(true);
@@ -211,6 +217,16 @@ public class ExperienceListener implements Listener {
 
         if (LivingTool.isLivingTool(item)) {
             LivingTool tool = new LivingTool(item);
+
+            // Naming Ceremony — first use of tool
+            com.livingtools.manager.NamingCeremonyManager.tryStartCeremony(killer, tool);
+
+            // Daily Challenge progress
+            if (event.getEntity() instanceof Player) {
+                com.livingtools.manager.DailyChallengeManager.onPlayerKill(killer, tool);
+            } else {
+                com.livingtools.manager.DailyChallengeManager.onKill(killer, tool, event.getEntityType());
+            }
 
             // Corruption Logic (Phase 21)
             if (event.getEntity() instanceof org.bukkit.entity.Villager) {

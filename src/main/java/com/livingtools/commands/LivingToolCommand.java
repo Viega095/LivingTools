@@ -76,6 +76,16 @@ public class LivingToolCommand implements CommandExecutor {
                 case "feed":
                     FeedCommand.execute(player, args);
                     return true;
+                case "challenges":
+                case "retos":
+                    ItemStack heldChallenges = player.getInventory().getItemInMainHand();
+                    if (com.livingtools.data.LivingTool.isLivingTool(heldChallenges)) {
+                        com.livingtools.manager.DailyChallengeManager.showChallenges(
+                                player, new com.livingtools.data.LivingTool(heldChallenges));
+                    } else {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                    }
+                    return true;
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":

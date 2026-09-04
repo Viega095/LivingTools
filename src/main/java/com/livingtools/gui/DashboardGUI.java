@@ -139,6 +139,14 @@ public class DashboardGUI {
         }
         gui.setItem(48, armorBtn);
 
+        // Slot 49: Retos Diarios
+        ItemStack challengesBtn = GUIBuilder.createGlowingItem(Material.RECOVERY_COMPASS,
+                ChatColor.AQUA + "" + ChatColor.BOLD + "⚑ Retos Diarios",
+                "",
+                ChatColor.GRAY + "3 retos que se reinician cada día.",
+                ChatColor.YELLOW + "► Click para ver tus retos");
+        gui.setItem(49, challengesBtn);
+
         // Slot 50: Hitos (ruta de progresión)
         int milestonesCompleted = MilestoneManager.countCompleted(tool);
         int milestonesTotal = MilestoneManager.Milestone.values().length;

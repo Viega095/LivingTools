@@ -120,6 +120,10 @@ public class LivingToolsPlugin extends JavaPlugin {
                 // DailyBonusManager — first-use-of-day XP streak bonus
                 com.livingtools.manager.DailyBonusManager.startDailyReset();
 
+                // NamingCeremonyManager — chat listener for tool naming
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.NamingCeremonyManager(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

@@ -415,6 +415,17 @@ public class GUIListener implements Listener {
                 return;
             }
 
+            // Daily Challenges (RECOVERY_COMPASS)
+            if (m == Material.RECOVERY_COMPASS) {
+                player.closeInventory();
+                if (tool != null) {
+                    com.livingtools.manager.DailyChallengeManager.showChallenges(player, tool);
+                } else {
+                    player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                }
+                return;
+            }
+
             // Milestones / Help (NETHER_STAR / WRITABLE_BOOK)
             if (m == Material.NETHER_STAR || m == Material.WRITABLE_BOOK) {
                 if (m == Material.NETHER_STAR && tool != null) {
