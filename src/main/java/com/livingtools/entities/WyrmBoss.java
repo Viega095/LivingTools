@@ -194,7 +194,7 @@ public class WyrmBoss {
                     }
 
                     boss.getWorld().playSound(boss.getLocation(), Sound.ENTITY_RAVAGER_ROAR, 3.0f, 0.5f);
-                    boss.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, boss.getLocation(), 5);
+                    boss.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, boss.getLocation(), 5);
                 }
             }
         }.runTaskLater(LivingToolsPlugin.getInstance(), 100L);

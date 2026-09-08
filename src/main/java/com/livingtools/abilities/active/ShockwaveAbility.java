@@ -30,7 +30,7 @@ public class ShockwaveAbility extends Ability {
             double radius = 4.0 + (level * 0.5); // Lvl 1: 4.5, Lvl 5: 6.5
             double force = 1.0 + (level * 0.2); // Lvl 1: 1.2, Lvl 5: 2.0
 
-            player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 1);
+            player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, player.getLocation(), 1);
             player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
 
             int count = 0;

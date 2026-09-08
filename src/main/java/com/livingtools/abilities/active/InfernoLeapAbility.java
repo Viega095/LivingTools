@@ -70,7 +70,7 @@ public class InfernoLeapAbility extends ActiveAbility {
         double damage = 6.0;
 
         // Explosion effects
-        player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, landingLoc, 5, 1, 0.1, 1, 0);
+        player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, landingLoc, 5, 1, 0.1, 1, 0);
         player.getWorld().spawnParticle(Particle.FLAME, landingLoc, 100, radius, 0.5, radius, 0.1);
         player.getWorld().spawnParticle(Particle.LAVA, landingLoc, 50, radius, 0.5, radius, 0);
 

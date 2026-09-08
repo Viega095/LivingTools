@@ -49,7 +49,7 @@ public class BlinkStrikeAbility extends ActiveAbility {
         double knockback = ConfigManager.getDouble("abilities.blinkstrike.knockback-power");
 
         // Visual explosion
-        player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, target, 3, 0.1, 0.1, 0.1, 0);
+        player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, target, 3, 0.1, 0.1, 0.1, 0);
         player.getWorld().spawnParticle(Particle.FLAME, target, 50, radius, 0.5, radius, 0.1);
         player.getWorld().spawnParticle(Particle.CRIT_MAGIC, target, 30, radius, 0.5, radius, 0.05);
         player.getWorld().spawnParticle(Particle.SWEEP_ATTACK, target, 5, radius, 0.1, radius, 0);

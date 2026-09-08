@@ -24,10 +24,20 @@ import java.util.UUID;
  */
 public class DailyBonusManager {
 
-    private static final org.bukkit.NamespacedKey KEY_LAST_USE =
-            new org.bukkit.NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "daily_last_use");
-    private static final org.bukkit.NamespacedKey KEY_STREAK =
-            new org.bukkit.NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "daily_streak");
+    // Lazy-initialized keys — avoids NPE if class loads before onEnable
+    private static org.bukkit.NamespacedKey KEY_LAST_USE;
+    private static org.bukkit.NamespacedKey KEY_STREAK;
+
+    private static org.bukkit.NamespacedKey keyLastUse() {
+        if (KEY_LAST_USE == null)
+            KEY_LAST_USE = new org.bukkit.NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "daily_last_use");
+        return KEY_LAST_USE;
+    }
+    private static org.bukkit.NamespacedKey keyStreak() {
+        if (KEY_STREAK == null)
+            KEY_STREAK = new org.bukkit.NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "daily_streak");
+        return KEY_STREAK;
+    }
 
     // En memoria: jugadores que ya recibieron el bonus hoy (evita revisar cada bloque)
     private static final Map<UUID, String> todayBonusTool = new HashMap<>();
@@ -50,8 +60,8 @@ public class DailyBonusManager {
         org.bukkit.persistence.PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
         long now = System.currentTimeMillis();
-        long lastUse = pdc.getOrDefault(KEY_LAST_USE, PersistentDataType.LONG, 0L);
-        int streak   = pdc.getOrDefault(KEY_STREAK,   PersistentDataType.INTEGER, 0);
+        long lastUse = pdc.getOrDefault(keyLastUse(), PersistentDataType.LONG, 0L);
+        int streak   = pdc.getOrDefault(keyStreak(),   PersistentDataType.INTEGER, 0);
 
         long daysSinceLast = (now - lastUse) / DAY_MS;
 
@@ -66,8 +76,8 @@ public class DailyBonusManager {
         }
 
         // Guardar en PDC
-        pdc.set(KEY_LAST_USE, PersistentDataType.LONG, now);
-        pdc.set(KEY_STREAK,   PersistentDataType.INTEGER, streak);
+        pdc.set(keyLastUse(), PersistentDataType.LONG, now);
+        pdc.set(keyStreak(),   PersistentDataType.INTEGER, streak);
         tool.getItem().setItemMeta(meta);
 
         // Calcular bonus

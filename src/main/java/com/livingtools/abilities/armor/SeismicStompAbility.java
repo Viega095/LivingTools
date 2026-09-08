@@ -33,7 +33,7 @@ public class SeismicStompAbility extends Ability {
 
                 // Efectos visuales y sonoros
                 player.getWorld().spawnParticle(
-                        Particle.EXPLOSION_LARGE,
+                        Particle.EXPLOSION_HUGE,
                         player.getLocation(),
                         5,
                         radius / 2, 0.1, radius / 2);

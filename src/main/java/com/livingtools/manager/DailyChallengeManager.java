@@ -19,12 +19,26 @@ import java.util.*;
  */
 public class DailyChallengeManager {
 
-    private static final NamespacedKey KEY_CHALLENGES =
-            new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "daily_challenges");
-    private static final NamespacedKey KEY_CHALLENGE_DAY =
-            new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "challenge_day");
-    private static final NamespacedKey KEY_CHALLENGE_PROGRESS =
-            new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "challenge_progress");
+    // Lazy-initialized keys — avoids NPE if class loads before onEnable
+    private static NamespacedKey KEY_CHALLENGES;
+    private static NamespacedKey KEY_CHALLENGE_DAY;
+    private static NamespacedKey KEY_CHALLENGE_PROGRESS;
+
+    private static NamespacedKey keyChallenges() {
+        if (KEY_CHALLENGES == null)
+            KEY_CHALLENGES = new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "daily_challenges");
+        return KEY_CHALLENGES;
+    }
+    private static NamespacedKey keyChallengeDay() {
+        if (KEY_CHALLENGE_DAY == null)
+            KEY_CHALLENGE_DAY = new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "challenge_day");
+        return KEY_CHALLENGE_DAY;
+    }
+    private static NamespacedKey keyChallengeProgress() {
+        if (KEY_CHALLENGE_PROGRESS == null)
+            KEY_CHALLENGE_PROGRESS = new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "challenge_progress");
+        return KEY_CHALLENGE_PROGRESS;
+    }
 
     // -----------------------------------------------------------------------
     // Tipos de retos
@@ -164,12 +178,12 @@ public class DailyChallengeManager {
         if (!tool.getItem().hasItemMeta()) return generateAndSave(tool);
         org.bukkit.inventory.meta.ItemMeta meta = tool.getItem().getItemMeta();
         int today = getDayOfYear();
-        int savedDay = meta.getPersistentDataContainer().getOrDefault(KEY_CHALLENGE_DAY, PersistentDataType.INTEGER, -1);
+        int savedDay = meta.getPersistentDataContainer().getOrDefault(keyChallengeDay(), PersistentDataType.INTEGER, -1);
         if (savedDay != today) {
             // Nuevo día — generar nuevos retos y resetear progreso
             return generateAndSave(tool);
         }
-        String raw = meta.getPersistentDataContainer().getOrDefault(KEY_CHALLENGES, PersistentDataType.STRING, "");
+        String raw = meta.getPersistentDataContainer().getOrDefault(keyChallenges(), PersistentDataType.STRING, "");
         if (raw.isEmpty()) return generateAndSave(tool);
         List<ChallengeType> list = new ArrayList<>();
         for (String s : raw.split(",")) {
@@ -191,10 +205,10 @@ public class DailyChallengeManager {
             if (sb.length() > 0) sb.append(",");
             sb.append(c.name());
         }
-        meta.getPersistentDataContainer().set(KEY_CHALLENGES, PersistentDataType.STRING, sb.toString());
-        meta.getPersistentDataContainer().set(KEY_CHALLENGE_DAY, PersistentDataType.INTEGER, getDayOfYear());
+        meta.getPersistentDataContainer().set(keyChallenges(), PersistentDataType.STRING, sb.toString());
+        meta.getPersistentDataContainer().set(keyChallengeDay(), PersistentDataType.INTEGER, getDayOfYear());
         // Reset progress for new day
-        meta.getPersistentDataContainer().set(KEY_CHALLENGE_PROGRESS, PersistentDataType.STRING, "");
+        meta.getPersistentDataContainer().set(keyChallengeProgress(), PersistentDataType.STRING, "");
         tool.getItem().setItemMeta(meta);
         return selected;
     }
@@ -203,7 +217,7 @@ public class DailyChallengeManager {
         Map<ChallengeType, Integer> map = new HashMap<>();
         if (!tool.getItem().hasItemMeta()) return map;
         String raw = tool.getItem().getItemMeta().getPersistentDataContainer()
-                .getOrDefault(KEY_CHALLENGE_PROGRESS, PersistentDataType.STRING, "");
+                .getOrDefault(keyChallengeProgress(), PersistentDataType.STRING, "");
         if (raw.isEmpty()) return map;
         for (String pair : raw.split(";")) {
             String[] kv = pair.split("=");
@@ -223,7 +237,7 @@ public class DailyChallengeManager {
             if (sb.length() > 0) sb.append(";");
             sb.append(e.getKey().name()).append("=").append(e.getValue());
         }
-        meta.getPersistentDataContainer().set(KEY_CHALLENGE_PROGRESS, PersistentDataType.STRING, sb.toString());
+        meta.getPersistentDataContainer().set(keyChallengeProgress(), PersistentDataType.STRING, sb.toString());
         tool.getItem().setItemMeta(meta);
     }
 

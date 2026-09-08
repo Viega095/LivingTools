@@ -85,7 +85,7 @@ public class TimeFreezeAbility extends ActiveAbility {
 
                     // Frozen particles
                     if (ticks % 5 == 0) {
-                        entity.getWorld().spawnParticle(Particle.SNOW_SHOVEL,
+                        entity.getWorld().spawnParticle(Particle.SNOWFLAKE,
                                 entity.getLocation().add(0, entity.getHeight() / 2, 0),
                                 10, 0.3, 0.5, 0.3, 0);
                         entity.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,

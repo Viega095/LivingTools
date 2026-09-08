@@ -20,8 +20,13 @@ import java.util.*;
  */
 public class NamingCeremonyManager implements Listener {
 
-    private static final NamespacedKey KEY_NAMED =
-            new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "ceremony_named");
+    // Lazy-initialized — avoids NPE before onEnable
+    private static NamespacedKey KEY_NAMED;
+    private static NamespacedKey keyNamed() {
+        if (KEY_NAMED == null)
+            KEY_NAMED = new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "ceremony_named");
+        return KEY_NAMED;
+    }
 
     // UUID del jugador → herramienta esperando nombre
     private static final Map<UUID, LivingTool> waitingForName = new HashMap<>();
@@ -139,13 +144,13 @@ public class NamingCeremonyManager implements Listener {
     public static boolean isNamed(LivingTool tool) {
         if (!tool.getItem().hasItemMeta()) return false;
         return tool.getItem().getItemMeta().getPersistentDataContainer()
-                .has(KEY_NAMED, PersistentDataType.BYTE);
+                .has(keyNamed(), PersistentDataType.BYTE);
     }
 
     private static void setNamed(LivingTool tool) {
         if (!tool.getItem().hasItemMeta()) return;
         org.bukkit.inventory.meta.ItemMeta meta = tool.getItem().getItemMeta();
-        meta.getPersistentDataContainer().set(KEY_NAMED, PersistentDataType.BYTE, (byte) 1);
+        meta.getPersistentDataContainer().set(keyNamed(), PersistentDataType.BYTE, (byte) 1);
         tool.getItem().setItemMeta(meta);
     }
 }

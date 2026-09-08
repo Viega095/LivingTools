@@ -47,7 +47,7 @@ public class VortexAbility extends ActiveAbility {
             public void run() {
                 if (ticks >= duration) {
                     // End vortex
-                    player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, target, 3);
+                    player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, target, 3);
                     player.getWorld().playSound(target, Sound.ENTITY_GENERIC_EXPLODE, 1, 0.8f);
                     this.cancel();
                     return;

@@ -26,7 +26,7 @@ public class GodModeManager {
                     Block block = loc.clone().add(x, y, z).getBlock();
                     if (block.getType() != Material.AIR && block.getType() != Material.BEDROCK) {
                         block.setType(Material.AIR);
-                        block.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, block.getLocation(), 1);
+                        block.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1);
                     }
                 }
             }

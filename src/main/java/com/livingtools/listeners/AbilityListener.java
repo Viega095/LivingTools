@@ -113,7 +113,7 @@ public class AbilityListener implements Listener {
                     event.setDamage(event.getDamage() * 1.5); // +50% Damage
                     player.sendMessage(org.bukkit.ChatColor.RED + "¡GOLPE DE FURIA MINERA! (+50% Daño)");
                     player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_GENERIC_EXPLODE, 1, 2.0f);
-                    player.spawnParticle(org.bukkit.Particle.EXPLOSION_LARGE, event.getEntity().getLocation(), 1);
+                    player.spawnParticle(org.bukkit.Particle.EXPLOSION_HUGE, event.getEntity().getLocation(), 1);
                 }
 
                 // Corruption Check (Phase 37)

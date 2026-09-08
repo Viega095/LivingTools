@@ -30,7 +30,7 @@ public class FrostNovaAbility extends ActiveAbility {
                 LivingEntity target = (LivingEntity) entity;
                 target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 10)); // 3s Freeze (Slowness high)
                 target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 128)); // No Jump
-                target.getWorld().spawnParticle(Particle.SNOW_SHOVEL, target.getLocation().add(0, 1, 0), 10, 0.5, 0.5,
+                target.getWorld().spawnParticle(Particle.SNOWFLAKE, target.getLocation().add(0, 1, 0), 10, 0.5, 0.5,
                         0.5, 0.05);
             }
         }
