@@ -23,7 +23,9 @@ public class TerraformAbility extends Ability {
             return;
 
         // Cost
-        LivingTool tool = new LivingTool(player.getInventory().getItemInMainHand());
+        org.bukkit.inventory.ItemStack heldItem = player.getInventory().getItemInMainHand();
+        if (!LivingTool.isLivingTool(heldItem)) return;
+        LivingTool tool = new LivingTool(heldItem);
         org.bukkit.inventory.meta.Damageable meta = (org.bukkit.inventory.meta.Damageable) tool.getItem().getItemMeta();
 
         if (meta.getDamage() > tool.getItem().getType().getMaxDurability() - 50) {

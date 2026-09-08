@@ -79,6 +79,7 @@ public class AetherialManager {
     }
 
     public static boolean isAetherial(LivingTool tool) {
+        if (!tool.getItem().hasItemMeta()) return false;
         return tool.getItem().getItemMeta().getPersistentDataContainer().has(KEY_IS_AETHERIAL, PersistentDataType.BYTE);
     }
 }

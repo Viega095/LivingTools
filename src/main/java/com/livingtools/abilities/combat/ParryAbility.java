@@ -37,7 +37,9 @@ public class ParryAbility extends Ability {
             // Dot product > 0.5 means within ~60 degrees
             if (playerDir.dot(dirToAttacker) > 0.5) {
 
-                LivingTool tool = new LivingTool(victim.getInventory().getItemInMainHand());
+                org.bukkit.inventory.ItemStack heldItem = victim.getInventory().getItemInMainHand();
+                if (!com.livingtools.data.LivingTool.isLivingTool(heldItem)) return;
+                LivingTool tool = new LivingTool(heldItem);
                 int level = getLevel(tool);
                 double chance = 0.22 + (level * 0.02); // Lvl 1: 24%, Lvl 5: 32%
 

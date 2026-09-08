@@ -101,9 +101,7 @@ public class CustomEnchantManager implements Listener {
     }
 
     public static int getEnchantLevel(LivingTool tool, LivingEnchant enchant) {
-        // This is a simplified storage. In reality, we'd parse a stored string or map.
-        // For this implementation, let's assume we store enchants as
-        // "ENCHANT:LEVEL,ENCHANT:LEVEL"
+        if (!tool.getItem().hasItemMeta()) return 0;
         String data = tool.getItem().getItemMeta().getPersistentDataContainer().get(KEY_ENCHANTS,
                 PersistentDataType.STRING);
         if (data == null)

@@ -72,6 +72,7 @@ public class AbyssalManager {
     }
 
     public static boolean isAbyssal(LivingTool tool) {
+        if (!tool.getItem().hasItemMeta()) return false;
         return tool.getItem().getItemMeta().getPersistentDataContainer().has(KEY_IS_ABYSSAL, PersistentDataType.BYTE);
     }
 }
