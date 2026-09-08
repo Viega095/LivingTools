@@ -97,6 +97,10 @@ public class ExperienceListener implements Listener {
             double weatherMult = com.livingtools.manager.WeatherBonusManager.getWeatherMultiplier(player, item.getType());
             multiplier = multiplier * weatherMult;
 
+            // Sleep Bonus — extra XP if player slept recently
+            double sleepMult = com.livingtools.manager.SleepBonusManager.getSleepMultiplier(player);
+            multiplier = multiplier * sleepMult;
+
             long finalXP = (long) (baseXP * multiplier);
 
             // Daily first-use bonus (runs once per tool per day)
@@ -243,10 +247,11 @@ public class ExperienceListener implements Listener {
                 com.livingtools.manager.CorruptionManager.checkCorruption(killer, tool);
             }
 
-            // Combat XP — base 5, scaled by weather, config, and world event
+            // Combat XP — base 5, scaled by weather, config, world event, and sleep
             double combatMult = com.livingtools.manager.ConfigManager.getCombatXPMultiplier()
                     * com.livingtools.manager.WeatherBonusManager.getWeatherMultiplier(killer, item.getType())
-                    * com.livingtools.manager.ServerEventManager.getCombatXPMultiplier(killer.getWorld());
+                    * com.livingtools.manager.ServerEventManager.getCombatXPMultiplier(killer.getWorld())
+                    * com.livingtools.manager.SleepBonusManager.getSleepMultiplier(killer);
             long killXP = Math.max(1L, (long)(5 * combatMult));
             tool.addXP(killer, killXP);
 

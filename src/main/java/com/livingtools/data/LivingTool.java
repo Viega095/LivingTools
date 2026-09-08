@@ -184,7 +184,7 @@ public class LivingTool {
         }
     }
 
-    private long getRequiredXP(int level) {
+    public static long getRequiredXP(int level) {
         // Simple exponential curve: Scaling * level^2
         long scaling = com.livingtools.manager.ConfigManager.getInt("xp.level-scaling");
         return scaling * level * level;

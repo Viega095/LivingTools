@@ -160,6 +160,14 @@ public class DashboardGUI {
                 ChatColor.YELLOW + "► Click para ver hitos");
         gui.setItem(50, milestonesBtn);
 
+        // Slot 46: Leaderboard
+        ItemStack lbBtn = GUIBuilder.createGlowingItem(Material.GOLDEN_HELMET,
+                ChatColor.GOLD + "" + ChatColor.BOLD + "★ Tabla de Líderes",
+                "",
+                ChatColor.GRAY + "Top herramientas de jugadores online.",
+                ChatColor.YELLOW + "► Click para ver el ranking");
+        gui.setItem(46, lbBtn);
+
         // Slot 51: Ayuda
         ItemStack helpBtn = GUIBuilder.createGlowingItem(Material.WRITABLE_BOOK,
                 ConfigManager.getMessage("help_title"),
@@ -167,6 +175,14 @@ public class DashboardGUI {
                 ChatColor.GRAY + "Guía completa de Living Tools.",
                 ChatColor.YELLOW + "► Click para abrir");
         gui.setItem(51, helpBtn);
+
+        // Slot 52: Inspect (Ver detalles en chat)
+        ItemStack inspectBtn = GUIBuilder.createGlowingItem(Material.SPYGLASS,
+                ChatColor.LIGHT_PURPLE + "🔍 Inspeccionar",
+                "",
+                ChatColor.GRAY + "Ver ficha completa de tu herramienta en el chat.",
+                ChatColor.YELLOW + "► Click para ver");
+        gui.setItem(52, inspectBtn);
 
         // Slot 53: Cerrar
         ItemStack close = GUIBuilder.createGlowingItem(Material.BARRIER,

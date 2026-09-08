@@ -124,6 +124,14 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.manager.NamingCeremonyManager(), this);
 
+                // SleepBonusManager — XP boost after sleeping
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.SleepBonusManager(), this);
+
+                // LootBonusManager — personality-driven bonus drops on kill
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.LootBonusManager(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

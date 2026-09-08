@@ -76,6 +76,16 @@ public class LivingToolCommand implements CommandExecutor {
                 case "feed":
                     FeedCommand.execute(player, args);
                     return true;
+                case "inspect":
+                case "ver":
+                    Player inspectTarget = (args.length >= 2)
+                            ? org.bukkit.Bukkit.getPlayer(args[1]) : player;
+                    if (inspectTarget == null) {
+                        player.sendMessage(ChatColor.RED + "Jugador no encontrado: " + args[1]);
+                        return true;
+                    }
+                    com.livingtools.manager.ToolInspectManager.inspect(player, inspectTarget);
+                    return true;
                 case "challenges":
                 case "retos":
                     ItemStack heldChallenges = player.getInventory().getItemInMainHand();

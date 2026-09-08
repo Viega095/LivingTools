@@ -426,6 +426,20 @@ public class GUIListener implements Listener {
                 return;
             }
 
+            // Leaderboard (GOLDEN_HELMET)
+            if (m == Material.GOLDEN_HELMET) {
+                player.closeInventory();
+                com.livingtools.gui.LeaderboardGUI.open(player);
+                return;
+            }
+
+            // Inspect — muestra ficha en chat (SPYGLASS)
+            if (m == Material.SPYGLASS) {
+                player.closeInventory();
+                com.livingtools.manager.ToolInspectManager.inspect(player, player);
+                return;
+            }
+
             // Milestones / Help (NETHER_STAR / WRITABLE_BOOK)
             if (m == Material.NETHER_STAR || m == Material.WRITABLE_BOOK) {
                 if (m == Material.NETHER_STAR && tool != null) {
