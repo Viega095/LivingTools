@@ -26,7 +26,14 @@ public class CustomEnchantManager implements Listener {
     public enum LivingEnchant {
         SOUL_REAPER("Segador de Almas", "Aumenta la probabilidad de obtener Gemas de Alma.", 10),
         THUNDERLORD("Señor del Trueno", "Probabilidad de invocar un rayo al golpear.", 5),
-        VEIN_BREAKER("Rompevenas", "Mina vetas enteras de mineral.", 1);
+        VEIN_BREAKER("Rompevenas", "Mina vetas enteras de mineral (hasta 16 bloques).", 3),
+
+        // ── Nuevos encantamientos de minería ──────────────────────────────────
+        TREASURE("Tesoro", "Chance muy baja de descubrir un cofre con loot al picar.", 5),
+        ORE_ECHO("Eco de Minas", "Detecta ores cercanos y los marca en el chat brevemente.", 3),
+        AUTO_SMELT("Fundición Viva", "Funde automáticamente los ores al romperlos.", 1),
+        EXPLOSIVE_PICK("Pico Explosivo", "Probabilidad de romper un radio 3×3 de bloques.", 3),
+        SOUL_HARVEST("Cosecha de Almas", "Mobs matados con el pico tienen +15% chance de drop raro.", 5);
 
         private final String name;
         private final String description;
@@ -38,17 +45,9 @@ public class CustomEnchantManager implements Listener {
             this.maxLevel = maxLevel;
         }
 
-        public String getName() {
-            return name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public int getMaxLevel() {
-            return maxLevel;
-        }
+        public String getName() { return name; }
+        public String getDescription() { return description; }
+        public int getMaxLevel() { return maxLevel; }
     }
 
     // --- Event Listeners ---

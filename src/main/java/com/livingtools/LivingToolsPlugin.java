@@ -140,6 +140,10 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.manager.TrapKillManager(), this);
 
+                // MiningEnchantListener — TREASURE, VEIN_BREAKER, ORE_ECHO, AUTO_SMELT, EXPLOSIVE_PICK, SOUL_HARVEST
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.MiningEnchantListener(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 
