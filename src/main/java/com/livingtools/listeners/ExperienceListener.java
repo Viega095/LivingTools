@@ -2,6 +2,7 @@ package com.livingtools.listeners;
 
 import com.livingtools.data.LivingTool;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -218,9 +219,24 @@ public class ExperienceListener implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (event.getEntity().getKiller() == null)
-            return;
-        Player killer = event.getEntity().getKiller();
+        LivingEntity deadEntity = event.getEntity();
+        Player killer = deadEntity.getKiller();
+
+        // --- Trap Kill Attribution ---
+        // If no direct killer, check if a player's trap caused the death
+        if (killer == null) {
+            Player trapKiller = com.livingtools.manager.TrapKillManager.getTrapKiller(deadEntity);
+            if (trapKiller != null) {
+                ItemStack trapItem = trapKiller.getInventory().getItemInMainHand();
+                if (LivingTool.isLivingTool(trapItem)) {
+                    LivingTool trapTool = new LivingTool(trapItem);
+                    com.livingtools.manager.TrapKillManager.awardTrapXP(trapKiller, trapTool,
+                            deadEntity, event.getEntityType());
+                }
+            }
+            return; // No direct killer, either trap handled or nothing to do
+        }
+
         ItemStack item = killer.getInventory().getItemInMainHand();
 
         if (LivingTool.isLivingTool(item)) {

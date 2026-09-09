@@ -136,6 +136,10 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.manager.KillStreakManager(), this);
 
+                // TrapKillManager — attribute kills from traps, dispensers, TNT, lava
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.TrapKillManager(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 
