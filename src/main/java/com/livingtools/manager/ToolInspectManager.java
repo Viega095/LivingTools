@@ -107,6 +107,39 @@ public class ToolInspectManager {
         lines.add(ChatColor.GOLD + "║ " + ChatColor.GRAY + "✦ Hitos: " + ChatColor.YELLOW
                 + milestonesCompleted + "/" + milestonesTotal);
 
+        // Puntos de Habilidad disponibles
+        int skillPoints = com.livingtools.manager.LevelUpRewardManager.getSkillPoints(tool);
+        if (skillPoints > 0) {
+            lines.add(ChatColor.GOLD + "║ " + ChatColor.GREEN + "★ Pts. de Habilidad: " + skillPoints);
+        }
+
+        // Memoria de la herramienta
+        int ageInDays = com.livingtools.manager.ToolMemoryManager.getAgeInDays(tool);
+        String favBiome = com.livingtools.manager.ToolMemoryManager.getFavoriteBiome(tool);
+        String favMob = com.livingtools.manager.ToolMemoryManager.getFavoriteMob(tool);
+        if (ageInDays > 0 || favBiome != null || favMob != null) {
+            lines.add(ChatColor.GOLD + "║");
+            lines.add(ChatColor.GOLD + "║ " + ChatColor.DARK_GRAY + "― MEMORIA ―");
+            if (ageInDays > 0) {
+                lines.add(ChatColor.GOLD + "║ " + ChatColor.GRAY + "📅 Edad: " + ChatColor.WHITE + ageInDays + " días");
+            }
+            if (favBiome != null) {
+                lines.add(ChatColor.GOLD + "║ " + ChatColor.GRAY + "🌍 Bioma fav: " + ChatColor.GREEN
+                        + favBiome.replace("_", " ").toLowerCase());
+            }
+            if (favMob != null) {
+                lines.add(ChatColor.GOLD + "║ " + ChatColor.GRAY + "⚔ Presa fav: " + ChatColor.RED + favMob);
+            }
+        }
+
+        // Racha activa
+        int streak = com.livingtools.manager.KillStreakManager.getStreak(target);
+        if (streak >= 3) {
+            double sm = com.livingtools.manager.KillStreakManager.getStreakMultiplier(target);
+            lines.add(ChatColor.GOLD + "║ " + ChatColor.RED + "⚡ Racha: " + streak
+                    + "  ×" + String.format("%.1f", sm) + " XP");
+        }
+
         // Habilidades
         List<String> abilities = data.getAbilities();
         if (!abilities.isEmpty()) {

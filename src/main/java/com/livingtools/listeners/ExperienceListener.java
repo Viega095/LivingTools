@@ -112,6 +112,10 @@ public class ExperienceListener implements Listener {
                 // Track blocks mined for history
                 tool.getData().setBlocksMined(tool.getData().getBlocksMined() + 1);
 
+                // Tool Memory — track biome visited
+                com.livingtools.manager.ToolMemoryManager.onBlockMined(
+                        player, tool, event.getBlock().getLocation().getBlock().getBiome());
+
                 // Weather bonus action bar (only if bonus active)
                 String weatherDesc = com.livingtools.manager.WeatherBonusManager.getBonusDescription(player, item.getType());
                 if (weatherDesc != null) {
@@ -247,13 +251,17 @@ public class ExperienceListener implements Listener {
                 com.livingtools.manager.CorruptionManager.checkCorruption(killer, tool);
             }
 
-            // Combat XP — base 5, scaled by weather, config, world event, and sleep
+            // Combat XP — base 5, scaled by weather, config, world event, sleep, and kill streak
             double combatMult = com.livingtools.manager.ConfigManager.getCombatXPMultiplier()
                     * com.livingtools.manager.WeatherBonusManager.getWeatherMultiplier(killer, item.getType())
                     * com.livingtools.manager.ServerEventManager.getCombatXPMultiplier(killer.getWorld())
-                    * com.livingtools.manager.SleepBonusManager.getSleepMultiplier(killer);
+                    * com.livingtools.manager.SleepBonusManager.getSleepMultiplier(killer)
+                    * com.livingtools.manager.KillStreakManager.getStreakMultiplier(killer);
             long killXP = Math.max(1L, (long)(5 * combatMult));
             tool.addXP(killer, killXP);
+
+            // Tool Memory — track mob type
+            com.livingtools.manager.ToolMemoryManager.onKill(killer, tool, event.getEntityType());
 
             // Daily first-use bonus
             com.livingtools.manager.DailyBonusManager.checkAndGrant(killer, tool);

@@ -132,6 +132,10 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.manager.LootBonusManager(), this);
 
+                // KillStreakManager — consecutive kill tracking and XP multiplier
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.KillStreakManager(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

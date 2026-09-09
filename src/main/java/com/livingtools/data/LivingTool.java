@@ -106,6 +106,9 @@ public class LivingTool {
             // Check Evolution
             checkEvolution(player, currentLevel);
 
+            // Milestone Level Rewards (fireworks, skill points, broadcasts)
+            com.livingtools.manager.LevelUpRewardManager.onLevelUp(player, this, currentLevel - 1, currentLevel);
+
             // Update required XP for next loop
             requiredXP = getRequiredXP(currentLevel);
         }
