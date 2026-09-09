@@ -19,8 +19,16 @@ import java.util.Random;
 
 public class CustomEnchantManager implements Listener {
 
-    public static final NamespacedKey KEY_ENCHANTS = new NamespacedKey(
-            com.livingtools.LivingToolsPlugin.getInstance(), "custom_enchants");
+    private static NamespacedKey KEY_ENCHANTS_INSTANCE;
+
+    /** Lazy getter — seguro para llamar después de onEnable() */
+    public static NamespacedKey getKeyEnchants() {
+        if (KEY_ENCHANTS_INSTANCE == null)
+            KEY_ENCHANTS_INSTANCE = new NamespacedKey(
+                    com.livingtools.LivingToolsPlugin.getInstance(), "custom_enchants");
+        return KEY_ENCHANTS_INSTANCE;
+    }
+
     private static final Random random = new Random();
 
     public enum LivingEnchant {
@@ -101,7 +109,7 @@ public class CustomEnchantManager implements Listener {
 
     public static int getEnchantLevel(LivingTool tool, LivingEnchant enchant) {
         if (!tool.getItem().hasItemMeta()) return 0;
-        String data = tool.getItem().getItemMeta().getPersistentDataContainer().get(KEY_ENCHANTS,
+        String data = tool.getItem().getItemMeta().getPersistentDataContainer().get(getKeyEnchants(),
                 PersistentDataType.STRING);
         if (data == null)
             return 0;
@@ -120,7 +128,7 @@ public class CustomEnchantManager implements Listener {
     }
 
     public static void addEnchant(LivingTool tool, LivingEnchant enchant, int level) {
-        String data = tool.getItem().getItemMeta().getPersistentDataContainer().get(KEY_ENCHANTS,
+        String data = tool.getItem().getItemMeta().getPersistentDataContainer().get(getKeyEnchants(),
                 PersistentDataType.STRING);
         if (data == null)
             data = "";
@@ -144,7 +152,7 @@ public class CustomEnchantManager implements Listener {
 
         String finalString = String.join(",", newData);
         org.bukkit.inventory.meta.ItemMeta meta = tool.getItem().getItemMeta();
-        meta.getPersistentDataContainer().set(KEY_ENCHANTS, PersistentDataType.STRING, finalString);
+        meta.getPersistentDataContainer().set(getKeyEnchants(), PersistentDataType.STRING, finalString);
 
         // Update Lore
         List<String> lore = meta.getLore();

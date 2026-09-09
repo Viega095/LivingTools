@@ -49,16 +49,19 @@ public class TerritoryManager implements Listener {
         String ownerName = chunk.getPersistentDataContainer().get(KEY_CHUNK_FACTION, PersistentDataType.STRING);
 
         if (ownerName != null) {
-            FactionManager.Faction owner = FactionManager.Faction.valueOf(ownerName);
-            FactionManager.Faction playerFaction = FactionManager.getFaction(player);
+            try {
+                FactionManager.Faction owner = FactionManager.Faction.valueOf(ownerName);
+                FactionManager.Faction playerFaction = FactionManager.getFaction(player);
 
-            if (playerFaction == owner) {
-                player.sendTitle("", MessageUtils.color("&aTerritorio Aliado"), 10, 40, 10);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 0));
-            } else if (playerFaction != FactionManager.Faction.NONE) {
-                player.sendTitle("", MessageUtils.color("&cTerritorio Enemigo"), 10, 40, 10);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200, 0));
+                if (playerFaction == owner) {
+                    player.sendTitle("", MessageUtils.color("&aTerritorio Aliado"), 10, 40, 10);
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 0));
+                } else if (playerFaction != FactionManager.Faction.NONE) {
+                    player.sendTitle("", MessageUtils.color("&cTerritorio Enemigo"), 10, 40, 10);
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200, 0));
+                }
+            } catch (IllegalArgumentException ignored) {
             }
         }
     }

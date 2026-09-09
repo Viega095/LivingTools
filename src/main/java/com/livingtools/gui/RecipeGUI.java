@@ -324,13 +324,21 @@ public class RecipeGUI {
         if (matPrefix.isEmpty()) {
             return new ItemStack(Material.STONE);
         }
-        return new ItemStack(Material.valueOf(tier + matPrefix));
+        try {
+            return new ItemStack(Material.valueOf(tier + matPrefix));
+        } catch (Exception e) {
+            return new ItemStack(Material.STONE_PICKAXE);
+        }
     }
 
     private static ItemStack resolveCenterItem(String context, String matPrefix, String tier) {
         if (context.equals("HELMET") || context.equals("CHESTPLATE")
                 || context.equals("LEGGINGS") || context.equals("BOOTS")) {
-            return new ItemStack(Material.valueOf(tier + "_" + context));
+            try {
+                return new ItemStack(Material.valueOf(tier + "_" + context));
+            } catch (Exception e) {
+                return new ItemStack(Material.IRON_CHESTPLATE);
+            }
         }
         return baseItem(context, matPrefix, tier);
     }

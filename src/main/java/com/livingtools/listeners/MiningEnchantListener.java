@@ -66,18 +66,23 @@ public class MiningEnchantListener implements Listener {
         SMELT_MAP.put(Material.NETHER_QUARTZ_ORE,     Material.QUARTZ);
     }
 
+    // Set anti-recursión para evitar cascadas infinitas en VEIN_BREAKER y EXPLOSIVE_PICK
+    private static final Set<Location> breakingBlocks = Collections.synchronizedSet(new HashSet<>());
+
     // -----------------------------------------------------------------------
     // Main event
     // -----------------------------------------------------------------------
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+        if (breakingBlocks.contains(block.getLocation())) return;
+
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
         if (!LivingTool.isLivingTool(item)) return;
 
         LivingTool tool = new LivingTool(item);
-        Block block = event.getBlock();
 
         // ── TREASURE ─────────────────────────────────────────────────────────
         if (CustomEnchantManager.hasEnchant(tool, LivingEnchant.TREASURE)) {
@@ -308,8 +313,14 @@ public class MiningEnchantListener implements Listener {
         int broken = 0;
         for (Block veinBlock : visited) {
             if (veinBlock.equals(origin)) continue;
-            veinBlock.breakNaturally(player.getInventory().getItemInMainHand());
-            broken++;
+            Location loc = veinBlock.getLocation();
+            breakingBlocks.add(loc);
+            try {
+                veinBlock.breakNaturally(player.getInventory().getItemInMainHand());
+                broken++;
+            } finally {
+                breakingBlocks.remove(loc);
+            }
         }
 
         if (broken > 0) {
@@ -333,7 +344,7 @@ public class MiningEnchantListener implements Listener {
         oreEchoCooldown.put(uuid, now);
 
         int level = CustomEnchantManager.getEnchantLevel(tool, LivingEnchant.ORE_ECHO);
-        int radius = level == 1 ? 6 : level == 2 ? 10 : 16;
+        int radius = level == 1 ? 5 : level == 2 ? 8 : 12;
 
         // Contar ores en radio
         Map<Material, Integer> oreCounts = new LinkedHashMap<>();
@@ -381,13 +392,11 @@ public class MiningEnchantListener implements Listener {
         Material smelted = SMELT_MAP.get(block.getType());
         if (smelted == null) return;
 
-        // Cancelar el drop normal y dar el item fundido
+        // Cancelar el drop normal del evento y soltar el item fundido
+        event.setDropItems(false);
         event.setExpToDrop(0);
-        event.getBlock().setType(Material.AIR);
-        // Drops ya caen del evento — los cancelamos y damos el fundido
         Location dropLoc = block.getLocation().add(0.5, 0.5, 0.5);
         block.getWorld().dropItemNaturally(dropLoc, new ItemStack(smelted, 1));
-        event.setDropItems(false);
 
         MessageUtils.sendActionBar(player, ChatColor.GOLD + "🔥 Fundición Viva: " + smelted.name().replace("_", " ").toLowerCase());
     }
@@ -412,7 +421,13 @@ public class MiningEnchantListener implements Listener {
                     if (dx == 0 && dy == 0 && dz == 0) continue;
                     Block b = center.getRelative(dx, dy, dz);
                     if (isMineableByPick(b.getType())) {
-                        b.breakNaturally(player.getInventory().getItemInMainHand());
+                        Location bLoc = b.getLocation();
+                        breakingBlocks.add(bLoc);
+                        try {
+                            b.breakNaturally(player.getInventory().getItemInMainHand());
+                        } finally {
+                            breakingBlocks.remove(bLoc);
+                        }
                     }
                 }
             }

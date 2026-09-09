@@ -198,8 +198,15 @@ public class LivingTool {
         if (meta == null)
             return;
 
+        org.bukkit.ChatColor biomeColor = org.bukkit.ChatColor.GREEN;
+        try {
+            if (data.getBiomeColor() != null) {
+                biomeColor = org.bukkit.ChatColor.valueOf(data.getBiomeColor());
+            }
+        } catch (Exception ignored) {
+        }
+
         String displayName = data.getCustomName();
-        org.bukkit.ChatColor biomeColor = org.bukkit.ChatColor.valueOf(data.getBiomeColor());
 
         if (displayName.isEmpty()) {
             if (com.livingtools.data.LivingArmor.isLivingArmor(item)) {
