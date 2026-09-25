@@ -153,4 +153,8 @@ public class NamingCeremonyManager implements Listener {
         meta.getPersistentDataContainer().set(keyNamed(), PersistentDataType.BYTE, (byte) 1);
         tool.getItem().setItemMeta(meta);
     }
+
+    public static void cleanup(UUID uuid) {
+        waitingForName.remove(uuid);
+    }
 }

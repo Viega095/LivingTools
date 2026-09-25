@@ -52,8 +52,9 @@ public class DailyBonusManager {
         String toolId = getToolId(tool);
         String cacheKey = player.getUniqueId() + ":" + toolId;
 
-        // Ya se dio el bonus hoy para esta herramienta
-        if (todayBonusTool.containsValue(cacheKey)) return false;
+        // Ya se comprobó/dio el bonus hoy para esta herramienta (O(1) lookup)
+        String cached = todayBonusTool.get(player.getUniqueId());
+        if (cacheKey.equals(cached)) return false;
 
         if (!tool.getItem().hasItemMeta()) return false;
         org.bukkit.inventory.meta.ItemMeta meta = tool.getItem().getItemMeta();
@@ -65,8 +66,11 @@ public class DailyBonusManager {
 
         long daysSinceLast = (now - lastUse) / DAY_MS;
 
-        // No se usa si usó hace menos de 24h
-        if (daysSinceLast < 1) return false;
+        // No aplica si se usó hace menos de 24h — cachear para no volver a leer PDC en cada bloque
+        if (daysSinceLast < 1) {
+            todayBonusTool.put(player.getUniqueId(), cacheKey);
+            return false;
+        }
 
         // Actualizar streak: si pasó más de 2 días, se rompe
         if (daysSinceLast > 2) {
@@ -102,6 +106,9 @@ public class DailyBonusManager {
         player.sendMessage("");
 
         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+
+        // Aniversario / Cumpleaños de la herramienta
+        com.livingtools.manager.ToolBirthdayManager.checkBirthday(player, tool);
 
         // Mensaje de la herramienta si streak alto
         if (streak >= 7) {
@@ -142,5 +149,9 @@ public class DailyBonusManager {
             }
         }.runTaskTimer(com.livingtools.LivingToolsPlugin.getInstance(), 0L, 72000L); // 72000 ticks = 1 hora
         // Verificar cada hora si cambió el día
+    }
+
+    public static void cleanup(UUID uuid) {
+        todayBonusTool.remove(uuid);
     }
 }

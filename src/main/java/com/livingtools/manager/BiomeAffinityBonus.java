@@ -63,4 +63,8 @@ public class BiomeAffinityBonus {
             default: return "Este lugar nos resulta familiar. La tierra nos recuerda.";
         }
     }
+
+    public static void cleanup(java.util.UUID uuid) {
+        lastNotifiedBiome.remove(uuid);
+    }
 }

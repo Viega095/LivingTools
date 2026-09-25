@@ -151,6 +151,26 @@ public class LivingToolCommand implements CommandExecutor {
                     }
                     return true;
                 }
+                case "awaken":
+                case "despertar": {
+                    ItemStack awakenItem = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(awakenItem)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.data.LivingTool awakenTool = new com.livingtools.data.LivingTool(awakenItem);
+                    if (awakenTool.getData().getLevel() < 100 && awakenTool.getData().getPrestige() < 1) {
+                        player.sendMessage(ChatColor.RED + "Tu herramienta debe ser al menos Nivel 100 o Prestigio 1 para despertar.");
+                        return true;
+                    }
+                    long cd = com.livingtools.manager.ToolAwakeningManager.getCooldownRemainingSeconds(player);
+                    if (cd > 0) {
+                        player.sendMessage(ChatColor.RED + "⏳ Despertar en cooldown: " + ChatColor.YELLOW + cd + "s restantes.");
+                        return true;
+                    }
+                    player.sendMessage(ChatColor.GOLD + "✦ ¡Usa Shift + Click Derecho para activar el Despertar!");
+                    return true;
+                }
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":

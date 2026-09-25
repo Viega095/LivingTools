@@ -152,6 +152,14 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.manager.SecretAchievementManager(), this);
 
+                // ToolAwakeningManager — Shift + Right Click ultimate ability
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.ToolAwakeningManager(), this);
+
+                // PlayerCleanupListener — frees static memory caches on player disconnect
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.PlayerCleanupListener(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

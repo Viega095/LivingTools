@@ -134,4 +134,8 @@ public class WeatherBonusManager implements Listener {
         player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.3f, 1.5f);
         MessageUtils.sendActionBar(player, ChatColor.RED + "⚡ +25% XP — ¡Modo Tormenta Activo!");
     }
+
+    public static void cleanup(UUID uuid) {
+        stormReactionCD.remove(uuid);
+    }
 }

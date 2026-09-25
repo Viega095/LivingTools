@@ -138,11 +138,11 @@ public class ExperienceListener implements Listener {
                             org.bukkit.ChatColor.GREEN + "+" + finalXP + " XP  " + weatherDesc);
                 }
 
-                // Milestone check (deferred to next tick to avoid concurrent modification)
-                final LivingTool toolRef = tool;
-                org.bukkit.Bukkit.getScheduler().runTaskLater(
-                    com.livingtools.LivingToolsPlugin.getInstance(),
-                    () -> com.livingtools.manager.MilestoneManager.checkAll(player, toolRef), 1L);
+                // Milestone check (solo cuando se alcanza un hito relevante)
+                long blocksMined = tool.getData().getBlocksMined();
+                if (blocksMined == 100 || blocksMined == 1000 || blocksMined == 10000 || blocksMined % 500 == 0) {
+                    com.livingtools.manager.MilestoneManager.checkAll(player, tool);
+                }
 
                 // Bond Shared XP (Phase 28)
                 java.util.UUID partnerId = com.livingtools.manager.BondManager.getBondPartner(tool);
@@ -281,14 +281,18 @@ public class ExperienceListener implements Listener {
                 com.livingtools.manager.CorruptionManager.checkCorruption(killer, tool);
             }
 
-            // Combat XP — base 5, scaled by weather, config, world event, sleep, and kill streak
+            // Combat XP — base 5, scaled by weather, config, world event, sleep, kill streak, and relic
             double combatMult = com.livingtools.manager.ConfigManager.getCombatXPMultiplier()
                     * com.livingtools.manager.WeatherBonusManager.getWeatherMultiplier(killer, item.getType())
                     * com.livingtools.manager.ServerEventManager.getCombatXPMultiplier(killer.getWorld())
                     * com.livingtools.manager.SleepBonusManager.getSleepMultiplier(killer)
-                    * com.livingtools.manager.KillStreakManager.getStreakMultiplier(killer);
+                    * com.livingtools.manager.KillStreakManager.getStreakMultiplier(killer)
+                    * com.livingtools.manager.RelicFragmentSystem.getRelicXPMultiplier(tool);
             long killXP = Math.max(1L, (long)(5 * combatMult));
             tool.addXP(killer, killXP);
+
+            // Secret Achievement session XP tracking
+            com.livingtools.manager.SecretAchievementManager.onXPGained(killer, tool, killXP);
 
             // Tool Memory — track mob type
             com.livingtools.manager.ToolMemoryManager.onKill(killer, tool, event.getEntityType());
@@ -316,11 +320,11 @@ public class ExperienceListener implements Listener {
                 com.livingtools.listeners.ReputationListener.checkReputation(killer, tool);
             }
 
-            // Milestone check
-            final LivingTool toolRef = tool;
-            org.bukkit.Bukkit.getScheduler().runTaskLater(
-                com.livingtools.LivingToolsPlugin.getInstance(),
-                () -> com.livingtools.manager.MilestoneManager.checkAll(killer, toolRef), 1L);
+            // Milestone check (solo cuando se alcanza un hito relevante)
+            long mobKills = tool.getData().getMobKills();
+            if (mobKills == 10 || mobKills == 50 || mobKills == 250 || mobKills == 1000 || mobKills == 5000 || mobKills % 100 == 0) {
+                com.livingtools.manager.MilestoneManager.checkAll(killer, tool);
+            }
 
             // Trial Progress
             com.livingtools.manager.TrialManager.onKill(killer, tool, event.getEntityType());

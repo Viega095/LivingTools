@@ -447,8 +447,7 @@ public class GUIListener implements Listener {
                     player.closeInventory();
                     player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "═══ Hitos de Progresión ═══");
                     for (com.livingtools.manager.MilestoneManager.Milestone ms : com.livingtools.manager.MilestoneManager.Milestone.values()) {
-                        boolean done = com.livingtools.manager.MilestoneManager.countCompleted(tool) > 0
-                            && com.livingtools.manager.MilestoneManager.isCompleted(tool, ms);
+                        boolean done = com.livingtools.manager.MilestoneManager.isCompleted(tool, ms);
                         String mark = done ? ChatColor.GREEN + "✔" : ChatColor.RED + "✘";
                         player.sendMessage(mark + " " + ChatColor.YELLOW + ms.getTitle()
                                 + ChatColor.GRAY + " — " + ms.getRequirement()

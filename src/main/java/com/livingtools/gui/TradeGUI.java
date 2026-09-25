@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import java.util.Map;
 
 public class TradeGUI {
 
@@ -125,17 +126,29 @@ public class TradeGUI {
         for (int i = 0; i < 54; i++) {
             if (i % 9 < 4) { // P1 items -> Give to P2
                 ItemStack item = inv.getItem(i);
-                if (item != null)
-                    p2.getInventory().addItem(item);
+                if (item != null) {
+                    if (p2.isOnline()) {
+                        Map<Integer, ItemStack> leftover = p2.getInventory().addItem(item);
+                        for (ItemStack left : leftover.values()) p2.getWorld().dropItemNaturally(p2.getLocation(), left);
+                    } else if (p1.isOnline()) {
+                        p1.getInventory().addItem(item);
+                    }
+                }
             } else if (i % 9 > 4) { // P2 items -> Give to P1
                 ItemStack item = inv.getItem(i);
-                if (item != null)
-                    p1.getInventory().addItem(item);
+                if (item != null) {
+                    if (p1.isOnline()) {
+                        Map<Integer, ItemStack> leftover = p1.getInventory().addItem(item);
+                        for (ItemStack left : leftover.values()) p1.getWorld().dropItemNaturally(p1.getLocation(), left);
+                    } else if (p2.isOnline()) {
+                        p2.getInventory().addItem(item);
+                    }
+                }
             }
         }
 
-        p1.sendMessage(MessageUtils.color("&aIntercambio completado."));
-        p2.sendMessage(MessageUtils.color("&aIntercambio completado."));
+        if (p1.isOnline()) p1.sendMessage(MessageUtils.color("&aIntercambio completado."));
+        if (p2.isOnline()) p2.sendMessage(MessageUtils.color("&aIntercambio completado."));
         TradeManager.endTrade(p1, p2);
     }
 
@@ -145,22 +158,34 @@ public class TradeGUI {
         for (int i = 0; i < 54; i++) {
             if (i % 9 < 4) { // P1 items -> Return to P1
                 ItemStack item = inv.getItem(i);
-                if (item != null)
-                    p1.getInventory().addItem(item);
+                if (item != null) {
+                    if (p1.isOnline()) {
+                        Map<Integer, ItemStack> leftover = p1.getInventory().addItem(item);
+                        for (ItemStack left : leftover.values()) p1.getWorld().dropItemNaturally(p1.getLocation(), left);
+                    }
+                }
             } else if (i % 9 > 4) { // P2 items -> Return to P2
                 ItemStack item = inv.getItem(i);
-                if (item != null)
-                    p2.getInventory().addItem(item);
+                if (item != null) {
+                    if (p2.isOnline()) {
+                        Map<Integer, ItemStack> leftover = p2.getInventory().addItem(item);
+                        for (ItemStack left : leftover.values()) p2.getWorld().dropItemNaturally(p2.getLocation(), left);
+                    }
+                }
             }
         }
 
-        p1.sendMessage(MessageUtils.color("&cIntercambio cancelado."));
-        p2.sendMessage(MessageUtils.color("&cIntercambio cancelado."));
+        if (p1.isOnline()) p1.sendMessage(MessageUtils.color("&cIntercambio cancelado."));
+        if (p2.isOnline()) p2.sendMessage(MessageUtils.color("&cIntercambio cancelado."));
         TradeManager.endTrade(p1, p2);
 
-        if (p1.getOpenInventory().getTopInventory().equals(inv))
-            p1.closeInventory();
-        if (p2.getOpenInventory().getTopInventory().equals(inv))
-            p2.closeInventory();
+        try {
+            if (p1.isOnline() && p1.getOpenInventory().getTopInventory().equals(inv))
+                p1.closeInventory();
+        } catch (Throwable ignored) {}
+        try {
+            if (p2.isOnline() && p2.getOpenInventory().getTopInventory().equals(inv))
+                p2.closeInventory();
+        } catch (Throwable ignored) {}
     }
 }

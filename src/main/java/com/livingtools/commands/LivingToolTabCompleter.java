@@ -27,7 +27,9 @@ public class LivingToolTabCompleter implements TabCompleter {
         if (args.length == 1) {
             List<String> subcommands = new ArrayList<>(Arrays.asList(
                     "menu", "stats", "top", "guide", "history", "armor", "recipes", "forge",
-                    "bind", "rename", "feed", "prestige", "bond", "duel", "structure", "trade"));
+                    "bind", "rename", "feed", "prestige", "bond", "duel", "structure", "trade",
+                    "inspect", "ver", "challenges", "retos", "relic", "reliquia", "logros",
+                    "achievements", "titulo", "awaken", "despertar", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
             }
@@ -48,7 +50,8 @@ public class LivingToolTabCompleter implements TabCompleter {
                         "startconvergence", "giveomnitool", "spawnboss", "spawnarena",
                         "menu", "wiki", "models", "multiplier", "setlevel", "reset"), args[1]);
             }
-            if (sub.equals("bond") || sub.equals("duel") || sub.equals("trade") || sub.equals("stats")) {
+            if (sub.equals("bond") || sub.equals("duel") || sub.equals("trade") || sub.equals("stats")
+                    || sub.equals("inspect") || sub.equals("ver")) {
                 return null; // Player names
             }
             if (sub.equals("structure")) {

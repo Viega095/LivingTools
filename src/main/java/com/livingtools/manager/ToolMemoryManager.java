@@ -193,4 +193,8 @@ public class ToolMemoryManager {
         }
         return sb.toString();
     }
+
+    public static void cleanup(UUID uuid) {
+        lastBiomeWrite.remove(uuid);
+    }
 }

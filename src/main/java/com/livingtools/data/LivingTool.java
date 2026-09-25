@@ -120,7 +120,9 @@ public class LivingTool {
             requiredXP = getRequiredXP(currentLevel);
         }
 
+        // Leaderboard update & Milestone check
         com.livingtools.manager.LeaderboardManager.updateEntry(player, this);
+        com.livingtools.manager.MilestoneManager.checkAll(player, this);
 
         // Check Infusions
         checkInfusions(player);

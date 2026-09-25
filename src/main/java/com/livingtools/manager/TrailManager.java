@@ -128,4 +128,8 @@ public class TrailManager implements Listener {
                 count, 0.5, 0.5, 0.5, 0,
                 new Particle.DustOptions(c, 1.5f));
     }
+
+    public static void cleanup(UUID uuid) {
+        lastTrailTick.remove(uuid);
+    }
 }

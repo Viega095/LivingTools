@@ -137,4 +137,9 @@ public class SleepBonusManager implements Listener {
         long remaining = (expiry - System.currentTimeMillis()) / 1000;
         return Math.max(0, remaining);
     }
+
+    public static void cleanup(UUID uuid) {
+        sleepBonusExpiry.remove(uuid);
+        sleepBonusMult.remove(uuid);
+    }
 }

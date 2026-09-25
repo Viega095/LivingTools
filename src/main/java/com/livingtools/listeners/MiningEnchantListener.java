@@ -502,4 +502,9 @@ public class MiningEnchantListener implements Listener {
         item.setItemMeta(meta);
         return item;
     }
+
+    public static void cleanup(UUID uuid) {
+        oreEchoCooldown.remove(uuid);
+        treasureCooldown.remove(uuid);
+    }
 }
