@@ -96,6 +96,61 @@ public class LivingToolCommand implements CommandExecutor {
                         player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
                     }
                     return true;
+                case "relic":
+                case "reliquia": {
+                    ItemStack relicItem = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(relicItem)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.data.LivingTool relicTool = new com.livingtools.data.LivingTool(relicItem);
+                    long remaining = com.livingtools.manager.RelicFragmentSystem.getRelicRemainingMinutes(relicTool);
+                    if (remaining > 0) {
+                        player.sendMessage(ChatColor.DARK_PURPLE + "✦ Reliquia Ancestral activa: "
+                                + ChatColor.GOLD + remaining + " min restantes.");
+                        return true;
+                    }
+                    com.livingtools.manager.RelicFragmentSystem.tryFuseRelic(player, relicTool);
+                    return true;
+                }
+                case "logros":
+                case "achievements": {
+                    ItemStack achItem = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(achItem)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.data.LivingTool achTool = new com.livingtools.data.LivingTool(achItem);
+                    java.util.List<com.livingtools.manager.SecretAchievementManager.SecretAchievement> achs =
+                            com.livingtools.manager.SecretAchievementManager.getAchievements(achTool);
+                    if (achs.isEmpty()) {
+                        player.sendMessage(ChatColor.GRAY + "Aún no has desbloqueado logros secretos.");
+                    } else {
+                        player.sendMessage(ChatColor.DARK_PURPLE + "✦ Logros secretos (" + achs.size() + "/"
+                                + com.livingtools.manager.SecretAchievementManager.SecretAchievement.values().length + "):");
+                        for (com.livingtools.manager.SecretAchievementManager.SecretAchievement a : achs) {
+                            player.sendMessage(ChatColor.GOLD + "  ✓ " + a.getTitle() + ChatColor.GRAY + " — " + a.getDescription());
+                        }
+                    }
+                    return true;
+                }
+                case "titulo": {
+                    ItemStack titleItem = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(titleItem)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.data.LivingTool titleTool = new com.livingtools.data.LivingTool(titleItem);
+                    com.livingtools.manager.ToolTitleSystem.ToolTitle t =
+                            com.livingtools.manager.ToolTitleSystem.getHighestTitle(titleTool);
+                    if (t == null) {
+                        player.sendMessage(ChatColor.GRAY + "Aún no tienes ningún título. ¡Sube de nivel!");
+                    } else {
+                        player.sendMessage(ChatColor.GOLD + "Título actual: " + t.formatted());
+                        com.livingtools.manager.ToolTitleSystem.updateTitle(player, titleTool);
+                    }
+                    return true;
+                }
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":

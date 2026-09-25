@@ -144,6 +144,14 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.listeners.MiningEnchantListener(), this);
 
+                // RelicFragmentSystem — collectable fragments drop from mobs, fuse for XP bonus
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.RelicFragmentSystem(), this);
+
+                // SecretAchievementManager — hidden achievements tracked on events
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.SecretAchievementManager(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

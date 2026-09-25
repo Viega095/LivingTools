@@ -102,7 +102,21 @@ public class ExperienceListener implements Listener {
             double sleepMult = com.livingtools.manager.SleepBonusManager.getSleepMultiplier(player);
             multiplier = multiplier * sleepMult;
 
+            // Biome Affinity Bonus — +10% in favorite biome
+            org.bukkit.block.Biome currentBiome = event.getBlock().getLocation().getBlock().getBiome();
+            double biomeAffinityMult = com.livingtools.manager.BiomeAffinityBonus.getAffinityMultiplier(player, tool, currentBiome);
+            multiplier = multiplier * biomeAffinityMult;
+
+            // Relic Bonus — +20% if active relic fusion
+            double relicMult = com.livingtools.manager.RelicFragmentSystem.getRelicXPMultiplier(tool);
+            multiplier = multiplier * relicMult;
+
             long finalXP = (long) (baseXP * multiplier);
+
+            // Secret Achievement session XP tracking
+            if (finalXP > 0) {
+                com.livingtools.manager.SecretAchievementManager.onXPGained(player, tool, finalXP);
+            }
 
             // Daily first-use bonus (runs once per tool per day)
             com.livingtools.manager.DailyBonusManager.checkAndGrant(player, tool);

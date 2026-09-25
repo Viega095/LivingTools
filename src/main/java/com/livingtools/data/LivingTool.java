@@ -109,6 +109,13 @@ public class LivingTool {
             // Milestone Level Rewards (fireworks, skill points, broadcasts)
             com.livingtools.manager.LevelUpRewardManager.onLevelUp(player, this, currentLevel - 1, currentLevel);
 
+            // Título — comprobar si se desbloqueó uno nuevo
+            boolean newTitle = com.livingtools.manager.ToolTitleSystem.updateTitle(player, this);
+            if (newTitle) {
+                com.livingtools.manager.SecretAchievementManager.grant(player, this,
+                        com.livingtools.manager.SecretAchievementManager.SecretAchievement.TITLE_EARNED);
+            }
+
             // Update required XP for next loop
             requiredXP = getRequiredXP(currentLevel);
         }
@@ -229,6 +236,19 @@ public class LivingTool {
         String title = data.getTitle();
         if (!title.isEmpty()) {
             lore.add(ChatColor.GOLD + "Título: " + title);
+        }
+
+        // Título del sistema de niveles (ToolTitleSystem)
+        String systemTitle = com.livingtools.manager.ToolTitleSystem.getTitleLoreLine(this);
+        if (systemTitle != null) {
+            lore.add(systemTitle);
+        }
+
+        // Logros secretos — contador breve
+        int achCount = com.livingtools.manager.SecretAchievementManager.countAchievements(this);
+        if (achCount > 0) {
+            lore.add(ChatColor.DARK_PURPLE + "Logros: " + ChatColor.LIGHT_PURPLE + achCount + "/"
+                    + com.livingtools.manager.SecretAchievementManager.SecretAchievement.values().length);
         }
 
         String personalityName = data.getPersonality();
