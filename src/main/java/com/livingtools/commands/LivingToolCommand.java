@@ -171,6 +171,16 @@ public class LivingToolCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.GOLD + "✦ ¡Usa Shift + Click Derecho para activar el Despertar!");
                     return true;
                 }
+                case "reforge":
+                case "reparar": {
+                    ItemStack reforgeItem = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(reforgeItem)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.gui.ToolReforgeGUI.open(player, new com.livingtools.data.LivingTool(reforgeItem));
+                    return true;
+                }
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":

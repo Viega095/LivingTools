@@ -160,6 +160,14 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.listeners.PlayerCleanupListener(), this);
 
+                // SoulResonanceManager — Armor + Tool resonance synergy
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.SoulResonanceManager(), this);
+
+                // ToolReforgeListener — Anvil / Smithing Table maintenance & Reforge GUI
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.ToolReforgeListener(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

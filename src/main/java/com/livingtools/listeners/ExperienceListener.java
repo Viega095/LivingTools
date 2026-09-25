@@ -111,6 +111,10 @@ public class ExperienceListener implements Listener {
             double relicMult = com.livingtools.manager.RelicFragmentSystem.getRelicXPMultiplier(tool);
             multiplier = multiplier * relicMult;
 
+            // Soul Resonance Bonus — +5% to +20% with Living Armor equipped
+            double resonanceMult = com.livingtools.manager.SoulResonanceManager.getResonanceXPMultiplier(player);
+            multiplier = multiplier * resonanceMult;
+
             long finalXP = (long) (baseXP * multiplier);
 
             // Secret Achievement session XP tracking
@@ -281,13 +285,14 @@ public class ExperienceListener implements Listener {
                 com.livingtools.manager.CorruptionManager.checkCorruption(killer, tool);
             }
 
-            // Combat XP — base 5, scaled by weather, config, world event, sleep, kill streak, and relic
+            // Combat XP — base 5, scaled by weather, config, world event, sleep, kill streak, relic, and soul resonance
             double combatMult = com.livingtools.manager.ConfigManager.getCombatXPMultiplier()
                     * com.livingtools.manager.WeatherBonusManager.getWeatherMultiplier(killer, item.getType())
                     * com.livingtools.manager.ServerEventManager.getCombatXPMultiplier(killer.getWorld())
                     * com.livingtools.manager.SleepBonusManager.getSleepMultiplier(killer)
                     * com.livingtools.manager.KillStreakManager.getStreakMultiplier(killer)
-                    * com.livingtools.manager.RelicFragmentSystem.getRelicXPMultiplier(tool);
+                    * com.livingtools.manager.RelicFragmentSystem.getRelicXPMultiplier(tool)
+                    * com.livingtools.manager.SoulResonanceManager.getResonanceXPMultiplier(killer);
             long killXP = Math.max(1L, (long)(5 * combatMult));
             tool.addXP(killer, killXP);
 

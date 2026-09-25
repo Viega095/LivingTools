@@ -63,5 +63,9 @@ public class PlayerCleanupListener implements Listener {
         try {
             DailyBonusManager.cleanup(uuid);
         } catch (Throwable ignored) {}
+
+        try {
+            SoulResonanceManager.cleanup(uuid);
+        } catch (Throwable ignored) {}
     }
 }

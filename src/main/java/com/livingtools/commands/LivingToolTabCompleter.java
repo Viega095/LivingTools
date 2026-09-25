@@ -29,7 +29,7 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "menu", "stats", "top", "guide", "history", "armor", "recipes", "forge",
                     "bind", "rename", "feed", "prestige", "bond", "duel", "structure", "trade",
                     "inspect", "ver", "challenges", "retos", "relic", "reliquia", "logros",
-                    "achievements", "titulo", "awaken", "despertar", "library"));
+                    "achievements", "titulo", "awaken", "despertar", "reforge", "reparar", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
             }
