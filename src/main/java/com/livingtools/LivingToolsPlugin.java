@@ -168,6 +168,21 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.listeners.ToolReforgeListener(), this);
 
+                // AdminInspectListener — live moderation GUI actions
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.AdminInspectListener(), this);
+
+                // TalentTreeListener — talent point upgrade & reset GUI
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.TalentTreeListener(), this);
+
+                // CosmeticTrailListener — cosmetic aura/trail selector
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.CosmeticTrailListener(), this);
+
+                // WorldEventScheduler — automatic cyclical world events every 2h
+                com.livingtools.manager.WorldEventScheduler.startScheduler();
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

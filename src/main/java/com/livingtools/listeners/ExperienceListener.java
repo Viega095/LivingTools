@@ -21,6 +21,12 @@ public class ExperienceListener implements Listener {
         if (LivingTool.isLivingTool(item)) {
             LivingTool tool = new LivingTool(item);
 
+            // Moderation: Check if tool is frozen
+            if (com.livingtools.manager.AdminFreezeManager.isFrozen(tool)) {
+                com.livingtools.utils.MessageUtils.sendActionBar(player, org.bukkit.ChatColor.RED + "❄ Esta herramienta está congelada por moderación.");
+                return;
+            }
+
             // Swords should NOT gain XP from mining - they level up via combat only
             if (item.getType().name().endsWith("_SWORD")) {
                 return;
@@ -114,6 +120,29 @@ public class ExperienceListener implements Listener {
             // Soul Resonance Bonus — +5% to +20% with Living Armor equipped
             double resonanceMult = com.livingtools.manager.SoulResonanceManager.getResonanceXPMultiplier(player);
             multiplier = multiplier * resonanceMult;
+
+            // Party XP Proximity Bonus
+            double partyMult = com.livingtools.manager.PartyXPManager.getPartyMultiplier(player);
+            multiplier = multiplier * partyMult;
+
+            // Automated World Event Bonus
+            double worldEventMult = com.livingtools.manager.WorldEventScheduler.getMiningMultiplier();
+            multiplier = multiplier * worldEventMult;
+
+            // Talent: ANCESTRAL_FLOW (+5%/level)
+            int ancestralLvl = com.livingtools.manager.TalentTreeManager.getTalentLevel(tool,
+                    com.livingtools.manager.TalentTreeManager.Talent.ANCESTRAL_FLOW);
+            if (ancestralLvl > 0) multiplier += (ancestralLvl * 0.05);
+
+            // Talent: MINING_INSTINCT (+5%/level chance to double drops)
+            int miningInstinctLvl = com.livingtools.manager.TalentTreeManager.getTalentLevel(tool,
+                    com.livingtools.manager.TalentTreeManager.Talent.MINING_INSTINCT);
+            if (miningInstinctLvl > 0 && Math.random() < (miningInstinctLvl * 0.05)) {
+                for (ItemStack drop : event.getBlock().getDrops(item)) {
+                    event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), drop);
+                }
+                com.livingtools.utils.MessageUtils.sendActionBar(player, org.bukkit.ChatColor.GOLD + "✦ ¡Instinto Minero! Drops duplicados.");
+            }
 
             long finalXP = (long) (baseXP * multiplier);
 
@@ -260,6 +289,12 @@ public class ExperienceListener implements Listener {
         if (LivingTool.isLivingTool(item)) {
             LivingTool tool = new LivingTool(item);
 
+            // Moderation: Check if tool is frozen
+            if (com.livingtools.manager.AdminFreezeManager.isFrozen(tool)) {
+                com.livingtools.utils.MessageUtils.sendActionBar(killer, org.bukkit.ChatColor.RED + "❄ Esta herramienta está congelada por moderación.");
+                return;
+            }
+
             // Naming Ceremony — first use of tool
             com.livingtools.manager.NamingCeremonyManager.tryStartCeremony(killer, tool);
 
@@ -285,14 +320,21 @@ public class ExperienceListener implements Listener {
                 com.livingtools.manager.CorruptionManager.checkCorruption(killer, tool);
             }
 
-            // Combat XP — base 5, scaled by weather, config, world event, sleep, kill streak, relic, and soul resonance
+            // Combat XP — base 5, scaled by weather, config, world event, sleep, kill streak, relic, soul resonance, party, and talents
             double combatMult = com.livingtools.manager.ConfigManager.getCombatXPMultiplier()
                     * com.livingtools.manager.WeatherBonusManager.getWeatherMultiplier(killer, item.getType())
                     * com.livingtools.manager.ServerEventManager.getCombatXPMultiplier(killer.getWorld())
                     * com.livingtools.manager.SleepBonusManager.getSleepMultiplier(killer)
                     * com.livingtools.manager.KillStreakManager.getStreakMultiplier(killer)
                     * com.livingtools.manager.RelicFragmentSystem.getRelicXPMultiplier(tool)
-                    * com.livingtools.manager.SoulResonanceManager.getResonanceXPMultiplier(killer);
+                    * com.livingtools.manager.SoulResonanceManager.getResonanceXPMultiplier(killer)
+                    * com.livingtools.manager.PartyXPManager.getPartyMultiplier(killer)
+                    * com.livingtools.manager.WorldEventScheduler.getCombatMultiplier();
+
+            int ancestralCombatLvl = com.livingtools.manager.TalentTreeManager.getTalentLevel(tool,
+                    com.livingtools.manager.TalentTreeManager.Talent.ANCESTRAL_FLOW);
+            if (ancestralCombatLvl > 0) combatMult += (ancestralCombatLvl * 0.05);
+
             long killXP = Math.max(1L, (long)(5 * combatMult));
             tool.addXP(killer, killXP);
 

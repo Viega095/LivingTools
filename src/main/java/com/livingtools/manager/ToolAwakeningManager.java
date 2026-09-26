@@ -66,8 +66,13 @@ public class ToolAwakeningManager implements Listener {
         long lastUse = cooldowns.getOrDefault(uuid, 0L);
         long elapsed = now - lastUse;
 
-        if (elapsed < COOLDOWN_MS) {
-            long remainingSec = (COOLDOWN_MS - elapsed) / 1000L;
+        long cooldownDuration = COOLDOWN_MS;
+        int quickLvl = TalentTreeManager.getTalentLevel(tool, TalentTreeManager.Talent.QUICK_AWAKENING);
+        if (quickLvl == 1) cooldownDuration = 75_000L;
+        else if (quickLvl >= 2) cooldownDuration = 60_000L;
+
+        if (elapsed < cooldownDuration) {
+            long remainingSec = (cooldownDuration - elapsed) / 1000L;
             MessageUtils.sendActionBar(player,
                     ChatColor.RED + "⏳ Despertar en cooldown: " + ChatColor.YELLOW + remainingSec + "s");
             return;

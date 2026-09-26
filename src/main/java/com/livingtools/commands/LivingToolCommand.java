@@ -181,6 +181,26 @@ public class LivingToolCommand implements CommandExecutor {
                     com.livingtools.gui.ToolReforgeGUI.open(player, new com.livingtools.data.LivingTool(reforgeItem));
                     return true;
                 }
+                case "talents":
+                case "talentos": {
+                    ItemStack talentItem = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(talentItem)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.gui.TalentTreeGUI.open(player, new com.livingtools.data.LivingTool(talentItem));
+                    return true;
+                }
+                case "trails":
+                case "auras": {
+                    ItemStack trailItem = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(trailItem)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.gui.CosmeticTrailGUI.open(player, new com.livingtools.data.LivingTool(trailItem));
+                    return true;
+                }
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":

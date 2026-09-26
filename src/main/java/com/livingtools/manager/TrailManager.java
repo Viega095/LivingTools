@@ -3,6 +3,7 @@ package com.livingtools.manager;
 import com.livingtools.data.LivingTool;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,6 +46,13 @@ public class TrailManager implements Listener {
         if (!LivingTool.isLivingTool(held)) return;
 
         LivingTool tool = new LivingTool(held);
+        CosmeticTrailManager.TrailStyle style = CosmeticTrailManager.getActiveTrail(tool);
+
+        if (style != CosmeticTrailManager.TrailStyle.DEFAULT) {
+            spawnCustomCosmeticTrail(player, style);
+            return;
+        }
+
         int level = tool.getData().getLevel();
         int prestige = tool.getData().getPrestige();
         String personality = tool.getData().getPersonality();
@@ -59,6 +67,35 @@ public class TrailManager implements Listener {
             spawnLevelTrail(player, personality, true);
         } else if (level >= 50) {
             spawnLevelTrail(player, personality, false);
+        }
+    }
+
+    private void spawnCustomCosmeticTrail(Player player, CosmeticTrailManager.TrailStyle style) {
+        Location loc = player.getLocation().add(0, 0.2, 0);
+        switch (style) {
+            case SOLAR_FLAME:
+                player.getWorld().spawnParticle(Particle.FLAME, loc, 4, 0.2, 0.1, 0.2, 0.02);
+                player.getWorld().spawnParticle(Particle.SMOKE_NORMAL, loc.add(0, 0.5, 0), 2, 0.1, 0.1, 0.1, 0.01);
+                break;
+            case AMETHYST_MIST:
+                player.getWorld().spawnParticle(Particle.REDSTONE, loc, 5, 0.3, 0.2, 0.3, 0,
+                        new Particle.DustOptions(Color.fromRGB(200, 100, 255), 1.2f));
+                player.getWorld().spawnParticle(Particle.END_ROD, loc.add(0, 0.3, 0), 2, 0.2, 0.2, 0.2, 0.01);
+                break;
+            case VOID_VORTEX:
+                player.getWorld().spawnParticle(Particle.PORTAL, loc, 8, 0.4, 0.3, 0.4, 0.1);
+                player.getWorld().spawnParticle(Particle.SPELL_WITCH, loc.add(0, 0.5, 0), 3, 0.2, 0.2, 0.2, 0.02);
+                break;
+            case LIGHTNING_AURA:
+                player.getWorld().spawnParticle(Particle.CRIT_MAGIC, loc, 6, 0.3, 0.4, 0.3, 0.05);
+                player.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, loc.add(0, 0.4, 0), 4, 0.2, 0.2, 0.2, 0.05);
+                break;
+            case CELESTIAL_DUST:
+                player.getWorld().spawnParticle(Particle.TOTEM, loc.add(0, 0.5, 0), 6, 0.3, 0.4, 0.3, 0.08);
+                player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, loc.add(0, 0.8, 0), 4, 0.3, 0.3, 0.3, 0.2);
+                break;
+            default:
+                break;
         }
     }
 

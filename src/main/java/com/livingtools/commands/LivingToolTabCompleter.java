@@ -29,7 +29,8 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "menu", "stats", "top", "guide", "history", "armor", "recipes", "forge",
                     "bind", "rename", "feed", "prestige", "bond", "duel", "structure", "trade",
                     "inspect", "ver", "challenges", "retos", "relic", "reliquia", "logros",
-                    "achievements", "titulo", "awaken", "despertar", "reforge", "reparar", "library"));
+                    "achievements", "titulo", "awaken", "despertar", "reforge", "reparar",
+                    "talents", "talentos", "trails", "auras", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
             }
@@ -48,7 +49,8 @@ public class LivingToolTabCompleter implements TabCompleter {
                         "setplayercorruption", "givestarlightessence", "upgradeaetherial",
                         "purifytool", "spawnfortress", "joinfaction", "claimchunk",
                         "startconvergence", "giveomnitool", "spawnboss", "spawnarena",
-                        "menu", "wiki", "models", "multiplier", "setlevel", "reset"), args[1]);
+                        "menu", "wiki", "models", "multiplier", "setlevel", "reset",
+                        "inspect", "freeze", "unfreeze", "strip", "givepoints", "event"), args[1]);
             }
             if (sub.equals("bond") || sub.equals("duel") || sub.equals("trade") || sub.equals("stats")
                     || sub.equals("inspect") || sub.equals("ver")) {

@@ -141,6 +141,102 @@ public class AdminCommand {
                 return handleSetLevel(sender, args);
             case "reset":
                 return handleReset(sender, args);
+            case "inspect":
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "Solo jugadores.");
+                    return true;
+                }
+                Player inspectTarget = args.length >= 3 ? org.bukkit.Bukkit.getPlayer(args[2]) : (Player) sender;
+                if (inspectTarget == null || !inspectTarget.isOnline()) {
+                    sender.sendMessage(ChatColor.RED + "Jugador no encontrado.");
+                    return true;
+                }
+                com.livingtools.gui.AdminInspectGUI.open((Player) sender, inspectTarget);
+                return true;
+            case "freeze":
+            case "unfreeze": {
+                Player freezeTarget = args.length >= 3 ? org.bukkit.Bukkit.getPlayer(args[2]) : (sender instanceof Player ? (Player) sender : null);
+                if (freezeTarget == null || !freezeTarget.isOnline()) {
+                    sender.sendMessage(ChatColor.RED + "Jugador no encontrado.");
+                    return true;
+                }
+                ItemStack held = freezeTarget.getInventory().getItemInMainHand();
+                if (!LivingTool.isLivingTool(held)) {
+                    sender.sendMessage(ChatColor.RED + freezeTarget.getName() + " no tiene una herramienta viviente.");
+                    return true;
+                }
+                LivingTool freezeTool = new LivingTool(held);
+                boolean freezeState = sub.equals("freeze");
+                com.livingtools.manager.AdminFreezeManager.setFrozen(freezeTool, freezeState);
+                sender.sendMessage(ChatColor.YELLOW + "Herramienta de " + freezeTarget.getName()
+                        + (freezeState ? ChatColor.RED + " CONGELADA." : ChatColor.GREEN + " DESCONGELADA."));
+                return true;
+            }
+            case "strip": {
+                Player stripTarget = args.length >= 3 ? org.bukkit.Bukkit.getPlayer(args[2]) : (sender instanceof Player ? (Player) sender : null);
+                if (stripTarget == null || !stripTarget.isOnline()) {
+                    sender.sendMessage(ChatColor.RED + "Jugador no encontrado.");
+                    return true;
+                }
+                ItemStack held = stripTarget.getInventory().getItemInMainHand();
+                if (!LivingTool.isLivingTool(held)) {
+                    sender.sendMessage(ChatColor.RED + stripTarget.getName() + " no tiene una herramienta viviente.");
+                    return true;
+                }
+                stripTarget.getInventory().setItemInMainHand(new ItemStack(held.getType()));
+                sender.sendMessage(ChatColor.GREEN + "Herramienta de " + stripTarget.getName() + " convertida a Vanilla.");
+                return true;
+            }
+            case "givepoints": {
+                if (args.length < 4) {
+                    sender.sendMessage(ChatColor.RED + "Uso: /livingtool admin givepoints [jugador] [cantidad]");
+                    return true;
+                }
+                Player ptsTarget = org.bukkit.Bukkit.getPlayer(args[2]);
+                if (ptsTarget == null || !ptsTarget.isOnline()) {
+                    sender.sendMessage(ChatColor.RED + "Jugador no encontrado.");
+                    return true;
+                }
+                ItemStack held = ptsTarget.getInventory().getItemInMainHand();
+                if (!LivingTool.isLivingTool(held)) {
+                    sender.sendMessage(ChatColor.RED + ptsTarget.getName() + " no tiene una herramienta viviente.");
+                    return true;
+                }
+                try {
+                    int count = Integer.parseInt(args[3]);
+                    LivingTool ptsTool = new LivingTool(held);
+                    for (int i = 0; i < count; i++) {
+                        com.livingtools.manager.LevelUpRewardManager.awardSkillPoint(ptsTarget, ptsTool);
+                    }
+                    sender.sendMessage(ChatColor.GREEN + "Otorgados " + count + " puntos a " + ptsTarget.getName());
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(ChatColor.RED + "Cantidad inválida.");
+                }
+                return true;
+            }
+            case "event": {
+                if (args.length < 3) {
+                    sender.sendMessage(ChatColor.RED + "Uso: /livingtool admin event [start/stop] [evento]");
+                    return true;
+                }
+                if (args[2].equalsIgnoreCase("stop")) {
+                    com.livingtools.manager.WorldEventScheduler.stopEvent();
+                    sender.sendMessage(ChatColor.GREEN + "Evento mundial detenido.");
+                    return true;
+                }
+                if (args[2].equalsIgnoreCase("start") && args.length >= 4) {
+                    try {
+                        com.livingtools.manager.WorldEventScheduler.AutomatedWorldEvent ev =
+                                com.livingtools.manager.WorldEventScheduler.AutomatedWorldEvent.valueOf(args[3].toUpperCase());
+                        com.livingtools.manager.WorldEventScheduler.startEvent(ev);
+                        sender.sendMessage(ChatColor.GREEN + "Evento " + ev.name() + " iniciado.");
+                    } catch (IllegalArgumentException e) {
+                        sender.sendMessage(ChatColor.RED + "Evento no válido. Opciones: METEOR_SHOWER, BLOOD_MOON, SOLAR_RESONANCE");
+                    }
+                    return true;
+                }
+                return true;
+            }
             default:
                 sender.sendMessage(ChatColor.RED + "Subcomando desconocido.");
                 return true;
