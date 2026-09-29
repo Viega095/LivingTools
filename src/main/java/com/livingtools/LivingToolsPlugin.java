@@ -251,6 +251,15 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.listeners.SoulTarotListener(), this);
 
+                // LivingRealmManager — dedicated realm world, keepInventory, arenas & safe return
+                com.livingtools.manager.LivingRealmManager.init();
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.LivingRealmManager(), this);
+
+                // AbyssalRiftListener — interactive protected rift GUI
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.AbyssalRiftListener(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 
@@ -538,6 +547,7 @@ public class LivingToolsPlugin extends JavaPlugin {
         @Override
         public void onDisable() {
                 com.livingtools.manager.SoulGuildManager.save();
+                com.livingtools.manager.LivingRealmManager.saveStoredLocations();
         }
 
         public static LivingToolsPlugin getInstance() {

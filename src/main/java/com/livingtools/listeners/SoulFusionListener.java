@@ -28,9 +28,14 @@ public class SoulFusionListener implements Listener {
         Inventory top = event.getView().getTopInventory();
         int slot = event.getRawSlot();
 
-        // Permitir interacción normal en slots 11 y 15 (slots de inserción)
-        if (slot == 11 || slot == 15 || slot >= 36) {
-            // Permitir mover ítems en el inventario del jugador o slots abiertos
+        if (event.isShiftClick()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        // Permitir interacción normal solo en slots 11 y 15 (slots de inserción) o inventario del jugador
+        if (slot == 11 || slot == 15 || slot >= 27) {
+            // Permitir mover ítems en slots abiertos
             return;
         }
 
@@ -100,6 +105,14 @@ public class SoulFusionListener implements Listener {
                 player.getWorld().dropItemNaturally(player.getLocation(), left);
             }
             top.setItem(15, new ItemStack(Material.AIR));
+        }
+    }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTitle() == null) return;
+        if (event.getView().getTitle().equals(SoulFusionGUI.TITLE)) {
+            event.setCancelled(true);
         }
     }
 }

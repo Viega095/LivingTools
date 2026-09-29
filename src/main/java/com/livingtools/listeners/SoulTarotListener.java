@@ -109,4 +109,12 @@ public class SoulTarotListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTitle() == null) return;
+        if (event.getView().getTitle().equals(SoulTarotGUI.TITLE)) {
+            event.setCancelled(true);
+        }
+    }
 }

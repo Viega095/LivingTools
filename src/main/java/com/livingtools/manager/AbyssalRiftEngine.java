@@ -80,7 +80,9 @@ public class AbyssalRiftEngine implements Listener {
             return false;
         }
 
-        Location center = player.getLocation();
+        // Teletransportar al Reino Dedicado de LivingTools
+        LivingRealmManager.teleportToRealm(player, LivingRealmManager.getRiftArenaSpawn());
+        Location center = LivingRealmManager.getRiftArenaSpawn();
         RiftSession session = new RiftSession(player.getUniqueId(), center);
         activeSessions.put(player.getUniqueId(), session);
 
@@ -88,12 +90,21 @@ public class AbyssalRiftEngine implements Listener {
         player.sendMessage(ChatColor.DARK_PURPLE + "╔══════════════════════════════════════════════╗");
         player.sendMessage(ChatColor.LIGHT_PURPLE + "║   🌌 ¡ENTRADA AL ABISMO PROFUNDO (ENDLESS)! ║");
         player.sendMessage(ChatColor.GRAY + "║  Sobrevive a tantas oleadas como puedas.      ║");
+        player.sendMessage(ChatColor.GRAY + "║  KeepInventory activo • Sal con /lt rift leave║");
         player.sendMessage(ChatColor.DARK_PURPLE + "╚══════════════════════════════════════════════╝");
         player.sendMessage("");
         player.playSound(center, Sound.BLOCK_PORTAL_TRIGGER, 1.2f, 0.8f);
 
         spawnWave(session);
         return true;
+    }
+
+    public static void leaveRift(Player player) {
+        RiftSession session = activeSessions.get(player.getUniqueId());
+        if (session != null) {
+            endRift(session, false);
+        }
+        LivingRealmManager.returnFromRealm(player);
     }
 
     private static void spawnWave(RiftSession session) {

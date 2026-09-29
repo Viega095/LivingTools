@@ -117,4 +117,12 @@ public class BestiaryListener implements Listener {
         } catch (Exception ignored) {}
         return 1;
     }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTitle() == null) return;
+        if (event.getView().getTitle().equals(BestiaryGUI.TITLE)) {
+            event.setCancelled(true);
+        }
+    }
 }

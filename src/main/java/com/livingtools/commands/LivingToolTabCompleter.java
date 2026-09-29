@@ -31,7 +31,7 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "inspect", "ver", "challenges", "retos", "relic", "reliquia", "logros",
                     "achievements", "titulo", "awaken", "despertar", "reforge", "reparar",
                     "talents", "talentos", "trails", "auras", "companion", "espiritu", "guardian",
-                    "incursion", "raid", "fusion", "rift", "abismo", "sockets", "gemas", "bounties",
+                    "incursion", "raid", "fusion", "rift", "abismo", "realm", "reino", "sockets", "gemas", "bounties",
                     "contratos", "pedestal", "museum", "forjaritmo", "ritmo", "compass", "brujula",
                     "ascend", "ascension", "guild", "clan", "tarot", "cartas", "genesis",
                     "checkrecipes", "auditrecipes", "library"));
@@ -43,6 +43,12 @@ public class LivingToolTabCompleter implements TabCompleter {
 
         if (args.length == 2) {
             String sub = args[0].toLowerCase();
+            if (sub.equals("realm") || sub.equals("reino")) {
+                return filter(Arrays.asList("leave", "rift", "sanctuary", "genesis"), args[1]);
+            }
+            if (sub.equals("rift") || sub.equals("abismo")) {
+                return filter(Arrays.asList("start", "leave"), args[1]);
+            }
             if (sub.equals("guild") || sub.equals("clan")) {
                 return filter(Arrays.asList("create", "invite", "accept", "vault", "info", "leave", "disband"), args[1]);
             }

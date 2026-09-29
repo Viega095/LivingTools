@@ -125,4 +125,12 @@ public class AdminInspectListener implements Listener {
             admin.closeInventory();
         }
     }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTitle() == null) return;
+        if (event.getView().getTitle().startsWith(AdminInspectGUI.TITLE_PREFIX)) {
+            event.setCancelled(true);
+        }
+    }
 }

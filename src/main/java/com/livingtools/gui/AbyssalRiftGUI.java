@@ -38,9 +38,10 @@ public class AbyssalRiftGUI {
         // Slot 13: Iniciar Grieta
         ItemStack startBtn = GUIBuilder.createGlowingItem(Material.ENDER_EYE,
                 ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "🌌 ENTRAR A LA GRIETA ABISAL 🌌",
-                ChatColor.GRAY + "Inicia una serie de oleadas continuas con",
-                ChatColor.GRAY + "modificadores de batalla aleatorios.",
+                ChatColor.GRAY + "Inicia una serie de oleadas continuas en el",
+                ChatColor.GRAY + "Reino Dedicado con modificadores de batalla.",
                 "",
+                ChatColor.AQUA + "✦ KeepInventory activado en la arena",
                 ChatColor.GREEN + "► Click aquí para descender al abismo");
         gui.setItem(13, startBtn);
 
@@ -52,6 +53,9 @@ public class AbyssalRiftGUI {
                 ChatColor.GRAY + "• Mobs Vampíricos",
                 ChatColor.GRAY + "• Suelo Volátil");
         gui.setItem(15, mods);
+
+        // Slot 22: Botón Cerrar
+        gui.setItem(22, GUIBuilder.createCloseButton());
 
         player.openInventory(gui);
     }

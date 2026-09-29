@@ -166,4 +166,12 @@ public class GemSocketListener implements Listener {
     public static void cleanup(UUID uuid) {
         phoenixCooldown.remove(uuid);
     }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTitle() == null) return;
+        if (event.getView().getTitle().equals(GemSocketGUI.TITLE)) {
+            event.setCancelled(true);
+        }
+    }
 }

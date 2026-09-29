@@ -241,11 +241,45 @@ public class LivingToolCommand implements CommandExecutor {
                 }
                 case "rift":
                 case "abismo": {
+                    if (args.length > 1 && (args[1].equalsIgnoreCase("leave") || args[1].equalsIgnoreCase("salir"))) {
+                        com.livingtools.manager.AbyssalRiftEngine.leaveRift(player);
+                        return true;
+                    }
                     if (args.length > 1 && args[1].equalsIgnoreCase("start")) {
                         com.livingtools.manager.AbyssalRiftEngine.startRift(player);
                     } else {
                         com.livingtools.gui.AbyssalRiftGUI.open(player);
                     }
+                    return true;
+                }
+                case "realm":
+                case "reino": {
+                    if (args.length > 1 && (args[1].equalsIgnoreCase("leave") || args[1].equalsIgnoreCase("salir"))) {
+                        com.livingtools.manager.LivingRealmManager.returnFromRealm(player);
+                        return true;
+                    }
+                    if (args.length > 1 && args[1].equalsIgnoreCase("rift")) {
+                        com.livingtools.manager.AbyssalRiftEngine.startRift(player);
+                        return true;
+                    }
+                    if (args.length > 1 && args[1].equalsIgnoreCase("sanctuary")) {
+                        com.livingtools.manager.LivingRealmManager.teleportToRealm(player, com.livingtools.manager.LivingRealmManager.getSanctuarySpawn());
+                        return true;
+                    }
+                    if (args.length > 1 && args[1].equalsIgnoreCase("genesis")) {
+                        if (!player.hasPermission("livingtools.admin")) {
+                            player.sendMessage(ConfigManager.getMessage("no_permission"));
+                            return true;
+                        }
+                        com.livingtools.manager.LivingRealmManager.teleportToRealm(player, com.livingtools.manager.LivingRealmManager.getGenesisArenaSpawn());
+                        com.livingtools.entities.GenesisAvatarBoss.spawn(com.livingtools.manager.LivingRealmManager.getGenesisArenaSpawn());
+                        return true;
+                    }
+                    if (!player.hasPermission("livingtools.command.realm") && !player.hasPermission("livingtools.admin")) {
+                        player.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    com.livingtools.manager.LivingRealmManager.teleportToRealm(player, com.livingtools.manager.LivingRealmManager.getRiftArenaSpawn());
                     return true;
                 }
                 case "sockets":

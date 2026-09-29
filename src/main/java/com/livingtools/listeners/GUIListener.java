@@ -35,6 +35,10 @@ public class GUIListener implements Listener {
                 || title.equals(com.livingtools.gui.CursedForgeGUI.TITLE)
                 || title.equals(ChatColor.DARK_PURPLE + "Forja Rúnica")
                 || title.startsWith(com.livingtools.gui.AbilityDetailGUI.TITLE_PREFIX)
+                || title.contains("Maestría de Habilidades")
+                || title.contains("Menú de Habilidades")
+                || title.contains("Selección de Armadura")
+                || title.contains("Top Herramientas")
                 || title.equals(com.livingtools.gui.LibraryGUI.TITLE)
                 || title.equals(ChatColor.DARK_RED + "Mercado Negro")
                 || title.equals(com.livingtools.gui.SoulForgeGUI.TITLE)
@@ -52,6 +56,21 @@ public class GUIListener implements Listener {
                 || title.contains("Living Tools");
 
         if (!isOurGUI) {
+            return;
+        }
+
+        // LeaderboardGUI — fully read-only
+        if (title.contains("Top Herramientas")) {
+            event.setCancelled(true);
+            if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BARRIER) {
+                event.getWhoClicked().closeInventory();
+            }
+            return;
+        }
+
+        // ArmorSelectionGUI
+        if (title.contains("Selección de Armadura")) {
+            com.livingtools.gui.ArmorSelectionGUI.handleClick(event);
             return;
         }
 
@@ -648,6 +667,13 @@ public class GUIListener implements Listener {
                 || title.equals(ChatColor.stripColor(com.livingtools.gui.RuneFusionGUI.TITLE))
                 || title.equals(ChatColor.stripColor(com.livingtools.gui.LibraryGUI.TITLE))
                 || title.startsWith(com.livingtools.gui.AbilityDetailGUI.TITLE_PREFIX)
+                || title.contains("Maestría")
+                || title.contains("Habilidades")
+                || title.contains("Selección de Armadura")
+                || title.contains("Top Herramientas")
+                || title.contains("Mercado Negro")
+                || title.contains("Comercio")
+                || title.contains("Living Tools")
                 || title.equals(assemblyTitle)
                 || isImprovedSkillTreeTitle(title)) {
             event.setCancelled(true);

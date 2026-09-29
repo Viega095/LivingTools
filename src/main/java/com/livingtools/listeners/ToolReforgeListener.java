@@ -154,4 +154,12 @@ public class ToolReforgeListener implements Listener {
             player.closeInventory();
         }
     }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTitle() == null) return;
+        if (event.getView().getTitle().equals(ToolReforgeGUI.TITLE)) {
+            event.setCancelled(true);
+        }
+    }
 }

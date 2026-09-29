@@ -58,6 +58,14 @@ public class AscensionListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTitle() == null) return;
+        if (event.getView().getTitle().equals(AscensionGUI.TITLE)) {
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onShiftDrop(PlayerDropItemEvent event) {
         Player player = event.getPlayer();

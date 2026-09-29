@@ -72,4 +72,12 @@ public class EnhancedGUIListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        String title = event.getView().getTitle();
+        if (title.contains("Mejorar con XP") || title.contains("Herramienta Viviente") || title.contains("Armadura Viviente")) {
+            event.setCancelled(true);
+        }
+    }
 }

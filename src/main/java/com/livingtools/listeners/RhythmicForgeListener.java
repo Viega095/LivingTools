@@ -36,4 +36,12 @@ public class RhythmicForgeListener implements Listener {
         Player player = (Player) event.getPlayer();
         RhythmicForgeManager.cleanup(player.getUniqueId());
     }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getView().getTitle() == null) return;
+        if (event.getView().getTitle().equals(RhythmicForgeGUI.TITLE)) {
+            event.setCancelled(true);
+        }
+    }
 }
