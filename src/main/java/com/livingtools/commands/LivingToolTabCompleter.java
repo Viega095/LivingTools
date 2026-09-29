@@ -34,7 +34,7 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "incursion", "raid", "fusion", "rift", "abismo", "sockets", "gemas", "bounties",
                     "contratos", "pedestal", "museum", "forjaritmo", "ritmo", "compass", "brujula",
                     "ascend", "ascension", "guild", "clan", "tarot", "cartas", "genesis",
-                    "library"));
+                    "recipes", "recetas", "checkrecipes", "auditrecipes", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
             }
@@ -58,6 +58,7 @@ public class LivingToolTabCompleter implements TabCompleter {
                         "givecustomenchant", "givevoidessence", "upgradeabyssal", "spawnrift",
                         "setplayercorruption", "givestarlightessence", "upgradeaetherial",
                         "purifytool", "spawnfortress", "joinfaction", "claimchunk",
+                        "checkrecipes", "auditrecipes",
                         "startconvergence", "giveomnitool", "spawnboss", "spawnarena",
                         "menu", "wiki", "models", "multiplier", "setlevel", "reset",
                         "inspect", "freeze", "unfreeze", "strip", "givepoints", "event"), args[1]);

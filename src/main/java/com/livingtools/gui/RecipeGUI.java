@@ -229,19 +229,19 @@ public class RecipeGUI {
                 setResult(gui, Material.STICK, ChatColor.DARK_GREEN + "Bastón del Bosque");
                 break;
             case "SandFang":
-                gui.setItem(12, new ItemStack(Material.SAND));
+                gui.setItem(12, named(Material.SAND, ChatColor.GOLD + "Núcleo de Arena"));
                 gui.setItem(20, new ItemStack(Material.GOLD_INGOT));
-                gui.setItem(21, named(Material.SAND, ChatColor.GOLD + "Núcleo de Arena"));
+                gui.setItem(21, new ItemStack(Material.GOLDEN_SWORD));
                 gui.setItem(22, new ItemStack(Material.GOLD_INGOT));
-                gui.setItem(30, new ItemStack(Material.SAND));
+                gui.setItem(30, named(Material.SAND, ChatColor.GOLD + "Núcleo de Arena"));
                 setResult(gui, Material.GOLDEN_SWORD, ChatColor.GOLD + "Colmillo del Desierto");
                 break;
             case "AbyssAnchor":
-                gui.setItem(12, new ItemStack(Material.PRISMARINE_SHARD));
+                gui.setItem(12, named(Material.PRISMARINE_CRYSTALS, ChatColor.AQUA + "Núcleo Abisal"));
                 gui.setItem(20, new ItemStack(Material.PRISMARINE_CRYSTALS));
-                gui.setItem(21, named(Material.PRISMARINE_CRYSTALS, ChatColor.AQUA + "Núcleo Abisal"));
+                gui.setItem(21, new ItemStack(Material.TRIDENT));
                 gui.setItem(22, new ItemStack(Material.PRISMARINE_CRYSTALS));
-                gui.setItem(30, new ItemStack(Material.PRISMARINE_SHARD));
+                gui.setItem(30, named(Material.PRISMARINE_CRYSTALS, ChatColor.AQUA + "Núcleo Abisal"));
                 setResult(gui, Material.TRIDENT, ChatColor.AQUA + "Ancla Abisal");
                 break;
             case "VerdantAscension":

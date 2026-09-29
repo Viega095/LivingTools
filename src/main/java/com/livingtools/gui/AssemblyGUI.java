@@ -182,6 +182,24 @@ public class AssemblyGUI {
             return;
         }
 
+        // Colmillo del Desierto (Wyrm): _ W _ / G S G / _ W _
+        if (isEmpty(s11) && isDrop(s12, BossDropType.WYRM_CORE) && isEmpty(s13) &&
+            isType(s20, Material.GOLD_INGOT) && isType(s21, Material.GOLDEN_SWORD) && isType(s22, Material.GOLD_INGOT) &&
+            isEmpty(s29) && isDrop(s30, BossDropType.WYRM_CORE) && isEmpty(s31)) {
+            setPreview(inv, createThemedWeapon(Material.GOLDEN_SWORD, "&6&lColmillo del Desierto",
+                    "Filo tallado con el núcleo del Wyrm de las Arenas."));
+            return;
+        }
+
+        // Ancla Abisal (Leviathan): _ L _ / C T C / _ L _
+        if (isEmpty(s11) && isDrop(s12, BossDropType.LEVIATHAN_CORE) && isEmpty(s13) &&
+            isVanilla(s20, Material.PRISMARINE_CRYSTALS) && isType(s21, Material.TRIDENT) && isVanilla(s22, Material.PRISMARINE_CRYSTALS) &&
+            isEmpty(s29) && isDrop(s30, BossDropType.LEVIATHAN_CORE) && isEmpty(s31)) {
+            setPreview(inv, createThemedWeapon(Material.TRIDENT, "&3&lAncla Abisal",
+                    "Forjada en las fosas del gran Leviatán."));
+            return;
+        }
+
         // Bastón Ancestral: _ Relicario _ / _ Bastón _ / _ Bloque Esmeralda _
         if (isEmpty(s11) && isNamed(s12, Material.EMERALD, "Relicario") && isEmpty(s13) &&
             isEmpty(s20) && isNamed(s21, Material.STICK, "Bastón") && isEmpty(s22) &&

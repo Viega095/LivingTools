@@ -321,6 +321,11 @@ public class LivingToolCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.GOLD + "✦ ¡Invocando al Avatar del Génesis!");
                     return true;
                 }
+                case "checkrecipes":
+                case "auditrecipes": {
+                    com.livingtools.manager.RecipeValidationManager.sendAuditReport(player);
+                    return true;
+                }
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":
@@ -338,6 +343,7 @@ public class LivingToolCommand implements CommandExecutor {
                 case "library":
                     return handleLibraryCommand(player);
                 case "recipes":
+                case "recetas":
                     if (!player.hasPermission("livingtools.command.recipes")) {
                         player.sendMessage(ConfigManager.getMessage("no_permission"));
                         return true;

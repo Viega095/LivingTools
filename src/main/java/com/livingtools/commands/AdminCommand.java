@@ -70,6 +70,10 @@ public class AdminCommand {
                     sender.sendMessage(ChatColor.RED + "Solo jugadores pueden ver recetas.");
                 }
                 return true;
+            case "checkrecipes":
+            case "auditrecipes":
+                com.livingtools.manager.RecipeValidationManager.sendAuditReport(sender);
+                return true;
             case "opensmuggler":
                 return handleOpenSmuggler(sender, args);
             case "givesoulgem":

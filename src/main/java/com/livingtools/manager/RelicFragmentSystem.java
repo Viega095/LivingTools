@@ -38,22 +38,32 @@ import java.util.*;
 public class RelicFragmentSystem implements Listener {
 
     public enum RelicType {
-        FUEGO   ("Fragmento de Fuego",   Material.BLAZE_POWDER,    ChatColor.RED,         "🔥"),
-        HIELO   ("Fragmento de Hielo",   Material.BLUE_ICE,        ChatColor.AQUA,        "❄"),
-        TRUENO  ("Fragmento de Trueno",  Material.LIGHTNING_ROD,   ChatColor.YELLOW,      "⚡"),
-        SOMBRA  ("Fragmento de Sombra",  Material.ECHO_SHARD,      ChatColor.DARK_PURPLE, "☽"),
-        LUZ     ("Fragmento de Luz",     Material.END_CRYSTAL,     ChatColor.WHITE,       "✦");
+        FUEGO   ("Fragmento de Fuego",   Material.BLAZE_POWDER,    ChatColor.RED,         "🔥",
+                "&6✦ Jefe / Mob: &fBlazes, Magma Cubes, Ghasts", "&e✦ Esbirros: &fInvocaciones Ígneas"),
+        HIELO   ("Fragmento de Hielo",   Material.BLUE_ICE,        ChatColor.AQUA,        "❄",
+                "&6✦ Jefe / Mob: &fSnow Golems, Strays, Helados", "&e✦ Esbirros: &fEspectros de Escarcha"),
+        TRUENO  ("Fragmento de Trueno",  Material.LIGHTNING_ROD,   ChatColor.YELLOW,      "⚡",
+                "&6✦ Jefe / Mob: &fWither, Creepers Eléctricos", "&e✦ Esbirros: &fCriaturas de Tormenta"),
+        SOMBRA  ("Fragmento de Sombra",  Material.ECHO_SHARD,      ChatColor.DARK_PURPLE, "☽",
+                "&6✦ Jefe / Mob: &fWarden, Ender Dragon", "&e✦ Esbirros: &fPhantoms, Endermen, Shulkers"),
+        LUZ     ("Fragmento de Luz",     Material.END_CRYSTAL,     ChatColor.WHITE,       "✦",
+                "&6✦ Jefe / Mob: &fBrujas al Sol, Allays, Abejas", "&e✦ Esbirros: &fCentinelas de Luz");
 
         final String itemName;
         final Material material;
         final ChatColor color;
         final String symbol;
+        final String bossSource;
+        final String minionSource;
 
-        RelicType(String itemName, Material material, ChatColor color, String symbol) {
+        RelicType(String itemName, Material material, ChatColor color, String symbol,
+                  String bossSource, String minionSource) {
             this.itemName = itemName;
             this.material = material;
             this.color = color;
             this.symbol = symbol;
+            this.bossSource = bossSource;
+            this.minionSource = minionSource;
         }
     }
 
@@ -184,6 +194,8 @@ public class RelicFragmentSystem implements Listener {
         meta.setDisplayName(type.color + "" + ChatColor.BOLD + type.symbol + " " + type.itemName);
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.DARK_GRAY + "Tipo: " + type.color + type.name());
+        lore.add(MessageUtils.color(type.bossSource));
+        lore.add(MessageUtils.color(type.minionSource));
         lore.add(ChatColor.GRAY + "Colecciona los 5 fragmentos para");
         lore.add(ChatColor.GRAY + "forjar una " + ChatColor.GOLD + "Reliquia Ancestral" + ChatColor.GRAY + ".");
         lore.add("");
