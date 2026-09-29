@@ -34,6 +34,7 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "incursion", "raid", "fusion", "rift", "abismo", "realm", "reino", "sockets", "gemas", "bounties",
                     "contratos", "pedestal", "museum", "forjaritmo", "ritmo", "compass", "brujula",
                     "ascend", "ascension", "guild", "clan", "tarot", "cartas", "genesis",
+                    "test", "testguide", "pruebas",
                     "checkrecipes", "auditrecipes", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");

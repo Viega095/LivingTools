@@ -355,6 +355,16 @@ public class LivingToolCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.GOLD + "✦ ¡Invocando al Avatar del Génesis!");
                     return true;
                 }
+                case "test":
+                case "testguide":
+                case "pruebas": {
+                    if (!player.hasPermission("livingtools.admin")) {
+                        player.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    com.livingtools.gui.AdminTestingGUI.open(player);
+                    return true;
+                }
                 case "checkrecipes":
                 case "auditrecipes": {
                     com.livingtools.manager.RecipeValidationManager.sendAuditReport(player);

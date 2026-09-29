@@ -66,6 +66,14 @@ public class BestiaryGUI {
         }
 
         public String getName() { return name; }
+        public String getSubtitle() { return subtitle; }
+        public Material getIcon() { return icon; }
+        public double getMaxHealth() { return maxHealth; }
+        public double getAttackDamage() { return attackDamage; }
+        public String getDifficultyStars() { return difficultyStars; }
+        public String getLocation() { return location; }
+        public List<String> getDropList() { return dropList; }
+        public List<String> getMinionList() { return minionList; }
         public boolean isBoss() { return isBoss; }
 
         public ItemStack createItem() {
@@ -90,9 +98,23 @@ public class BestiaryGUI {
                 }
             }
 
+            lore.add("");
+            lore.add(ChatColor.YELLOW + "► Click para ver detalles, drops y combate");
+
             return GUIBuilder.createGlowingItem(icon, (isBoss ? ChatColor.GOLD + "👑 " : ChatColor.YELLOW + "👾 ") + name,
                     lore.toArray(new String[0]));
         }
+    }
+
+    public static BestiaryEntry getEntryByName(String rawName) {
+        if (rawName == null) return null;
+        String clean = ChatColor.stripColor(rawName).replace("👑", "").replace("👾", "").trim();
+        for (BestiaryEntry e : ENTRIES) {
+            if (clean.equalsIgnoreCase(e.getName()) || clean.contains(e.getName()) || e.getName().contains(clean)) {
+                return e;
+            }
+        }
+        return null;
     }
 
     public static final List<BestiaryEntry> ENTRIES = new ArrayList<>();

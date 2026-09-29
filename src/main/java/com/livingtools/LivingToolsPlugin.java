@@ -260,6 +260,10 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.listeners.AbyssalRiftListener(), this);
 
+                // AdminTestListener — interactive test suite for all GUIs and animations
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.AdminTestListener(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 
