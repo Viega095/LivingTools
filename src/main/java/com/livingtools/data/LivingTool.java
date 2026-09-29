@@ -220,6 +220,12 @@ public class LivingTool {
         if (displayName.isEmpty()) {
             if (com.livingtools.data.LivingArmor.isLivingArmor(item)) {
                 displayName = biomeColor + "Armadura Viviente";
+            } else if (item.getType() == Material.BOW) {
+                displayName = biomeColor + "Arco Viviente";
+            } else if (item.getType() == Material.CROSSBOW) {
+                displayName = biomeColor + "Ballesta Viviente";
+            } else if (item.getType() == Material.FISHING_ROD) {
+                displayName = biomeColor + "Caña Viviente";
             } else {
                 displayName = biomeColor + "Herramienta Viviente";
             }
@@ -253,15 +259,34 @@ public class LivingTool {
                     + com.livingtools.manager.SecretAchievementManager.SecretAchievement.values().length);
         }
 
-        String personalityName = data.getPersonality();
-        if (personalityName != null && !personalityName.isEmpty()) {
-            try {
-                com.livingtools.mechanics.Personality p = com.livingtools.mechanics.Personality
-                        .valueOf(personalityName);
-                lore.add(ChatColor.GRAY + "Personalidad: " + ChatColor.YELLOW + p.name());
-                lore.add(ChatColor.GRAY + "Beneficio: " + ChatColor.GREEN + getBenefitDescription(p));
-            } catch (IllegalArgumentException ignored) {
+        // Personalidad Híbrida / Estándar
+        com.livingtools.manager.SoulFusionManager.HybridPersonality hybrid =
+                com.livingtools.manager.SoulFusionManager.getHybridPersonality(this);
+        if (hybrid != null) {
+            lore.add(ChatColor.GRAY + "Personalidad: " + hybrid.getDisplayName());
+            lore.add(ChatColor.GRAY + "Rasgo Quimérico: " + ChatColor.LIGHT_PURPLE + hybrid.getDescription());
+        } else {
+            String personalityName = data.getPersonality();
+            if (personalityName != null && !personalityName.isEmpty()) {
+                try {
+                    com.livingtools.mechanics.Personality p = com.livingtools.mechanics.Personality
+                            .valueOf(personalityName);
+                    lore.add(ChatColor.GRAY + "Personalidad: " + ChatColor.YELLOW + p.name());
+                    lore.add(ChatColor.GRAY + "Beneficio: " + ChatColor.GREEN + getBenefitDescription(p));
+                } catch (IllegalArgumentException ignored) {
+                }
             }
+        }
+
+        // Gem Sockets en Lore
+        List<com.livingtools.manager.GemSocketManager.GemType> gems =
+                com.livingtools.manager.GemSocketManager.getSocketedGems(this);
+        if (!gems.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (com.livingtools.manager.GemSocketManager.GemType g : gems) {
+                sb.append(" ◆ ").append(g.getDisplayName());
+            }
+            lore.add(ChatColor.GOLD + "Gemas:" + sb.toString());
         }
 
         int prestige = data.getPrestige();

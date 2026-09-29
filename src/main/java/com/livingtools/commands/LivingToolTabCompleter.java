@@ -31,7 +31,8 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "inspect", "ver", "challenges", "retos", "relic", "reliquia", "logros",
                     "achievements", "titulo", "awaken", "despertar", "reforge", "reparar",
                     "talents", "talentos", "trails", "auras", "companion", "espiritu", "guardian",
-                    "incursion", "raid", "library"));
+                    "incursion", "raid", "fusion", "rift", "abismo", "sockets", "gemas", "bounties",
+                    "contratos", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
             }

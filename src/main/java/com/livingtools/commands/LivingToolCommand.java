@@ -233,6 +233,35 @@ public class LivingToolCommand implements CommandExecutor {
                     com.livingtools.manager.BossRaidDungeonManager.startIncursion(player);
                     return true;
                 }
+                case "fusion":
+                case "fusionar": {
+                    com.livingtools.gui.SoulFusionGUI.open(player);
+                    return true;
+                }
+                case "rift":
+                case "abismo": {
+                    if (args.length > 1 && args[1].equalsIgnoreCase("start")) {
+                        com.livingtools.manager.AbyssalRiftEngine.startRift(player);
+                    } else {
+                        com.livingtools.gui.AbyssalRiftGUI.open(player);
+                    }
+                    return true;
+                }
+                case "sockets":
+                case "gemas": {
+                    ItemStack heldSocket = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(heldSocket)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.gui.GemSocketGUI.open(player, new com.livingtools.data.LivingTool(heldSocket));
+                    return true;
+                }
+                case "bounties":
+                case "contratos": {
+                    com.livingtools.gui.BountyContractGUI.open(player);
+                    return true;
+                }
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":

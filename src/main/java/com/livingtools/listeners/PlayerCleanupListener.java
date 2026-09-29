@@ -83,5 +83,17 @@ public class PlayerCleanupListener implements Listener {
         try {
             BossRaidDungeonManager.cleanup(uuid);
         } catch (Throwable ignored) {}
+
+        try {
+            AbyssalRiftEngine.cleanup(uuid);
+        } catch (Throwable ignored) {}
+
+        try {
+            GemSocketListener.cleanup(uuid);
+        } catch (Throwable ignored) {}
+
+        try {
+            BountyContractManager.cleanup(uuid);
+        } catch (Throwable ignored) {}
     }
 }

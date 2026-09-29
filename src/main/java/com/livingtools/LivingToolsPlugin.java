@@ -197,6 +197,26 @@ public class LivingToolsPlugin extends JavaPlugin {
                     new com.livingtools.manager.BossRaidDungeonManager(), this);
                 com.livingtools.manager.BossRaidDungeonManager.init();
 
+                // SoulFusionListener — soul fusion & hybrid personality GUI
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.SoulFusionListener(), this);
+
+                // LivingBowListener — trajectory particles & ranged XP
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.LivingBowListener(), this);
+
+                // AbyssalRiftEngine — endless wave incursions & modifiers
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.AbyssalRiftEngine(), this);
+
+                // GemSocketListener — celestial socketing & phoenix gem
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.GemSocketListener(), this);
+
+                // BountyContractListener — daily hunting contracts & rewards
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.BountyContractListener(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 
@@ -463,6 +483,14 @@ public class LivingToolsPlugin extends JavaPlugin {
                                 .register(new com.livingtools.abilities.enchant.SoulReaperAbility());
                 com.livingtools.abilities.AbilityRegistry
                                 .register(new com.livingtools.abilities.enchant.ThunderlordAbility());
+
+                // Register Ranged & Bow Abilities
+                com.livingtools.abilities.AbilityRegistry
+                                .register(new com.livingtools.abilities.combat.SoulHomingArrowAbility());
+                com.livingtools.abilities.AbilityRegistry
+                                .register(new com.livingtools.abilities.combat.ArrowRainAbility());
+                com.livingtools.abilities.AbilityRegistry
+                                .register(new com.livingtools.abilities.combat.VoidSniperAbility());
 
                 // Register Durability & Balance Abilities
                 com.livingtools.tasks.PlayerUpdateTask.start();
