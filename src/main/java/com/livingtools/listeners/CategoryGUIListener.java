@@ -105,6 +105,12 @@ public class CategoryGUIListener implements Listener {
             case ENCHANTED_BOOK:
                 ArtifactsCategoryGUI.open(player);
                 break;
+            case KNOWLEDGE_BOOK:
+                player.closeInventory();
+                player.getInventory().addItem(com.livingtools.manager.GuideBookManager.getGuideBook());
+                player.sendMessage(org.bukkit.ChatColor.GREEN + "📖 Has recibido la Guía de Living Tools. ¡Ábrela para descubrir todos los secretos!");
+                player.playSound(player.getLocation(), org.bukkit.Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
+                return;
             case NETHER_STAR:
                 BossForgeRecipesGUI.open(player);
                 break;
@@ -116,6 +122,28 @@ public class CategoryGUIListener implements Listener {
             case OAK_SAPLING:
                 BossRelicsCategoryGUI.open(player);
                 break;
+            case ZOMBIE_HEAD:
+                com.livingtools.gui.BestiaryGUI.open(player, 0, com.livingtools.gui.BestiaryGUI.BestiaryCategory.ALL);
+                player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+                return;
+            case BEACON:
+                ItemStack heldBeacon = player.getInventory().getItemInMainHand();
+                if (com.livingtools.data.LivingTool.isLivingTool(heldBeacon)) {
+                    com.livingtools.gui.AscensionGUI.open(player, new com.livingtools.data.LivingTool(heldBeacon));
+                } else {
+                    player.sendMessage(org.bukkit.ChatColor.RED + "Debes sostener tu Herramienta Viviente (Nv.100+) para abrir el Altar de Ascensión Divina.");
+                }
+                player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_BEACON_ACTIVATE, 1f, 1.2f);
+                return;
+            case ENDER_EYE:
+                com.livingtools.gui.SoulTarotGUI.open(player);
+                player.playSound(player.getLocation(), org.bukkit.Sound.ITEM_BOOK_PAGE_TURN, 1f, 1.2f);
+                return;
+            case SHIELD:
+                player.closeInventory();
+                player.performCommand("livingtool guild info");
+                player.playSound(player.getLocation(), org.bukkit.Sound.ITEM_ARMOR_EQUIP_GENERIC, 1f, 1f);
+                return;
             case BARRIER:
                 player.closeInventory();
                 return;

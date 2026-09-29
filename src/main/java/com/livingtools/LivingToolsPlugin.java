@@ -92,6 +92,8 @@ public class LivingToolsPlugin extends JavaPlugin {
                                 .registerEvents(new com.livingtools.listeners.BossWeaponListener(), this);
                 getServer().getPluginManager()
                                 .registerEvents(new com.livingtools.listeners.AbilityWorldInteractionListener(), this);
+                getServer().getPluginManager()
+                                .registerEvents(new com.livingtools.listeners.BestiaryListener(), this);
 
                 com.livingtools.manager.BiomeManager.startBiomeTask();
                 com.livingtools.manager.BloodMoonManager.startCycle();

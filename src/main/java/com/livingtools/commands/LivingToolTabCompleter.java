@@ -26,15 +26,15 @@ public class LivingToolTabCompleter implements TabCompleter {
 
         if (args.length == 1) {
             List<String> subcommands = new ArrayList<>(Arrays.asList(
-                    "menu", "stats", "top", "guide", "history", "armor", "recipes", "forge",
-                    "bind", "rename", "feed", "prestige", "bond", "duel", "structure", "trade",
+                    "menu", "stats", "top", "guide", "guia", "libro", "history", "armor", "recipes", "recetas", "forge",
+                    "bestiary", "bestiario", "bind", "rename", "feed", "prestige", "bond", "duel", "structure", "trade",
                     "inspect", "ver", "challenges", "retos", "relic", "reliquia", "logros",
                     "achievements", "titulo", "awaken", "despertar", "reforge", "reparar",
                     "talents", "talentos", "trails", "auras", "companion", "espiritu", "guardian",
                     "incursion", "raid", "fusion", "rift", "abismo", "sockets", "gemas", "bounties",
                     "contratos", "pedestal", "museum", "forjaritmo", "ritmo", "compass", "brujula",
                     "ascend", "ascension", "guild", "clan", "tarot", "cartas", "genesis",
-                    "recipes", "recetas", "checkrecipes", "auditrecipes", "library"));
+                    "checkrecipes", "auditrecipes", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
             }

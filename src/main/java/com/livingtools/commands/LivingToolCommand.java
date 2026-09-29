@@ -336,9 +336,15 @@ public class LivingToolCommand implements CommandExecutor {
                     return handleBindCommand(player);
                 case "rename":
                     return handleRenameCommand(player, args);
+                case "bestiary":
+                case "bestiario": {
+                    com.livingtools.gui.BestiaryGUI.open(player, 0, com.livingtools.gui.BestiaryGUI.BestiaryCategory.ALL);
+                    return true;
+                }
                 case "guide":
-                    player.getInventory().addItem(com.livingtools.manager.GuideBookManager.getGuideBook());
-                    player.sendMessage(ChatColor.GREEN + "Has recibido la guía.");
+                case "guia":
+                case "libro":
+                    com.livingtools.manager.GuideBookManager.giveBook(player);
                     return true;
                 case "library":
                     return handleLibraryCommand(player);
@@ -354,6 +360,7 @@ public class LivingToolCommand implements CommandExecutor {
                     com.livingtools.gui.BossForgeGUI.open(player);
                     return true;
                 case "help":
+                case "ayuda":
                 default:
                     sendHelp(player);
                     return true;
@@ -599,10 +606,13 @@ public class LivingToolCommand implements CommandExecutor {
         player.sendMessage(
                 ChatColor.YELLOW + "/livingtool history" + ChatColor.WHITE + " - Ver historia de la herramienta.");
         player.sendMessage(ChatColor.YELLOW + "/livingtool armor" + ChatColor.WHITE + " - Ver armadura viviente.");
-        player.sendMessage(ChatColor.YELLOW + "/living recipes" + ChatColor.WHITE + " - Menú unificado de recetas.");
-        player.sendMessage(ChatColor.YELLOW + "/livingtool recipes" + ChatColor.WHITE + " - Menú unificado de recetas.");
+        player.sendMessage(ChatColor.YELLOW + "/livingtool recipes" + ChatColor.WHITE + " - Menú interactivo de recetas.");
+        player.sendMessage(ChatColor.YELLOW + "/livingtool bestiary" + ChatColor.WHITE + " - Bestiario de jefes y esbirros.");
         player.sendMessage(ChatColor.YELLOW + "/livingtool forge" + ChatColor.WHITE
                 + " - Abrir Forja de Jefes (crafteo en cruz).");
+        player.sendMessage(ChatColor.YELLOW + "/livingtool ascend" + ChatColor.WHITE + " - Altar de Ascensión Divina.");
+        player.sendMessage(ChatColor.YELLOW + "/livingtool tarot" + ChatColor.WHITE + " - Tarot Arcano del Destino.");
+        player.sendMessage(ChatColor.YELLOW + "/livingtool guild" + ChatColor.WHITE + " - Hermandades y Bóveda.");
         player.sendMessage(ChatColor.YELLOW + "/livingtool structure assembly" + ChatColor.WHITE
                 + " - Guía Mesa de Ensamblaje (3×3).");
         player.sendMessage(ChatColor.YELLOW + "/livingtool structure bossforge" + ChatColor.WHITE
