@@ -217,6 +217,24 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.listeners.BountyContractListener(), this);
 
+                // SoulPedestalManager — 3D display & rested XP
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.SoulPedestalListener(), this);
+                com.livingtools.manager.SoulPedestalManager.startLoop();
+
+                // RuneSynergyListener — secret 3-rune combos
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.RuneSynergyListener(), this);
+
+                // RhythmicForgeListener — timing-based forge game
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.RhythmicForgeListener(), this);
+
+                // SoulCompassListener — celestial meteor tracking
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.SoulCompassListener(), this);
+                com.livingtools.manager.SoulCompassManager.startEventScheduler();
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

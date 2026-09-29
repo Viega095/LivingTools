@@ -262,6 +262,36 @@ public class LivingToolCommand implements CommandExecutor {
                     com.livingtools.gui.BountyContractGUI.open(player);
                     return true;
                 }
+                case "pedestal":
+                case "museum": {
+                    player.sendMessage("");
+                    player.sendMessage(ChatColor.GOLD + "🏛 " + ChatColor.BOLD + "Pedestal de Almas (Exhibición 3D):");
+                    player.sendMessage(ChatColor.GRAY + "Coloca un bloque de " + ChatColor.YELLOW + "Lodestone" + ChatColor.GRAY + " o " + ChatColor.YELLOW + "Marco de Portal del End" + ChatColor.GRAY + " y haz");
+                    player.sendMessage(ChatColor.AQUA + "Shift + Click Derecho" + ChatColor.GRAY + " sosteniendo tu herramienta para exponerla.");
+                    player.sendMessage(ChatColor.GREEN + "Mientras repose en el pedestal, acumulará " + ChatColor.GOLD + "XP de Descanso" + ChatColor.GREEN + " continuamente.");
+                    player.sendMessage("");
+                    return true;
+                }
+                case "forjaritmo":
+                case "ritmo": {
+                    ItemStack heldForge = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(heldForge)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.gui.RhythmicForgeGUI.open(player, new com.livingtools.data.LivingTool(heldForge));
+                    return true;
+                }
+                case "compass":
+                case "brujula": {
+                    if (!player.hasPermission("livingtools.command.compass")) {
+                        player.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    player.getInventory().addItem(com.livingtools.manager.SoulCompassManager.createSoulCompass());
+                    player.sendMessage(ChatColor.AQUA + "🧭 Has recibido una Brújula de Almas para rastrear meteoritos celestiales.");
+                    return true;
+                }
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":

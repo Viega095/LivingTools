@@ -95,5 +95,13 @@ public class PlayerCleanupListener implements Listener {
         try {
             BountyContractManager.cleanup(uuid);
         } catch (Throwable ignored) {}
+
+        try {
+            SoulPedestalManager.cleanup(uuid);
+        } catch (Throwable ignored) {}
+
+        try {
+            RhythmicForgeManager.cleanup(uuid);
+        } catch (Throwable ignored) {}
     }
 }
