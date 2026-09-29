@@ -52,10 +52,14 @@ public class LevelUpRewardManager {
     }
 
     private static void processLevelUp(Player player, LivingTool tool, int newLevel) {
-        // Siempre: sonido y partícula básica
+        // Siempre: sonido y partícula básica + hélice visual
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.0f + (newLevel / 200f));
         player.getWorld().spawnParticle(Particle.SPELL_MOB, player.getLocation().add(0, 1, 0),
                 20, 0.5, 0.5, 0.5, 0.05);
+
+        try {
+            com.livingtools.visuals.VisualOverhaulManager.playLevelUpHelix(player, tool.getData().getPersonality());
+        } catch (Throwable ignored) {}
 
         // Mensaje base
         String toolName = getToolName(tool);
@@ -171,7 +175,7 @@ public class LevelUpRewardManager {
         try {
             Location loc = p.getLocation().add(0, 1, 0);
             org.bukkit.entity.Firework fw = (org.bukkit.entity.Firework)
-                    p.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.FIREWORK);
+                    p.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.FIREWORK_ROCKET);
             org.bukkit.inventory.meta.FireworkMeta fwm = fw.getFireworkMeta();
             fwm.addEffect(FireworkEffect.builder()
                     .with(type)

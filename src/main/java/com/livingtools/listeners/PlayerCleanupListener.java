@@ -71,5 +71,17 @@ public class PlayerCleanupListener implements Listener {
         try {
             PartyXPManager.cleanup(uuid);
         } catch (Throwable ignored) {}
+
+        try {
+            ElementalReactionsManager.cleanup(uuid);
+        } catch (Throwable ignored) {}
+
+        try {
+            ToolGuardianCompanion.cleanup(uuid);
+        } catch (Throwable ignored) {}
+
+        try {
+            BossRaidDungeonManager.cleanup(uuid);
+        } catch (Throwable ignored) {}
     }
 }

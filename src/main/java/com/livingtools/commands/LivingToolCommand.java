@@ -201,6 +201,38 @@ public class LivingToolCommand implements CommandExecutor {
                     com.livingtools.gui.CosmeticTrailGUI.open(player, new com.livingtools.data.LivingTool(trailItem));
                     return true;
                 }
+                case "companion":
+                case "espiritu":
+                case "guardian": {
+                    ItemStack compItem = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(compItem)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.data.LivingTool compTool = new com.livingtools.data.LivingTool(compItem);
+                    if (compTool.getData().getLevel() < 50 && compTool.getData().getPrestige() < 1) {
+                        player.sendMessage(ChatColor.RED + "Tu herramienta debe ser al menos Nivel 50 o Prestigio 1 para manifestar un Espíritu Guardián.");
+                        return true;
+                    }
+                    boolean enabled = com.livingtools.manager.ToolGuardianCompanion.toggleCompanion(player);
+                    if (enabled) {
+                        player.sendMessage(ChatColor.AQUA + "✦ ¡Espíritu Guardián invocado y acompañándote! (Radar de diamantes y magnetismo activo)");
+                        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.2f, 1.4f);
+                    } else {
+                        player.sendMessage(ChatColor.GRAY + "✧ Espíritu Guardián retirado a la herramienta.");
+                        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_HIT, 1.0f, 0.8f);
+                    }
+                    return true;
+                }
+                case "incursion":
+                case "raid": {
+                    if (!player.hasPermission("livingtools.command.incursion")) {
+                        player.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    com.livingtools.manager.BossRaidDungeonManager.startIncursion(player);
+                    return true;
+                }
                 case "history":
                     return handleHistoryCommand(player);
                 case "armor":

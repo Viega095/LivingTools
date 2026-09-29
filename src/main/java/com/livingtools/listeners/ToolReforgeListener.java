@@ -90,6 +90,9 @@ public class ToolReforgeListener implements Listener {
 
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1f, 1.2f);
             player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(0, 1, 0), 20, 0.5, 0.5, 0.5, 0.1);
+            try {
+                com.livingtools.visuals.VisualOverhaulManager.playReforgeSequence(player, player.getLocation());
+            } catch (Throwable ignored) {}
             player.sendMessage(ChatColor.GREEN + "🔨 ¡Herramienta completamente reparada con éxito! (-300 XP)");
             player.closeInventory();
             return;

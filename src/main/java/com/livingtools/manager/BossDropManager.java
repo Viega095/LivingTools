@@ -96,6 +96,12 @@ public class BossDropManager implements Listener {
                     entity.getCustomName() != null ? entity.getCustomName() : entity.getName());
         }
 
+        if (isTrackedBoss(entity)) {
+            try {
+                com.livingtools.manager.BossCinematicManager.playDeathCinematic(entity, null);
+            } catch (Throwable ignored) {}
+        }
+
         if (isLivingBoss(entity)) {
             dropLootBag(event.getEntity().getLocation(), "LIVING");
             event.getDrops().clear();

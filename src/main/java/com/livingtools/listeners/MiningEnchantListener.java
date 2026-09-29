@@ -133,6 +133,10 @@ public class MiningEnchantListener implements Listener {
         block.getWorld().spawnParticle(Particle.TOTEM, block.getLocation().add(0.5, 1.5, 0.5), 30, 0.5, 1, 0.5, 0.2);
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.5f);
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.8f, 1.2f);
+        try {
+            com.livingtools.visuals.DamageIndicatorManager.spawnIndicator(block.getLocation().add(0.5, 1.0, 0.5),
+                    ChatColor.GOLD + "✦ ¡TESORO DESCUBIERTO! ✦");
+        } catch (Throwable ignored) {}
 
         // Abrir GUI de Tesoro
         openTreasureGUI(player, level, block.getLocation());
@@ -326,6 +330,9 @@ public class MiningEnchantListener implements Listener {
         if (broken > 0) {
             MessageUtils.sendActionBar(player, ChatColor.YELLOW + "⛏ Rompevenas: +" + broken + " bloques");
             player.playSound(player.getLocation(), Sound.BLOCK_STONE_BREAK, 0.5f, 0.8f);
+            try {
+                com.livingtools.visuals.VisualOverhaulManager.playMiningShockwave(origin.getLocation());
+            } catch (Throwable ignored) {}
         }
     }
 
@@ -433,6 +440,9 @@ public class MiningEnchantListener implements Listener {
             }
         }
         MessageUtils.sendActionBar(player, ChatColor.RED + "💥 Pico Explosivo activado!");
+        try {
+            com.livingtools.visuals.VisualOverhaulManager.playMiningShockwave(center.getLocation());
+        } catch (Throwable ignored) {}
     }
 
     // -----------------------------------------------------------------------

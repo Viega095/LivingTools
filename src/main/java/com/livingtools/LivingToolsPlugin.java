@@ -183,6 +183,20 @@ public class LivingToolsPlugin extends JavaPlugin {
                 // WorldEventScheduler — automatic cyclical world events every 2h
                 com.livingtools.manager.WorldEventScheduler.startScheduler();
 
+                // ElementalReactionsManager — multi-element combat reactions
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.ElementalReactionsManager(), this);
+
+                // ToolGuardianCompanion — floating guardian wisp & radar
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.ToolGuardianCompanion(), this);
+                com.livingtools.manager.ToolGuardianCompanion.startLoop();
+
+                // BossRaidDungeonManager — Runic Incursions, Sentinels & Mythic Ancient Chest
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.BossRaidDungeonManager(), this);
+                com.livingtools.manager.BossRaidDungeonManager.init();
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 
