@@ -359,7 +359,8 @@ public class BossRaidDungeonManager implements Listener {
         rewards.add(new ItemStack(Material.EXPERIENCE_BOTTLE, 8 + random.nextInt(8)));
 
         // 2. Fragmentos de Reliquia
-        rewards.add(RelicFragmentSystem.createFragment(1 + random.nextInt(3)));
+        RelicFragmentSystem.RelicType[] rTypes = RelicFragmentSystem.RelicType.values();
+        rewards.add(RelicFragmentSystem.createFragment(rTypes[random.nextInt(rTypes.length)]));
 
         // 3. XP Masivo para Living Tool
         ItemStack held = player.getInventory().getItemInMainHand();

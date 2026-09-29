@@ -5,6 +5,7 @@ import com.livingtools.data.ToolData;
 import com.livingtools.manager.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -290,6 +291,34 @@ public class LivingToolCommand implements CommandExecutor {
                     }
                     player.getInventory().addItem(com.livingtools.manager.SoulCompassManager.createSoulCompass());
                     player.sendMessage(ChatColor.AQUA + "🧭 Has recibido una Brújula de Almas para rastrear meteoritos celestiales.");
+                    return true;
+                }
+                case "ascend":
+                case "ascension": {
+                    ItemStack heldAscend = player.getInventory().getItemInMainHand();
+                    if (!com.livingtools.data.LivingTool.isLivingTool(heldAscend)) {
+                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
+                        return true;
+                    }
+                    com.livingtools.gui.AscensionGUI.open(player, new com.livingtools.data.LivingTool(heldAscend));
+                    return true;
+                }
+                case "guild":
+                case "clan": {
+                    return handleGuildCommand(player, args);
+                }
+                case "tarot":
+                case "cartas": {
+                    com.livingtools.gui.SoulTarotGUI.open(player);
+                    return true;
+                }
+                case "genesis": {
+                    if (!player.hasPermission("livingtools.admin")) {
+                        player.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    com.livingtools.entities.GenesisAvatarBoss.spawn(player.getLocation());
+                    player.sendMessage(ChatColor.GOLD + "✦ ¡Invocando al Avatar del Génesis!");
                     return true;
                 }
                 case "history":
@@ -634,5 +663,90 @@ public class LivingToolCommand implements CommandExecutor {
 
         com.livingtools.manager.TradeManager.sendRequest(player, target);
         return true;
+    }
+
+    private boolean handleGuildCommand(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage("");
+            player.sendMessage(ChatColor.DARK_AQUA + "🏰 " + ChatColor.BOLD + "Comandos de Hermandad de Almas:");
+            player.sendMessage(ChatColor.YELLOW + "/lt guild create <nombre>" + ChatColor.GRAY + " - Fundar una hermandad");
+            player.sendMessage(ChatColor.YELLOW + "/lt guild invite <jugador>" + ChatColor.GRAY + " - Invitar a un miembro");
+            player.sendMessage(ChatColor.YELLOW + "/lt guild accept" + ChatColor.GRAY + " - Aceptar invitación");
+            player.sendMessage(ChatColor.YELLOW + "/lt guild vault" + ChatColor.GRAY + " - Abrir la Bóveda de Clan");
+            player.sendMessage(ChatColor.YELLOW + "/lt guild info" + ChatColor.GRAY + " - Ver información y nivel");
+            player.sendMessage(ChatColor.YELLOW + "/lt guild leave" + ChatColor.GRAY + " - Salir de la hermandad");
+            player.sendMessage(ChatColor.YELLOW + "/lt guild disband" + ChatColor.GRAY + " - Disolver hermandad (Líder)");
+            player.sendMessage("");
+            return true;
+        }
+
+        String action = args[1].toLowerCase();
+        switch (action) {
+            case "create": {
+                if (args.length < 3) {
+                    player.sendMessage(ChatColor.RED + "Uso: /lt guild create <nombre>");
+                    return true;
+                }
+                com.livingtools.manager.SoulGuildManager.createGuild(player, args[2]);
+                return true;
+            }
+            case "invite": {
+                if (args.length < 3) {
+                    player.sendMessage(ChatColor.RED + "Uso: /lt guild invite <jugador>");
+                    return true;
+                }
+                Player target = org.bukkit.Bukkit.getPlayer(args[2]);
+                if (target == null || !target.isOnline()) {
+                    player.sendMessage(ChatColor.RED + "Jugador no encontrado o desconectado.");
+                    return true;
+                }
+                com.livingtools.manager.SoulGuildManager.inviteMember(player, target);
+                return true;
+            }
+            case "accept": {
+                com.livingtools.manager.SoulGuildManager.acceptInvite(player);
+                return true;
+            }
+            case "vault":
+            case "boveda": {
+                com.livingtools.gui.SoulGuildVaultGUI.open(player);
+                return true;
+            }
+            case "leave":
+            case "salir": {
+                com.livingtools.manager.SoulGuildManager.leaveGuild(player);
+                return true;
+            }
+            case "disband":
+            case "disolver": {
+                com.livingtools.manager.SoulGuildManager.disbandGuild(player);
+                return true;
+            }
+            case "info": {
+                com.livingtools.manager.SoulGuildManager.SoulGuild guild = com.livingtools.manager.SoulGuildManager.getGuild(player.getUniqueId());
+                if (guild == null) {
+                    player.sendMessage(ChatColor.RED + "No perteneces a ninguna Hermandad de Almas.");
+                    return true;
+                }
+                player.sendMessage("");
+                player.sendMessage(ChatColor.DARK_AQUA + "🏰 " + ChatColor.BOLD + "Hermandad: " + ChatColor.WHITE + guild.getName());
+                Player leaderP = org.bukkit.Bukkit.getPlayer(guild.getLeader());
+                String leaderName = leaderP != null ? leaderP.getName() : guild.getLeader().toString().substring(0, 8);
+                player.sendMessage(ChatColor.GRAY + "Líder: " + ChatColor.GOLD + leaderName);
+                player.sendMessage(ChatColor.GRAY + "Nivel: " + ChatColor.YELLOW + guild.getLevel() + "/10" + ChatColor.GRAY + " (" + guild.getGuildXp() + " XP)");
+                player.sendMessage(ChatColor.GRAY + "Miembros (" + guild.getMembers().size() + "/" + com.livingtools.manager.SoulGuildManager.MAX_MEMBERS + "):");
+                for (java.util.UUID m : guild.getMembers()) {
+                    Player mp = org.bukkit.Bukkit.getPlayer(m);
+                    String mName = mp != null ? mp.getName() : m.toString().substring(0, 8);
+                    boolean isOnline = mp != null && mp.isOnline();
+                    player.sendMessage(ChatColor.GRAY + " - " + (isOnline ? ChatColor.GREEN + "● " : ChatColor.DARK_GRAY + "○ ") + ChatColor.WHITE + mName);
+                }
+                player.sendMessage("");
+                return true;
+            }
+            default:
+                player.sendMessage(ChatColor.RED + "Subcomando de hermandad desconocido. Usa /lt guild");
+                return true;
+        }
     }
 }

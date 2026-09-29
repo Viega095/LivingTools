@@ -33,6 +33,7 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "talents", "talentos", "trails", "auras", "companion", "espiritu", "guardian",
                     "incursion", "raid", "fusion", "rift", "abismo", "sockets", "gemas", "bounties",
                     "contratos", "pedestal", "museum", "forjaritmo", "ritmo", "compass", "brujula",
+                    "ascend", "ascension", "guild", "clan", "tarot", "cartas", "genesis",
                     "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
@@ -42,6 +43,12 @@ public class LivingToolTabCompleter implements TabCompleter {
 
         if (args.length == 2) {
             String sub = args[0].toLowerCase();
+            if (sub.equals("guild") || sub.equals("clan")) {
+                return filter(Arrays.asList("create", "invite", "accept", "vault", "info", "leave", "disband"), args[1]);
+            }
+            if (sub.equals("raid") || sub.equals("incursion")) {
+                return filter(Arrays.asList("genesis", "start"), args[1]);
+            }
             if (sub.equals("admin") && sender.hasPermission("livingtools.admin")) {
                 return filter(Arrays.asList(
                         "give", "xp", "givearmor", "unlock", "forcetrial", "setpersonality",

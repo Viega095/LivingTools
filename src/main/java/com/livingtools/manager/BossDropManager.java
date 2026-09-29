@@ -260,6 +260,10 @@ public class BossDropManager implements Listener {
         entity.getPersistentDataContainer().set(bossTypeKey("is_leviathan"), PersistentDataType.BYTE, (byte) 1);
     }
 
+    public static void tagTitan(LivingEntity entity) {
+        entity.getPersistentDataContainer().set(bossTypeKey("is_titan"), PersistentDataType.BYTE, (byte) 1);
+    }
+
     private void handleShadowCreatureDrops(EntityDeathEvent event) {
         if (random.nextDouble() < 0.3) {
             event.getDrops().add(BossDropType.SHADOW_ESSENCE.create());

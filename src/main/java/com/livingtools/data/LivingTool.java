@@ -1,6 +1,7 @@
 package com.livingtools.data;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -250,6 +251,13 @@ public class LivingTool {
         String systemTitle = com.livingtools.manager.ToolTitleSystem.getTitleLoreLine(this);
         if (systemTitle != null) {
             lore.add(systemTitle);
+        }
+
+        // Senda de Ascensión Divina
+        com.livingtools.manager.DivineAscensionManager.AscensionPath ascension =
+                com.livingtools.manager.DivineAscensionManager.getAscensionPath(this);
+        if (ascension != null) {
+            lore.add(ChatColor.GOLD + "✦ Consagración: " + ascension.getDisplayName());
         }
 
         // Logros secretos — contador breve

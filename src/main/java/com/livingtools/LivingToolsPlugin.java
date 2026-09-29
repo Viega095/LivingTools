@@ -235,6 +235,20 @@ public class LivingToolsPlugin extends JavaPlugin {
                     new com.livingtools.listeners.SoulCompassListener(), this);
                 com.livingtools.manager.SoulCompassManager.startEventScheduler();
 
+                // DivineAscensionManager — celestial ascension & transcendent abilities
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.AscensionListener(), this);
+                com.livingtools.manager.DivineAscensionManager.startAuraLoop();
+
+                // SoulGuildManager — soul guilds, shared vault & clan progression
+                com.livingtools.manager.SoulGuildManager.init();
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.SoulGuildListener(), this);
+
+                // SoulTarotListener — destiny cards & arcane tarot blessings
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.listeners.SoulTarotListener(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 
@@ -517,6 +531,11 @@ public class LivingToolsPlugin extends JavaPlugin {
                 com.livingtools.manager.ParticlePreviewManager.start();
                 com.livingtools.manager.PerformanceOptimizer.startMonitoring();
 
+        }
+
+        @Override
+        public void onDisable() {
+                com.livingtools.manager.SoulGuildManager.save();
         }
 
         public static LivingToolsPlugin getInstance() {

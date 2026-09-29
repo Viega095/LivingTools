@@ -174,8 +174,7 @@ public class LevelUpRewardManager {
     private static void firework(Player p, FireworkEffect.Type type, Color primary, Color fade) {
         try {
             Location loc = p.getLocation().add(0, 1, 0);
-            org.bukkit.entity.Firework fw = (org.bukkit.entity.Firework)
-                    p.getWorld().spawnEntity(loc, org.bukkit.entity.EntityType.FIREWORK_ROCKET);
+            org.bukkit.entity.Firework fw = p.getWorld().spawn(loc, org.bukkit.entity.Firework.class);
             org.bukkit.inventory.meta.FireworkMeta fwm = fw.getFireworkMeta();
             fwm.addEffect(FireworkEffect.builder()
                     .with(type)

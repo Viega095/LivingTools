@@ -103,5 +103,21 @@ public class PlayerCleanupListener implements Listener {
         try {
             RhythmicForgeManager.cleanup(uuid);
         } catch (Throwable ignored) {}
+
+        try {
+            AscensionListener.cleanup(uuid);
+        } catch (Throwable ignored) {}
+
+        try {
+            SoulGuildManager.cleanup(uuid);
+        } catch (Throwable ignored) {}
+
+        try {
+            com.livingtools.gui.SoulGuildVaultGUI.removeOpenVault(uuid);
+        } catch (Throwable ignored) {}
+
+        try {
+            SoulTarotManager.cleanup(uuid);
+        } catch (Throwable ignored) {}
     }
 }
