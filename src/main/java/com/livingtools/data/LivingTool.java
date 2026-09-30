@@ -260,6 +260,18 @@ public class LivingTool {
             lore.add(ChatColor.GOLD + "✦ Consagración: " + ascension.getDisplayName());
         }
 
+        // Obra Maestra (Forja Rítmica)
+        if (com.livingtools.manager.RhythmicForgeManager.isMasterwork(this)) {
+            lore.add(ChatColor.GOLD + "🌟 " + ChatColor.BOLD + "CALIDAD: OBRA MAESTRA" + ChatColor.YELLOW + " (+15% Stats)");
+        }
+
+        // Sello Elemental de Forja
+        com.livingtools.manager.SoulElementalSealManager.ElementalSeal seal =
+                com.livingtools.manager.SoulElementalSealManager.getSeal(item);
+        if (seal != null) {
+            lore.add(seal.getFormattedName());
+        }
+
         // Logros secretos — contador breve
         int achCount = com.livingtools.manager.SecretAchievementManager.countAchievements(this);
         if (achCount > 0) {

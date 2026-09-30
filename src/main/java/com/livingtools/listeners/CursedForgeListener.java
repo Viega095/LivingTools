@@ -27,7 +27,8 @@ public class CursedForgeListener implements Listener {
             if (CursedForgeManager.isCursedForge(block)) {
                 event.setCancelled(true);
                 CursedForgeManager.openGUI(event.getPlayer());
-            } else {
+            } else if (block.getRelative(0, -1, 0).getType() == Material.POLISHED_BLACKSTONE) {
+                // Solo si el suelo parece el de una Forja Maldita enviamos la sugerencia
                 event.getPlayer().sendMessage(org.bukkit.ChatColor.RED + "La Forja Maldita está incompleta.");
                 com.livingtools.visuals.CursedForgeVisualizer.sendMaterialLegend(event.getPlayer());
             }

@@ -99,7 +99,8 @@ public class AdminTestListener implements Listener {
                 break;
             case 31:
                 player.closeInventory();
-                LivingRealmManager.teleportToRealm(player, LivingRealmManager.getSanctuarySpawn());
+                LivingRealmManager.teleportToRealm(player, LivingRealmManager.getForgeTempleSpawn());
+                player.sendMessage(ChatColor.AQUA + "✦ Teletransportado al Templo de la Forja Rítmica.");
                 break;
             case 32:
                 player.closeInventory();
@@ -114,6 +115,47 @@ public class AdminTestListener implements Listener {
                 giveMaxTestKit(player);
                 player.sendMessage(ChatColor.GREEN + "🎁 ¡Kit de pruebas completo entregado con éxito!");
                 player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.2f);
+                break;
+
+            // Fila 5: Nuevas Pruebas de Forja y Utilidades
+            case 37:
+                player.getInventory().addItem(RhythmicForgeManager.createSoulForgeCore());
+                player.sendMessage(ChatColor.AQUA + "✦ Núcleo de la Forja Rítmica entregado.");
+                player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1f, 1f);
+                break;
+            case 38:
+                // Dañar / romper herramienta en mano
+                ItemStack heldItem = tool.getItem();
+                int maxDur = heldItem.getType().getMaxDurability();
+                if (heldItem.getItemMeta() instanceof org.bukkit.inventory.meta.Damageable && maxDur > 0) {
+                    org.bukkit.inventory.meta.Damageable d = (org.bukkit.inventory.meta.Damageable) heldItem.getItemMeta();
+                    d.setDamage(maxDur - 5); // 5 de durabilidad restante
+                    heldItem.setItemMeta((org.bukkit.inventory.meta.ItemMeta) d);
+                }
+                tool.setBroken(true);
+                tool.updateLore();
+                player.sendMessage(ChatColor.RED + "💥 ¡Herramienta en mano dañada y marcada como ROTA! Ve a la Forja Rítmica para probar su reparación.");
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1f, 0.8f);
+                break;
+            case 39:
+                SoulElementalSealManager.applySeal(tool.getItem(), SoulElementalSealManager.ElementalSeal.VOLCANIC_FURY);
+                player.sendMessage(ChatColor.RED + "🔥 ¡Sello de Furia Volcánica aplicado a tu herramienta!");
+                player.playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 1f, 1.2f);
+                break;
+            case 40:
+                SoulElementalSealManager.applySeal(tool.getItem(), SoulElementalSealManager.ElementalSeal.GLACIAL_FROST);
+                player.sendMessage(ChatColor.AQUA + "❄ ¡Sello de Escarcha Glacial aplicado a tu herramienta!");
+                player.playSound(player.getLocation(), Sound.BLOCK_POWDER_SNOW_BREAK, 1f, 1.2f);
+                break;
+            case 41:
+                SoulElementalSealManager.applySeal(tool.getItem(), SoulElementalSealManager.ElementalSeal.CELESTIAL_THUNDER);
+                player.sendMessage(ChatColor.YELLOW + "⚡ ¡Sello de Trueno Celestial aplicado a tu herramienta!");
+                player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1f, 1.2f);
+                break;
+            case 42:
+                SoulElementalSealManager.applySeal(tool.getItem(), SoulElementalSealManager.ElementalSeal.VOID_VORTEX);
+                player.sendMessage(ChatColor.DARK_PURPLE + "🌑 ¡Sello del Vórtice del Vacío aplicado a tu herramienta!");
+                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 1.2f);
                 break;
 
             // Fila 5: Herramientas

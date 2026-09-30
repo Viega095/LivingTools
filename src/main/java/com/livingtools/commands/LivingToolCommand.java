@@ -275,6 +275,10 @@ public class LivingToolCommand implements CommandExecutor {
                         com.livingtools.entities.GenesisAvatarBoss.spawn(com.livingtools.manager.LivingRealmManager.getGenesisArenaSpawn());
                         return true;
                     }
+                    if (args.length > 1 && (args[1].equalsIgnoreCase("forge") || args[1].equalsIgnoreCase("forja"))) {
+                        com.livingtools.manager.LivingRealmManager.teleportToRealm(player, com.livingtools.manager.LivingRealmManager.getForgeTempleSpawn());
+                        return true;
+                    }
                     if (!player.hasPermission("livingtools.command.realm") && !player.hasPermission("livingtools.admin")) {
                         player.sendMessage(ConfigManager.getMessage("no_permission"));
                         return true;
@@ -307,8 +311,34 @@ public class LivingToolCommand implements CommandExecutor {
                     player.sendMessage("");
                     return true;
                 }
+                case "rhythmicforge":
                 case "forjaritmo":
                 case "ritmo": {
+                    if (args.length > 1) {
+                        if (args[1].equalsIgnoreCase("build")) {
+                            if (!player.hasPermission("livingtools.admin")) {
+                                player.sendMessage(ConfigManager.getMessage("no_permission"));
+                                return true;
+                            }
+                            com.livingtools.manager.RhythmicForgeManager.buildStructure(player.getLocation());
+                            player.sendMessage(ChatColor.GREEN + "✦ Estructura de la Forja Rítmica construida con éxito.");
+                            return true;
+                        }
+                        if (args[1].equalsIgnoreCase("guide") || args[1].equalsIgnoreCase("guia")) {
+                            com.livingtools.visuals.RhythmicForgeVisualizer.toggleGuide(player);
+                            return true;
+                        }
+                        if (args[1].equalsIgnoreCase("core") || args[1].equalsIgnoreCase("givecore")) {
+                            if (!player.hasPermission("livingtools.admin")) {
+                                player.sendMessage(ConfigManager.getMessage("no_permission"));
+                                return true;
+                            }
+                            player.getInventory().addItem(com.livingtools.manager.RhythmicForgeManager.createSoulForgeCore());
+                            player.sendMessage(ChatColor.AQUA + "✦ Has recibido el Núcleo de la Forja Rítmica.");
+                            return true;
+                        }
+                    }
+
                     ItemStack heldForge = player.getInventory().getItemInMainHand();
                     if (!com.livingtools.data.LivingTool.isLivingTool(heldForge)) {
                         player.sendMessage(ConfigManager.getMessage("must_hold_tool"));

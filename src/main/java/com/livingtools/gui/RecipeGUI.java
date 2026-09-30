@@ -242,6 +242,16 @@ public class RecipeGUI {
             case "TitanRune":
                 showForgeCrossRecipe(gui, Material.NETHERITE_CHESTPLATE, ChatColor.DARK_PURPLE + "Runa del Titán");
                 break;
+            case "SoulForgeCore":
+                gui.setItem(12, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Roca con lágrimas arcanas.", "✦ Origen: Nether / Portales en ruinas"));
+                gui.setItem(20, ingredient(Material.POLISHED_BLACKSTONE_BRICKS, "Ladrillos de Blackstone", "Piedra negra pulida.", "✦ Origen: Nether / Crafteo"));
+                gui.setItem(21, ingredient(Material.SOUL_CAMPFIRE, "Fogata de Almas", "Fuego espiritual eterno.", "✦ Origen: Crafteo con Soul Soil"));
+                gui.setItem(22, ingredient(Material.POLISHED_BLACKSTONE_BRICKS, "Ladrillos de Blackstone", "Piedra negra pulida.", "✦ Origen: Nether / Crafteo"));
+                gui.setItem(30, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Roca con lágrimas arcanas.", "✦ Origen: Nether / Portales en ruinas"));
+                setResult(gui, com.livingtools.manager.RhythmicForgeManager.createSoulForgeCore(),
+                        ChatColor.AQUA + "✦ Núcleo de la Forja Rítmica ✦",
+                        "Construye la Forja Rítmica en el mundo para reparar y templar tus armas.");
+                break;
             case "DryadRelic":
                 ItemStack heart = bossIngredient(BossDropType.DRYAD_HEARTWOOD);
                 gui.setItem(12, ingredient(Material.EMERALD, "Esmeralda", "Gema pura.", "✦ Origen: Aldeanos / Minería"));

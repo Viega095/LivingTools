@@ -250,6 +250,10 @@ public class ToolData {
         setPersistentData(KEY_AFFINITY, PersistentDataType.INTEGER, clamped);
     }
 
+    public void adjustAffinity(int amount) {
+        setAffinity(getAffinity() + amount);
+    }
+
     private static final NamespacedKey KEY_CORRUPTION = new NamespacedKey(LivingToolsPlugin.getInstance(),
             "livingtools_corruption");
 

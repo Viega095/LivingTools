@@ -93,11 +93,11 @@ public class RecipeValidationManager {
         details.add("✔ Mesa de Ensamblaje (3x3): " + assemblyCount + " recetas de reliquias, armas y equipo viviente.");
 
         // 3. Verificar Forja de Jefes (Boss Forge Cross Structure)
-        int bossForgeCount = 5; // Socket Expander, Repair Kit, Angel Wings, Seraphim Halo, Titan Rune
+        int bossForgeCount = 6; // Socket Expander, Repair Kit, Angel Wings, Seraphim Halo, Titan Rune, Soul Forge Core
         total += bossForgeCount;
         valid += bossForgeCount;
         stations.add("Forja de Jefes Cruz (" + bossForgeCount + " recetas)");
-        details.add("✔ Forja de Jefes (Cruz): " + bossForgeCount + " recetas con drops especiales de jefes y esbirros.");
+        details.add("✔ Forja de Jefes (Cruz): " + bossForgeCount + " recetas con drops especiales de jefes, esbirros y Núcleo de Forja.");
 
         // 4. Verificar Forja de Almas (Soul Forge)
         int soulForgeCount = 5; // Gemas de Poder, Protección, Agilidad, Sabiduría, Caos

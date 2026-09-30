@@ -32,6 +32,7 @@ public class BossForgeRecipesGUI {
         gui.setItem(12, entry(Material.ANVIL, "Kit de Reparación Viva", "RepairKit"));
         gui.setItem(14, entry(Material.ELYTRA, "Alas de Ángel", "AngelWings"));
         gui.setItem(16, entry(Material.GOLDEN_HELMET, "Halo de Serafín", "SeraphimHalo"));
+        gui.setItem(20, entry(Material.LODESTONE, "Núcleo de Forja Rítmica", "SoulForgeCore"));
         gui.setItem(22, entry(Material.PAPER, "Runa del Titán", "TitanRune"));
 
         gui.setItem(30, GUIBuilder.createGlowingItem(
@@ -75,6 +76,9 @@ public class BossForgeRecipesGUI {
                 break;
             case GOLDEN_HELMET:
                 RecipeGUI.openRecipeView(player, "SeraphimHalo", "FORGE");
+                break;
+            case LODESTONE:
+                RecipeGUI.openRecipeView(player, "SoulForgeCore", "FORGE");
                 break;
             case PAPER:
                 RecipeGUI.openRecipeView(player, "TitanRune", "FORGE");

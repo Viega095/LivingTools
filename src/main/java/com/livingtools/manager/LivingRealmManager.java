@@ -85,7 +85,10 @@ public class LivingRealmManager implements Listener {
         // 3. Santuario de Forjas y Pedestales en (-120, 65, 0)
         buildMasterForgeSanctuary(world, -120, 65, 0);
 
-        // 4. Portal de Retorno en (0, 65, 22)
+        // 4. Templo de la Forja Rítmica de Almas en (-60, 65, 60)
+        buildRhythmicForgeTemple(world, -60, 65, 60);
+
+        // 5. Portal de Retorno en (0, 65, 22)
         buildReturnPortal(world, 0, 65, 22);
     }
 
@@ -184,6 +187,46 @@ public class LivingRealmManager implements Listener {
         world.getBlockAt(cx + 6, cy + 1, cz).setType(Material.LODESTONE);
     }
 
+    private static void buildRhythmicForgeTemple(World world, int cx, int cy, int cz) {
+        int radius = 8;
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                double distSq = x * x + z * z;
+                if (distSq <= radius * radius) {
+                    Block b = world.getBlockAt(cx + x, cy, cz + z);
+                    if (distSq > (radius - 1) * (radius - 1)) {
+                        b.setType(Material.CRYING_OBSIDIAN);
+                    } else if (distSq > (radius - 3) * (radius - 3)) {
+                        b.setType(Material.POLISHED_BLACKSTONE_BRICKS);
+                    } else {
+                        b.setType(Material.DEEPSLATE_BRICKS);
+                    }
+
+                    for (int y = 1; y <= 6; y++) {
+                        world.getBlockAt(cx + x, cy + y, cz + z).setType(Material.AIR);
+                    }
+                }
+            }
+        }
+
+        // 4 Columnas Rúnicas con Linternas de Almas
+        int[][] pillars = {
+                {cx - 5, cz - 5},
+                {cx + 5, cz - 5},
+                {cx - 5, cz + 5},
+                {cx + 5, cz + 5}
+        };
+        for (int[] p : pillars) {
+            for (int y = 1; y <= 3; y++) {
+                world.getBlockAt(p[0], cy + y, p[1]).setType(Material.POLISHED_BLACKSTONE_WALL);
+            }
+            world.getBlockAt(p[0], cy + 4, p[1]).setType(Material.SOUL_LANTERN);
+        }
+
+        // Construcción de la Forja Rítmica Central en (-60, 65, 60)
+        RhythmicForgeManager.buildStructure(new Location(world, cx, cy + 1, cz));
+    }
+
     private static void buildReturnPortal(World world, int cx, int cy, int cz) {
         world.getBlockAt(cx, cy + 1, cz).setType(Material.END_PORTAL_FRAME);
         world.getBlockAt(cx, cy + 2, cz).setType(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
@@ -257,6 +300,11 @@ public class LivingRealmManager implements Listener {
     public static Location getSanctuarySpawn() {
         World realm = getOrCreateRealmWorld();
         return new Location(realm, -120.5, 66.0, 0.5, -90f, 0f);
+    }
+
+    public static Location getForgeTempleSpawn() {
+        World realm = getOrCreateRealmWorld();
+        return new Location(realm, -60.5, 66.0, 60.5, -45f, 0f);
     }
 
     public static boolean isInRealm(Player player) {

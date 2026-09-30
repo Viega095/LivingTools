@@ -45,7 +45,10 @@ public class LivingToolTabCompleter implements TabCompleter {
         if (args.length == 2) {
             String sub = args[0].toLowerCase();
             if (sub.equals("realm") || sub.equals("reino")) {
-                return filter(Arrays.asList("leave", "rift", "sanctuary", "genesis"), args[1]);
+                return filter(Arrays.asList("leave", "rift", "sanctuary", "forge", "genesis"), args[1]);
+            }
+            if (sub.equals("rhythmicforge") || sub.equals("forjaritmo") || sub.equals("ritmo")) {
+                return filter(Arrays.asList("build", "guide", "givecore"), args[1]);
             }
             if (sub.equals("rift") || sub.equals("abismo")) {
                 return filter(Arrays.asList("start", "leave"), args[1]);
