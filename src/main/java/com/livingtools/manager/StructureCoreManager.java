@@ -407,6 +407,7 @@ public class StructureCoreManager {
         // 1. Núcleo de Mesa de Ensamblaje (Fácil)
         try {
             NamespacedKey key1 = new NamespacedKey(LivingToolsPlugin.getInstance(), "core_assembly_table");
+            Bukkit.removeRecipe(key1);
             ShapedRecipe r1 = new ShapedRecipe(key1, createCoreItem(StructureType.ASSEMBLY_TABLE));
             r1.shape(" I ", "ICI", " S ");
             r1.setIngredient('I', Material.IRON_INGOT);
@@ -418,6 +419,7 @@ public class StructureCoreManager {
         // 2. Núcleo de Pedestal de Almas (Fácil)
         try {
             NamespacedKey key2 = new NamespacedKey(LivingToolsPlugin.getInstance(), "core_soul_pedestal");
+            Bukkit.removeRecipe(key2);
             ShapedRecipe r2 = new ShapedRecipe(key2, createCoreItem(StructureType.SOUL_PEDESTAL));
             r2.shape(" A ", "SLS", "SSS");
             r2.setIngredient('A', Material.AMETHYST_SHARD);
@@ -429,6 +431,7 @@ public class StructureCoreManager {
         // 3. Núcleo de Forja Rúnica (Media)
         try {
             NamespacedKey key3 = new NamespacedKey(LivingToolsPlugin.getInstance(), "core_rune_forge");
+            Bukkit.removeRecipe(key3);
             ShapedRecipe r3 = new ShapedRecipe(key3, createCoreItem(StructureType.RUNE_FORGE));
             r3.shape("PAP", "ASA", " G ");
             r3.setIngredient('P', Material.PURPLE_CANDLE);
@@ -441,6 +444,7 @@ public class StructureCoreManager {
         // 4. Núcleo de Forja Rítmica (Media)
         try {
             NamespacedKey key4 = new NamespacedKey(LivingToolsPlugin.getInstance(), "core_rhythmic_forge");
+            Bukkit.removeRecipe(key4);
             ShapedRecipe r4 = new ShapedRecipe(key4, createCoreItem(StructureType.RHYTHMIC_FORGE));
             r4.shape("OLO", "BCB", "OAO");
             r4.setIngredient('O', Material.CRYING_OBSIDIAN);
@@ -454,6 +458,7 @@ public class StructureCoreManager {
         // 5. Núcleo de Forja Maldita (Media-Alta)
         try {
             NamespacedKey key5 = new NamespacedKey(LivingToolsPlugin.getInstance(), "core_cursed_forge");
+            Bukkit.removeRecipe(key5);
             ShapedRecipe r5 = new ShapedRecipe(key5, createCoreItem(StructureType.CURSED_FORGE));
             r5.shape("RCR", "BAB", " B ");
             r5.setIngredient('R', Material.RED_CANDLE);
@@ -466,6 +471,7 @@ public class StructureCoreManager {
         // 6. Núcleo del Crisol de Fusión (Alta)
         try {
             NamespacedKey key6 = new NamespacedKey(LivingToolsPlugin.getInstance(), "core_soul_fusion");
+            Bukkit.removeRecipe(key6);
             ShapedRecipe r6 = new ShapedRecipe(key6, createCoreItem(StructureType.SOUL_FUSION_CRUCIBLE));
             r6.shape("TDT", "DLD", "TDT");
             r6.setIngredient('T', Material.SOUL_TORCH);
@@ -477,6 +483,7 @@ public class StructureCoreManager {
         // 7. Núcleo de Forja de Jefes (Alta)
         try {
             NamespacedKey key7 = new NamespacedKey(LivingToolsPlugin.getInstance(), "core_boss_forge");
+            Bukkit.removeRecipe(key7);
             ShapedRecipe r7 = new ShapedRecipe(key7, createCoreItem(StructureType.BOSS_FORGE));
             r7.shape("MBM", "BSB", " D ");
             r7.setIngredient('M', Material.MAGMA_BLOCK);
@@ -489,6 +496,7 @@ public class StructureCoreManager {
         // 8. Núcleo del Gran Altar Celestial (Mítica)
         try {
             NamespacedKey key8 = new NamespacedKey(LivingToolsPlugin.getInstance(), "core_ritual_altar");
+            Bukkit.removeRecipe(key8);
             ShapedRecipe r8 = new ShapedRecipe(key8, createCoreItem(StructureType.RITUAL_ALTAR));
             r8.shape("WRW", "RER", " B ");
             r8.setIngredient('W', Material.WHITE_CANDLE);

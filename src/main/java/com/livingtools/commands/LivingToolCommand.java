@@ -16,7 +16,32 @@ public class LivingToolCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        try {
+            if (args.length > 0) {
+                String sub = args[0].toLowerCase();
+                if (sub.equals("reload") || sub.equals("recargar")) {
+                    if (!sender.hasPermission("livingtools.admin")) {
+                        sender.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    com.livingtools.manager.AutoUpdateManager.getInstance().performHotReload(sender);
+                    return true;
+                }
+                if (sub.equals("update") || sub.equals("actualizar")) {
+                    if (!sender.hasPermission("livingtools.admin")) {
+                        sender.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    return handleUpdateCommand(sender, args);
+                }
+                if (sub.equals("admin")) {
+                    return AdminCommand.handle(sender, args);
+                }
+                if (sub.equals("checkrecipes") || sub.equals("auditrecipes")) {
+                    com.livingtools.manager.RecipeValidationManager.sendAuditReport(sender);
+                    return true;
+                }
+            }
+
             if (!(sender instanceof Player)) {
                 sender.sendMessage(ConfigManager.getMessage("only_players"));
                 return true;
@@ -433,6 +458,21 @@ public class LivingToolCommand implements CommandExecutor {
                 case "forge":
                     com.livingtools.gui.BossForgeGUI.open(player);
                     return true;
+                case "reload":
+                case "recargar":
+                    if (!player.hasPermission("livingtools.admin")) {
+                        player.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    com.livingtools.manager.AutoUpdateManager.getInstance().performHotReload(player);
+                    return true;
+                case "update":
+                case "actualizar":
+                    if (!player.hasPermission("livingtools.admin")) {
+                        player.sendMessage(ConfigManager.getMessage("no_permission"));
+                        return true;
+                    }
+                    return handleUpdateCommand(player, args);
                 case "help":
                 case "ayuda":
                 default:
@@ -715,7 +755,9 @@ public class LivingToolCommand implements CommandExecutor {
                 ChatColor.YELLOW + "/livingtool trade <jugador>" + ChatColor.WHITE + " - Comerciar ítems.");
 
         if (player.hasPermission("livingtools.admin")) {
-            player.sendMessage(ChatColor.RED + "=== Admin ===");
+            player.sendMessage(ChatColor.RED + "=== Admin & Sistema ===");
+            player.sendMessage(ChatColor.YELLOW + "/livingtool update [check|install]" + ChatColor.WHITE + " - Auto-Update en vivo.");
+            player.sendMessage(ChatColor.YELLOW + "/livingtool reload" + ChatColor.WHITE + " - Hot-Reload y recarga en vivo.");
             player.sendMessage(ChatColor.GRAY + "/livingtool admin give <material> [lvl]");
             player.sendMessage(ChatColor.GRAY + "/livingtool admin xp <amount>");
             player.sendMessage(ChatColor.GRAY + "/livingtool admin multiplier <amount>");
@@ -727,6 +769,79 @@ public class LivingToolCommand implements CommandExecutor {
             player.sendMessage(ChatColor.GRAY + "/livingtool admin givegeode [amount]");
             player.sendMessage(ChatColor.GRAY + "/livingtool admin giveartifact <type>");
             player.sendMessage(ChatColor.GRAY + "/livingtool admin reload");
+        }
+    }
+
+    public static boolean handleUpdateCommand(CommandSender sender, String[] args) {
+        com.livingtools.manager.AutoUpdateManager updateManager = com.livingtools.manager.AutoUpdateManager.getInstance();
+        if (updateManager == null) {
+            sender.sendMessage(ChatColor.RED + "Error: AutoUpdateManager no está inicializado.");
+            return true;
+        }
+
+        if (args.length == 1 || args[1].equalsIgnoreCase("status") || args[1].equalsIgnoreCase("info")) {
+            String current = updateManager.getCurrentVersion();
+            String latest = updateManager.getLatestVersion();
+            boolean hasUpdate = updateManager.isUpdateAvailable();
+            boolean pending = updateManager.isUpdatePendingReload();
+
+            sender.sendMessage("");
+            sender.sendMessage(ChatColor.GOLD + "╔════════════════════════════════════════════════════════════╗");
+            sender.sendMessage(ChatColor.YELLOW + "  🔄 " + ChatColor.BOLD + "GESTOR DE ACTUALIZACIONES LIVING TOOLS");
+            sender.sendMessage(ChatColor.WHITE + "  Versión instalada: " + ChatColor.YELLOW + "v" + current);
+            sender.sendMessage(ChatColor.WHITE + "  Última en GitHub:  " + (hasUpdate ? ChatColor.GREEN + "v" + latest + ChatColor.RED + " [¡NUEVA!]" : ChatColor.GREEN + "v" + latest + " (Al día)"));
+            if (pending) {
+                sender.sendMessage(ChatColor.AQUA + "  ✨ Estado: " + ChatColor.GREEN + "Paquete descargado listo para aplicar.");
+                sender.sendMessage(ChatColor.YELLOW + "  ► Usa " + ChatColor.GOLD + "/livingtool reload" + ChatColor.YELLOW + " para activarla en vivo.");
+            } else if (hasUpdate) {
+                sender.sendMessage(ChatColor.AQUA + "  ► Usa " + ChatColor.YELLOW + "/livingtool update install" + ChatColor.AQUA + " para instalar en vivo sin reiniciar.");
+            }
+            sender.sendMessage("");
+            sender.sendMessage(ChatColor.GRAY + "  Comandos disponibles:");
+            sender.sendMessage(ChatColor.YELLOW + "  • /livingtool update check      " + ChatColor.GRAY + "➔ Comprobar si hay versión nueva.");
+            sender.sendMessage(ChatColor.YELLOW + "  • /livingtool update install    " + ChatColor.GRAY + "➔ Descargar e instalar en vivo.");
+            sender.sendMessage(ChatColor.YELLOW + "  • /livingtool update changelog  " + ChatColor.GRAY + "➔ Ver notas del último parche.");
+            sender.sendMessage(ChatColor.YELLOW + "  • /livingtool reload            " + ChatColor.GRAY + "➔ Hot-reload completo y activar update.");
+            sender.sendMessage(ChatColor.GOLD + "╚════════════════════════════════════════════════════════════╝");
+            sender.sendMessage("");
+            return true;
+        }
+
+        String action = args[1].toLowerCase();
+        switch (action) {
+            case "check":
+            case "comprobar":
+                updateManager.checkForUpdates(sender, true);
+                return true;
+            case "install":
+            case "download":
+            case "descargar":
+            case "now":
+            case "instalar":
+            case "force":
+            case "forzar":
+                updateManager.downloadAndInstall(sender, true);
+                return true;
+            case "changelog":
+            case "notes":
+            case "notas": {
+                String notes = updateManager.getReleaseNotes();
+                if (notes == null || notes.trim().isEmpty()) {
+                    sender.sendMessage(ChatColor.YELLOW + "[LivingTools] No hay notas de parche descargadas. Comprobando...");
+                    updateManager.checkForUpdates(sender, false);
+                } else {
+                    sender.sendMessage("");
+                    sender.sendMessage(ChatColor.GOLD + "=== NOTAS DE PARCHE (v" + updateManager.getLatestVersion() + ") ===");
+                    for (String line : notes.split("\n")) {
+                        sender.sendMessage(ChatColor.GRAY + "• " + ChatColor.WHITE + line);
+                    }
+                    sender.sendMessage("");
+                }
+                return true;
+            }
+            default:
+                sender.sendMessage(ChatColor.RED + "Uso: /livingtool update [check|install|changelog|status]");
+                return true;
         }
     }
 

@@ -67,6 +67,25 @@ public class AdminTestingGUI {
         // Fila 6: Controles inferiores
         gui.setItem(45, GUIBuilder.createItem(Material.BOOK, ChatColor.YELLOW + "📋 Auditoría de Recetas", "", ChatColor.GRAY + "Ejecuta /lt checkrecipes."));
         gui.setItem(46, GUIBuilder.createItem(Material.LODESTONE, ChatColor.AQUA + "✦ Menú de Núcleos Desplegables", "", ChatColor.GRAY + "Abre la enciclopedia de núcleos."));
+
+        com.livingtools.manager.AutoUpdateManager aum = com.livingtools.manager.AutoUpdateManager.getInstance();
+        String curVer = aum != null ? aum.getCurrentVersion() : "1.0";
+        String latVer = aum != null ? aum.getLatestVersion() : curVer;
+        boolean hasUp = aum != null && aum.isUpdateAvailable();
+        boolean pend = aum != null && aum.isUpdatePendingReload();
+
+        gui.setItem(47, GUIBuilder.createGlowingItem(
+                Material.CLOCK,
+                ChatColor.GOLD + "🔄 " + ChatColor.BOLD + "Auto-Update & Hot-Reload",
+                "",
+                ChatColor.GRAY + "Versión actual: " + ChatColor.YELLOW + "v" + curVer,
+                ChatColor.GRAY + "Versión remota: " + (hasUp ? ChatColor.GREEN + "v" + latVer + ChatColor.RED + " (¡NUEVA!)" : ChatColor.GREEN + "v" + latVer + " (Al día)"),
+                ChatColor.GRAY + "Estado: " + (pend ? ChatColor.AQUA + "Listo para recargar" : (hasUp ? ChatColor.GOLD + "Actualización disponible" : ChatColor.GREEN + "Actualizado")),
+                "",
+                ChatColor.YELLOW + "► Click Izquierdo: " + ChatColor.WHITE + "Comprobar versión",
+                ChatColor.YELLOW + "► Shift + Click: " + ChatColor.GREEN + "Descargar e Instalar en vivo",
+                ChatColor.YELLOW + "► Click Derecho: " + ChatColor.AQUA + "Hot-Reload completo"));
+
         gui.setItem(49, GUIBuilder.createCloseButton());
         gui.setItem(53, GUIBuilder.createItem(Material.COMPASS, ChatColor.AQUA + "🧭 Dar Brújula de Almas", "", ChatColor.GRAY + "Recibe una brújula rastreadora."));
 

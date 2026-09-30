@@ -168,6 +168,19 @@ public class AdminTestListener implements Listener {
             case 46:
                 com.livingtools.gui.category.StructureCoresCategoryGUI.open(player);
                 break;
+            case 47:
+                player.closeInventory();
+                AutoUpdateManager updateManager = AutoUpdateManager.getInstance();
+                if (updateManager != null) {
+                    if (event.isShiftClick()) {
+                        updateManager.downloadAndInstall(player, true);
+                    } else if (event.isRightClick()) {
+                        updateManager.performHotReload(player);
+                    } else {
+                        updateManager.checkForUpdates(player, true);
+                    }
+                }
+                break;
             case 49:
                 player.closeInventory();
                 break;

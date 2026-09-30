@@ -276,14 +276,9 @@ public class LivingToolsPlugin extends JavaPlugin {
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 
-                // Update Checker
+                // Update Checker & Live Auto-Update Manager
+                com.livingtools.manager.AutoUpdateManager.init(this);
                 if (com.livingtools.manager.ConfigManager.getBoolean("update-checker.enabled")) {
-                        String repo = com.livingtools.manager.ConfigManager
-                                        .getString("update-checker.repository");
-                        new com.livingtools.manager.UpdateChecker(this, repo).getVersion(version -> {
-                                this.latestVersion = version;
-                                getLogger().info("Found new version: " + version);
-                        });
                         getServer().getPluginManager().registerEvents(
                                         new com.livingtools.listeners.UpdateListener(this), this);
                 }

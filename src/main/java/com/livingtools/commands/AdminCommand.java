@@ -37,9 +37,10 @@ public class AdminCommand {
             case "setpersonality":
                 return handleSetPersonality(sender, args);
             case "reload":
-                ConfigManager.reload();
-                sender.sendMessage(ChatColor.GREEN + "Configuración recargada.");
+                com.livingtools.manager.AutoUpdateManager.getInstance().performHotReload(sender);
                 return true;
+            case "update":
+                return LivingToolCommand.handleUpdateCommand(sender, args);
             case "giverune":
                 return handleGiveRune(sender, args);
             case "givegeode":

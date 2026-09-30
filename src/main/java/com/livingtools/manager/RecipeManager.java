@@ -69,6 +69,32 @@ public class RecipeManager {
         registerGeodeRecipe();
     }
 
+    public static void removeExistingRecipes() {
+        LivingToolsPlugin plugin = LivingToolsPlugin.getInstance();
+        if (plugin == null) return;
+        try {
+            java.util.Iterator<org.bukkit.inventory.Recipe> it = Bukkit.recipeIterator();
+            while (it.hasNext()) {
+                org.bukkit.inventory.Recipe r = it.next();
+                if (r instanceof org.bukkit.Keyed) {
+                    NamespacedKey key = ((org.bukkit.Keyed) r).getKey();
+                    if (key.getNamespace().equalsIgnoreCase(plugin.getName()) || key.getNamespace().equalsIgnoreCase("livingtools")) {
+                        it.remove();
+                    }
+                }
+            }
+        } catch (Throwable ignored) {}
+    }
+
+    private static void safeAddRecipe(ShapedRecipe recipe) {
+        try {
+            Bukkit.removeRecipe(recipe.getKey());
+        } catch (Throwable ignored) {}
+        try {
+            Bukkit.addRecipe(recipe);
+        } catch (Throwable ignored) {}
+    }
+
     private static void registerGeodeRecipe() {
         ItemStack result = com.livingtools.runes.RuneManager.createGeode();
 
@@ -80,7 +106,7 @@ public class RecipeManager {
         recipe.setIngredient('G', Material.GOLD_NUGGET);
         recipe.setIngredient('S', Material.STONE);
 
-        Bukkit.addRecipe(recipe);
+        safeAddRecipe(recipe);
     }
 
     private static void registerArtifactRecipes() {
@@ -115,7 +141,7 @@ public class RecipeManager {
             recipe.setIngredient('G', Material.GOLD_NUGGET);
         }
 
-        Bukkit.addRecipe(recipe);
+        safeAddRecipe(recipe);
     }
 
     private static void registerSleepingRecipes() {
@@ -137,7 +163,7 @@ public class RecipeManager {
         recipe.setIngredient('S', Material.SOUL_SAND);
         recipe.setIngredient('T', baseType);
 
-        Bukkit.addRecipe(recipe);
+        safeAddRecipe(recipe);
     }
 
     private static void registerStoneRecipes() {
@@ -196,7 +222,7 @@ public class RecipeManager {
         recipe.setIngredient('I', ingredient);
         recipe.setIngredient('T', baseType);
 
-        Bukkit.addRecipe(recipe);
+        safeAddRecipe(recipe);
     }
 
     private static void registerNetheriteRecipe(Material baseType, String keyName) {
@@ -211,7 +237,7 @@ public class RecipeManager {
         recipe.setIngredient('I', Material.NETHERITE_INGOT);
         recipe.setIngredient('T', baseType);
 
-        Bukkit.addRecipe(recipe);
+        safeAddRecipe(recipe);
     }
 
     private static void registerToolRecipe(Material baseType, String keyName) {
@@ -226,7 +252,7 @@ public class RecipeManager {
         recipe.setIngredient('A', Material.AMETHYST_SHARD);
         recipe.setIngredient('T', baseType);
 
-        Bukkit.addRecipe(recipe);
+        safeAddRecipe(recipe);
     }
 
     private static void registerBasicToolRecipe(Material baseType, String keyName) {
@@ -240,6 +266,6 @@ public class RecipeManager {
         recipe.setIngredient('S', Material.WHEAT_SEEDS);
         recipe.setIngredient('T', baseType);
 
-        Bukkit.addRecipe(recipe);
+        safeAddRecipe(recipe);
     }
 }

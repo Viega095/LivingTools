@@ -35,15 +35,21 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "contratos", "pedestal", "museum", "forjaritmo", "ritmo", "compass", "brujula",
                     "ascend", "ascension", "guild", "clan", "tarot", "cartas", "genesis",
                     "test", "testguide", "pruebas",
-                    "checkrecipes", "auditrecipes", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
+                subcommands.add("reload");
+                subcommands.add("recargar");
+                subcommands.add("update");
+                subcommands.add("actualizar");
             }
             return filter(subcommands, args[0]);
         }
 
         if (args.length == 2) {
             String sub = args[0].toLowerCase();
+            if (sub.equals("update") || sub.equals("actualizar")) {
+                return filter(Arrays.asList("check", "install", "download", "status", "changelog", "force"), args[1]);
+            }
             if (sub.equals("realm") || sub.equals("reino")) {
                 return filter(Arrays.asList("leave", "rift", "sanctuary", "forge", "genesis"), args[1]);
             }
@@ -62,7 +68,7 @@ public class LivingToolTabCompleter implements TabCompleter {
             if (sub.equals("admin") && sender.hasPermission("livingtools.admin")) {
                 return filter(Arrays.asList(
                         "give", "xp", "givearmor", "unlock", "forcetrial", "setpersonality",
-                        "reload", "giverune", "givegeode", "abilityxp", "setcorruption",
+                        "reload", "update", "giverune", "givegeode", "abilityxp", "setcorruption",
                         "giveartifact", "setmood", "givetome", "resetcooldowns", "smuggler",
                         "givebasic", "givesoulgem", "opensoulforge", "openrunefusion",
                         "givecustomenchant", "givevoidessence", "upgradeabyssal", "spawnrift",

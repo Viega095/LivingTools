@@ -80,3 +80,11 @@ ability_unlocked: "&a¡Habilidad &e%ability% &adesbloqueada!"
 insufficient_level: "&cNo tienes suficiente nivel para esta habilidad."
 no_armor_equipped: "&cNo tienes ninguna Armadura Viviente equipada."
 infusion_unlocked: "&d¡Fusión de alma completada! Desbloqueaste la habilidad %ability%."
+
+# Auto-Update & Reload
+update_checking: "&eComprobando actualizaciones en GitHub..."
+update_up_to_date: "&a✔ LivingTools está al día en la última versión."
+update_available: "&6🔔 ¡Nueva versión &e%version% &6disponible! Usa &e/livingtool update install&6."
+update_downloading: "&eDescargando actualización en segundo plano..."
+update_success: "&a✔ ¡Actualización descargada con éxito! Usa &e/livingtool reload &apara aplicarla."
+update_failed: "&c❌ Fallo durante la actualización: %error%"
