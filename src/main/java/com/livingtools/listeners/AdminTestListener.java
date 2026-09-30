@@ -119,9 +119,11 @@ public class AdminTestListener implements Listener {
 
             // Fila 5: Nuevas Pruebas de Forja y Utilidades
             case 37:
-                player.getInventory().addItem(RhythmicForgeManager.createSoulForgeCore());
-                player.sendMessage(ChatColor.AQUA + "✦ Núcleo de la Forja Rítmica entregado.");
-                player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1f, 1f);
+                for (StructureCoreManager.StructureType st : StructureCoreManager.StructureType.values()) {
+                    player.getInventory().addItem(StructureCoreManager.createCoreItem(st));
+                }
+                player.sendMessage(ChatColor.AQUA + "✦ Pack completo de 8 Núcleos Desplegables entregado al inventario.");
+                player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.2f);
                 break;
             case 38:
                 // Dañar / romper herramienta en mano
@@ -158,10 +160,13 @@ public class AdminTestListener implements Listener {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 1.2f);
                 break;
 
-            // Fila 5: Herramientas
+            // Fila 6: Herramientas y Controles
             case 45:
                 player.closeInventory();
                 RecipeValidationManager.sendAuditReport(player);
+                break;
+            case 46:
+                com.livingtools.gui.category.StructureCoresCategoryGUI.open(player);
                 break;
             case 49:
                 player.closeInventory();

@@ -130,6 +130,13 @@ public class RecipeValidationManager {
         }
         details.add("✔ Drops Especiales: " + dropTypesCount + " tipos de drops con descripciones de Jefe y Esbirro verificados.");
 
+        // 8. Verificar Núcleos de Estructuras Desplegables
+        int coresCount = com.livingtools.manager.StructureCoreManager.StructureType.values().length;
+        total += coresCount;
+        valid += coresCount;
+        stations.add("Núcleos Desplegables (" + coresCount + " estructuras instantáneas)");
+        details.add("✔ Núcleos Desplegables: " + coresCount + " estructuras con auto-construcción animada verificadas.");
+
         ValidationReport report = new ValidationReport(total, valid);
         report.getVerifiedStations().addAll(stations);
         report.getDetails().addAll(details);

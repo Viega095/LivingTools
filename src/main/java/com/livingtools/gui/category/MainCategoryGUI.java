@@ -54,10 +54,10 @@ public class MainCategoryGUI {
                 ChatColor.YELLOW + "► Click para recibir el libro guía detallado"));
 
         // Fila 4: Estructuras y Bestiario (Slots 28, 30, 32, 34)
-        gui.setItem(28, createCategory(Material.NETHER_STAR, "✦ Forja de Jefes (Cruz)",
+        gui.setItem(28, createCategory(Material.LODESTONE, "✦ Núcleos de Estructuras Desplegables",
+                "Auto-construye mesas, forjas y altares con 1 click"));
+        gui.setItem(30, createCategory(Material.NETHER_STAR, "✦ Forja de Jefes (Cruz)",
                 "Recetas legendarias con materiales de jefes"));
-        gui.setItem(30, createCategory(Material.CRAFTING_TABLE, "⚒ Mesa de Ensamblaje (3x3)",
-                "Estructura en el mundo para crafteos avanzados"));
         gui.setItem(32, createCategory(Material.OAK_SAPLING, "🌿 Reliquias & Armas de Jefes",
                 "Dryad, Wyrm y Leviatán y armas míticas"));
         gui.setItem(34, GUIBuilder.createGlowingItem(

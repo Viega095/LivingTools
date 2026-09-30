@@ -73,6 +73,11 @@ public class CategoryGUIListener implements Listener {
             return;
         }
 
+        if (title.equals(com.livingtools.gui.category.StructureCoresCategoryGUI.TITLE)) {
+            handleStructureCoresClick(player, event);
+            return;
+        }
+
         if (title.startsWith(RecipeGUI.TITLE_RECIPE)) {
             RecipeGUI.handleRecipeViewClick(event);
         }
@@ -114,11 +119,12 @@ public class CategoryGUIListener implements Listener {
             case NETHER_STAR:
                 BossForgeRecipesGUI.open(player);
                 break;
+            case LODESTONE:
+                com.livingtools.gui.category.StructureCoresCategoryGUI.open(player);
+                break;
             case CRAFTING_TABLE:
-                player.closeInventory();
-                player.performCommand("livingtool structure assembly");
-                player.sendMessage(org.bukkit.ChatColor.GREEN + "Mostrando guía de la Mesa de Ensamblaje.");
-                return;
+                com.livingtools.gui.category.StructureCoresCategoryGUI.open(player);
+                break;
             case OAK_SAPLING:
                 BossRelicsCategoryGUI.open(player);
                 break;
@@ -280,6 +286,23 @@ public class CategoryGUIListener implements Listener {
         player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1, 1);
     }
 
+    private void handleStructureCoresClick(Player player, InventoryClickEvent event) {
+        event.setCancelled(true);
+        ItemStack clicked = event.getCurrentItem();
+        if (clicked == null || clicked.getType() == Material.AIR) {
+            return;
+        }
+
+        if (clicked.getType() == Material.BARRIER || clicked.getType() == Material.ARROW) {
+            MainCategoryGUI.open(player);
+            player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1, 1);
+            return;
+        }
+
+        com.livingtools.gui.category.StructureCoresCategoryGUI.openRecipe(player, clicked.getType());
+        player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1, 1);
+    }
+
     private boolean isProtectedMenu(String title) {
         return isCategoryMenu(title) || title.startsWith(RecipeGUI.TITLE_RECIPE);
     }
@@ -291,7 +314,8 @@ public class CategoryGUIListener implements Listener {
                 || title.equals(WeaponsCategoryGUI.TITLE)
                 || title.equals(ArtifactsCategoryGUI.TITLE)
                 || title.equals(BossForgeRecipesGUI.TITLE)
-                || title.equals(BossRelicsCategoryGUI.TITLE);
+                || title.equals(BossRelicsCategoryGUI.TITLE)
+                || title.equals(com.livingtools.gui.category.StructureCoresCategoryGUI.TITLE);
     }
 
     private boolean isBlockedAction(InventoryAction action) {

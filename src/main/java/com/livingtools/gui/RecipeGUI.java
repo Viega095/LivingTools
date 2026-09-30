@@ -59,7 +59,11 @@ public class RecipeGUI {
         String stationDesc = "Craftea en Mesa de Ensamblaje (Mesa sobre Bloque de Hierro)";
         String cmdHint = "Usa /livingtool structure assembly";
 
-        if (recipeType.equals("SocketExpander") || recipeType.equals("RepairKit") ||
+        if (context.equals("CORE") || recipeType.endsWith("Core")) {
+            stationTitle = "Núcleo de Estructura Desplegable";
+            stationDesc = "Craftea este Núcleo y haz Click Derecho en el suelo";
+            cmdHint = "¡Auto-construcción instantánea con animación y sonido!";
+        } else if (recipeType.equals("SocketExpander") || recipeType.equals("RepairKit") ||
             recipeType.equals("AngelWings") || recipeType.equals("SeraphimHalo") || recipeType.equals("TitanRune")) {
             stationTitle = "Forja de Jefes (Estructura en Cruz)";
             stationDesc = "Plataforma 5x3 de Blackstone + Magma + Mesa de Herrería";
@@ -242,15 +246,105 @@ public class RecipeGUI {
             case "TitanRune":
                 showForgeCrossRecipe(gui, Material.NETHERITE_CHESTPLATE, ChatColor.DARK_PURPLE + "Runa del Titán");
                 break;
+            // 8 Núcleos de Estructuras Desplegables
+            case "AssemblyCore":
+                gui.setItem(12, ingredient(Material.IRON_INGOT, "Lingote de Hierro", "Metal refinado.", "✦ Origen: Minería / Fundición"));
+                gui.setItem(20, ingredient(Material.IRON_INGOT, "Lingote de Hierro", "Metal refinado.", "✦ Origen: Minería / Fundición"));
+                gui.setItem(21, ingredient(Material.CRAFTING_TABLE, "Mesa de Crafteo", "Mesa de trabajo.", "✦ Origen: 4 Tablones de Madera"));
+                gui.setItem(22, ingredient(Material.IRON_INGOT, "Lingote de Hierro", "Metal refinado.", "✦ Origen: Minería / Fundición"));
+                gui.setItem(30, ingredient(Material.SMOOTH_STONE, "Piedra Lisa", "Roca procesada.", "✦ Origen: Horno"));
+                setResult(gui, com.livingtools.manager.StructureCoreManager.createCoreItem(com.livingtools.manager.StructureCoreManager.StructureType.ASSEMBLY_TABLE),
+                        ChatColor.GREEN + "✦ Núcleo de Mesa de Ensamblaje ✦",
+                        "Despliega la Mesa de Ensamblaje con 1 click.");
+                break;
+            case "PedestalCore":
+                gui.setItem(12, ingredient(Material.AMETHYST_SHARD, "Fragmento de Amatista", "Cristal resonante.", "✦ Origen: Geodas subterráneas"));
+                gui.setItem(20, ingredient(Material.SMOOTH_STONE_SLAB, "Losa de Piedra Lisa", "Soporte de piedra.", "✦ Origen: Crafteo con Piedra Lisa"));
+                gui.setItem(21, ingredient(Material.LODESTONE, "Magnetita (Lodestone)", "Bloque de anclaje magnético.", "✦ Origen: Nether / Crafteo con Netherite"));
+                gui.setItem(22, ingredient(Material.SMOOTH_STONE_SLAB, "Losa de Piedra Lisa", "Soporte de piedra.", "✦ Origen: Crafteo con Piedra Lisa"));
+                gui.setItem(29, ingredient(Material.SMOOTH_STONE_SLAB, "Losa de Piedra Lisa", "Soporte de piedra.", "✦ Origen: Crafteo con Piedra Lisa"));
+                gui.setItem(30, ingredient(Material.SMOOTH_STONE_SLAB, "Losa de Piedra Lisa", "Soporte de piedra.", "✦ Origen: Crafteo con Piedra Lisa"));
+                gui.setItem(31, ingredient(Material.SMOOTH_STONE_SLAB, "Losa de Piedra Lisa", "Soporte de piedra.", "✦ Origen: Crafteo con Piedra Lisa"));
+                setResult(gui, com.livingtools.manager.StructureCoreManager.createCoreItem(com.livingtools.manager.StructureCoreManager.StructureType.SOUL_PEDESTAL),
+                        ChatColor.AQUA + "✦ Núcleo del Pedestal de Almas ✦",
+                        "Despliega el Pedestal de exhibición 3D.");
+                break;
+            case "RuneForgeCore":
+                gui.setItem(11, ingredient(Material.PURPLE_CANDLE, "Vela Púrpura", "Cera mística.", "✦ Origen: Panal y Tinte Púrpura"));
+                gui.setItem(12, ingredient(Material.AMETHYST_BLOCK, "Bloque de Amatista", "Gema condensada.", "✦ Origen: Geodas"));
+                gui.setItem(13, ingredient(Material.PURPLE_CANDLE, "Vela Púrpura", "Cera mística.", "✦ Origen: Panal y Tinte Púrpura"));
+                gui.setItem(20, ingredient(Material.AMETHYST_BLOCK, "Bloque de Amatista", "Gema condensada.", "✦ Origen: Geodas"));
+                gui.setItem(21, ingredient(Material.SMITHING_TABLE, "Mesa de Herrería", "Mesa de trabajo.", "✦ Origen: 2 Lingotes de Hierro + 4 Tablones"));
+                gui.setItem(22, ingredient(Material.AMETHYST_BLOCK, "Bloque de Amatista", "Gema condensada.", "✦ Origen: Geodas"));
+                gui.setItem(30, ingredient(Material.GOLD_INGOT, "Lingote de Oro", "Oro puro.", "✦ Origen: Minería / Nether"));
+                setResult(gui, com.livingtools.manager.StructureCoreManager.createCoreItem(com.livingtools.manager.StructureCoreManager.StructureType.RUNE_FORGE),
+                        ChatColor.LIGHT_PURPLE + "✦ Núcleo de la Forja Rúnica ✦",
+                        "Despliega la Forja Rúnica completa con amatista y velas.");
+                break;
+            case "RhythmicForgeCore":
             case "SoulForgeCore":
-                gui.setItem(12, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Roca con lágrimas arcanas.", "✦ Origen: Nether / Portales en ruinas"));
+                gui.setItem(11, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Roca con lágrimas arcanas.", "✦ Origen: Nether / Portales"));
+                gui.setItem(12, ingredient(Material.SOUL_LANTERN, "Linterna de Almas", "Luz de fuego espiritual.", "✦ Origen: Crafteo con Soul Torch"));
+                gui.setItem(13, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Roca con lágrimas arcanas.", "✦ Origen: Nether / Portales"));
                 gui.setItem(20, ingredient(Material.POLISHED_BLACKSTONE_BRICKS, "Ladrillos de Blackstone", "Piedra negra pulida.", "✦ Origen: Nether / Crafteo"));
                 gui.setItem(21, ingredient(Material.SOUL_CAMPFIRE, "Fogata de Almas", "Fuego espiritual eterno.", "✦ Origen: Crafteo con Soul Soil"));
                 gui.setItem(22, ingredient(Material.POLISHED_BLACKSTONE_BRICKS, "Ladrillos de Blackstone", "Piedra negra pulida.", "✦ Origen: Nether / Crafteo"));
-                gui.setItem(30, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Roca con lágrimas arcanas.", "✦ Origen: Nether / Portales en ruinas"));
-                setResult(gui, com.livingtools.manager.RhythmicForgeManager.createSoulForgeCore(),
-                        ChatColor.AQUA + "✦ Núcleo de la Forja Rítmica ✦",
-                        "Construye la Forja Rítmica en el mundo para reparar y templar tus armas.");
+                gui.setItem(29, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Roca con lágrimas arcanas.", "✦ Origen: Nether / Portales"));
+                gui.setItem(30, ingredient(Material.ANVIL, "Yunque", "Base de forja.", "✦ Origen: 3 Bloques de Hierro + 4 Lingotes"));
+                gui.setItem(31, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Roca con lágrimas arcanas.", "✦ Origen: Nether / Portales"));
+                setResult(gui, com.livingtools.manager.StructureCoreManager.createCoreItem(com.livingtools.manager.StructureCoreManager.StructureType.RHYTHMIC_FORGE),
+                        ChatColor.DARK_AQUA + "✦ Núcleo de la Forja Rítmica ✦",
+                        "Despliega la Forja Rítmica con fogata, linternas y yunque.");
+                break;
+            case "CursedForgeCore":
+                gui.setItem(11, ingredient(Material.RED_CANDLE, "Vela Roja", "Cera teñida de sangre.", "✦ Origen: Panal y Tinte Rojo"));
+                gui.setItem(12, ingredient(Material.CRYING_OBSIDIAN, "Obsidiana Llorosa", "Lágrimas oscuras.", "✦ Origen: Nether"));
+                gui.setItem(13, ingredient(Material.RED_CANDLE, "Vela Roja", "Cera teñida de sangre.", "✦ Origen: Panal y Tinte Rojo"));
+                gui.setItem(20, ingredient(Material.POLISHED_BLACKSTONE, "Blackstone Pulida", "Piedra oscura.", "✦ Origen: Nether"));
+                gui.setItem(21, ingredient(Material.ANVIL, "Yunque", "Base de forja.", "✦ Origen: Hierro"));
+                gui.setItem(22, ingredient(Material.POLISHED_BLACKSTONE, "Blackstone Pulida", "Piedra oscura.", "✦ Origen: Nether"));
+                gui.setItem(30, ingredient(Material.POLISHED_BLACKSTONE, "Blackstone Pulida", "Piedra oscura.", "✦ Origen: Nether"));
+                setResult(gui, com.livingtools.manager.StructureCoreManager.createCoreItem(com.livingtools.manager.StructureCoreManager.StructureType.CURSED_FORGE),
+                        ChatColor.DARK_RED + "✦ Núcleo de la Forja Maldita ✦",
+                        "Despliega la Forja Maldita de almas oscuras.");
+                break;
+            case "FusionCrucibleCore":
+                gui.setItem(11, ingredient(Material.SOUL_TORCH, "Antorcha de Almas", "Fuego espiritual.", "✦ Origen: Soul Soil / Sand"));
+                gui.setItem(12, ingredient(Material.DIAMOND, "Diamante", "Gema preciosa.", "✦ Origen: Minería Profunda"));
+                gui.setItem(13, ingredient(Material.SOUL_TORCH, "Antorcha de Almas", "Fuego espiritual.", "✦ Origen: Soul Soil / Sand"));
+                gui.setItem(20, ingredient(Material.DIAMOND, "Diamante", "Gema preciosa.", "✦ Origen: Minería Profunda"));
+                gui.setItem(21, ingredient(Material.LODESTONE, "Magnetita", "Núcleo de anclaje.", "✦ Origen: Netherite"));
+                gui.setItem(22, ingredient(Material.DIAMOND, "Diamante", "Gema preciosa.", "✦ Origen: Minería Profunda"));
+                gui.setItem(29, ingredient(Material.SOUL_TORCH, "Antorcha de Almas", "Fuego espiritual.", "✦ Origen: Soul Soil / Sand"));
+                gui.setItem(30, ingredient(Material.DIAMOND, "Diamante", "Gema preciosa.", "✦ Origen: Minería Profunda"));
+                gui.setItem(31, ingredient(Material.SOUL_TORCH, "Antorcha de Almas", "Fuego espiritual.", "✦ Origen: Soul Soil / Sand"));
+                setResult(gui, com.livingtools.manager.StructureCoreManager.createCoreItem(com.livingtools.manager.StructureCoreManager.StructureType.SOUL_FUSION_CRUCIBLE),
+                        ChatColor.GOLD + "✦ Núcleo del Crisol de Fusión ✦",
+                        "Despliega el Crisol de Fusión para combinar armas vivientes.");
+                break;
+            case "BossForgeCore":
+                gui.setItem(11, ingredient(Material.MAGMA_BLOCK, "Bloque de Magma", "Calor infernal.", "✦ Origen: Nether / Fondo marino"));
+                gui.setItem(12, ingredient(Material.POLISHED_BLACKSTONE_BRICKS, "Ladrillos de Blackstone", "Roca volcánica pulida.", "✦ Origen: Nether"));
+                gui.setItem(13, ingredient(Material.MAGMA_BLOCK, "Bloque de Magma", "Calor infernal.", "✦ Origen: Nether / Fondo marino"));
+                gui.setItem(20, ingredient(Material.POLISHED_BLACKSTONE_BRICKS, "Ladrillos de Blackstone", "Roca volcánica pulida.", "✦ Origen: Nether"));
+                gui.setItem(21, ingredient(Material.SMITHING_TABLE, "Mesa de Herrería", "Mesa de herrería.", "✦ Origen: Hierro y Madera"));
+                gui.setItem(22, ingredient(Material.POLISHED_BLACKSTONE_BRICKS, "Ladrillos de Blackstone", "Roca volcánica pulida.", "✦ Origen: Nether"));
+                gui.setItem(30, ingredient(Material.DIAMOND_BLOCK, "Bloque de Diamante", "9 Diamantes compactados.", "✦ Origen: Minería"));
+                setResult(gui, com.livingtools.manager.StructureCoreManager.createCoreItem(com.livingtools.manager.StructureCoreManager.StructureType.BOSS_FORGE),
+                        ChatColor.RED + "✦ Núcleo de la Forja de Jefes ✦",
+                        "Despliega la monumental Forja 5x3 en cruz para reliquias de jefes.");
+                break;
+            case "RitualAltarCore":
+                gui.setItem(11, ingredient(Material.WHITE_CANDLE, "Vela Sagrada", "Vela purificada.", "✦ Origen: Panal y Tinte Blanco"));
+                gui.setItem(12, ingredient(Material.REDSTONE, "Polvo de Redstone", "Polvo conductor de energía arcana.", "✦ Origen: Minería profunda"));
+                gui.setItem(13, ingredient(Material.WHITE_CANDLE, "Vela Sagrada", "Vela purificada.", "✦ Origen: Panal y Tinte Blanco"));
+                gui.setItem(20, ingredient(Material.REDSTONE, "Polvo de Redstone", "Polvo conductor de energía arcana.", "✦ Origen: Minería profunda"));
+                gui.setItem(21, ingredient(Material.ENCHANTING_TABLE, "Mesa de Encantamientos", "Altar arcano de magia.", "✦ Origen: 2 Diamantes + 4 Obsidiana + 1 Libro"));
+                gui.setItem(22, ingredient(Material.REDSTONE, "Polvo de Redstone", "Polvo conductor de energía arcana.", "✦ Origen: Minería profunda"));
+                gui.setItem(30, ingredient(Material.BEACON, "Faro (Beacon)", "Núcleo de energía estelar.", "✦ Origen: Drop del Wither + 5 Cristal + 3 Obsidiana"));
+                setResult(gui, com.livingtools.manager.StructureCoreManager.createCoreItem(com.livingtools.manager.StructureCoreManager.StructureType.RITUAL_ALTAR),
+                        ChatColor.YELLOW + "✦ Núcleo del Gran Altar Celestial ✦",
+                        "Despliega el Altar de Rituales y Ascensión Divina.");
                 break;
             case "DryadRelic":
                 ItemStack heart = bossIngredient(BossDropType.DRYAD_HEARTWOOD);

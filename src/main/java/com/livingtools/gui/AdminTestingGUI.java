@@ -57,7 +57,7 @@ public class AdminTestingGUI {
         gui.setItem(34, GUIBuilder.createGlowingItem(Material.DIAMOND_CHESTPLATE, ChatColor.GREEN + "🎁 Dar Kit de Pruebas Máximo", "", ChatColor.GRAY + "Entrega arma Lv.100, armadura completa,", ChatColor.GRAY + "gemas celestiales, runas y tarot.", "", ChatColor.YELLOW + "► Click para recibir kit"));
 
         // Fila 5: Nuevas Pruebas de Forja y Utilidades
-        gui.setItem(37, GUIBuilder.createGlowingItem(Material.LODESTONE, ChatColor.AQUA + "✦ Dar Núcleo de Forja Rítmica", "", ChatColor.GRAY + "Recibe el ítem que construye la forja.", "", ChatColor.YELLOW + "► Click para recibir"));
+        gui.setItem(37, GUIBuilder.createGlowingItem(Material.BEACON, ChatColor.AQUA + "✦ Dar Pack: 8 Núcleos Desplegables", "", ChatColor.GRAY + "Entrega los 8 núcleos de estructura al inventario", ChatColor.GRAY + "para probar la auto-construcción de todas.", "", ChatColor.YELLOW + "► Click para recibir pack"));
         gui.setItem(38, GUIBuilder.createGlowingItem(Material.DAMAGED_ANVIL, ChatColor.DARK_RED + "💥 Dañar / Romper Herramienta en Mano", "", ChatColor.GRAY + "Pone la durabilidad al 1% o rota para probar", ChatColor.GRAY + "la reparación instantánea en la Forja.", "", ChatColor.YELLOW + "► Click para dañar"));
         gui.setItem(39, GUIBuilder.createGlowingItem(Material.MAGMA_CREAM, ChatColor.RED + "🔥 Sello: Furia Volcánica", "", ChatColor.GRAY + "Aplica el Sello Ígneo a la herramienta.", "", ChatColor.YELLOW + "► Click para aplicar"));
         gui.setItem(40, GUIBuilder.createGlowingItem(Material.BLUE_ICE, ChatColor.AQUA + "❄ Sello: Escarcha Glacial", "", ChatColor.GRAY + "Aplica el Sello Criogénico.", "", ChatColor.YELLOW + "► Click para aplicar"));
@@ -66,6 +66,7 @@ public class AdminTestingGUI {
 
         // Fila 6: Controles inferiores
         gui.setItem(45, GUIBuilder.createItem(Material.BOOK, ChatColor.YELLOW + "📋 Auditoría de Recetas", "", ChatColor.GRAY + "Ejecuta /lt checkrecipes."));
+        gui.setItem(46, GUIBuilder.createItem(Material.LODESTONE, ChatColor.AQUA + "✦ Menú de Núcleos Desplegables", "", ChatColor.GRAY + "Abre la enciclopedia de núcleos."));
         gui.setItem(49, GUIBuilder.createCloseButton());
         gui.setItem(53, GUIBuilder.createItem(Material.COMPASS, ChatColor.AQUA + "🧭 Dar Brújula de Almas", "", ChatColor.GRAY + "Recibe una brújula rastreadora."));
 
