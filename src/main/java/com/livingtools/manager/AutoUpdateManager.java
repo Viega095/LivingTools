@@ -159,19 +159,50 @@ public class AutoUpdateManager {
                     });
 
                 } else if (code == 404) {
+                    // Si GitHub devuelve 404, significa que aún no hay releases creadas en GitHub Releases
+                    this.updateAvailable = false;
+                    this.latestVersion = currentVersion;
+                    plugin.setLatestVersion(currentVersion);
+
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        if (feedbackSender != null) {
+                            feedbackSender.sendMessage("");
+                            feedbackSender.sendMessage(ChatColor.GOLD + "╔════════════════════════════════════════════════════════════╗");
+                            feedbackSender.sendMessage(ChatColor.GREEN + "  ✔ " + ChatColor.BOLD + "LIVING TOOLS: VERSIÓN ACTUAL AL DÍA");
+                            feedbackSender.sendMessage(ChatColor.WHITE + "  Versión instalada: " + ChatColor.YELLOW + "v" + currentVersion);
+                            feedbackSender.sendMessage(ChatColor.GRAY + "  Repositorio: " + ChatColor.AQUA + "github.com/" + repository);
+                            feedbackSender.sendMessage("");
+                            feedbackSender.sendMessage(ChatColor.YELLOW + "  💡 Para publicar nuevas versiones descargables:");
+                            feedbackSender.sendMessage(ChatColor.GRAY + "  1. Ve a " + ChatColor.AQUA + "https://github.com/" + repository + "/releases/new");
+                            feedbackSender.sendMessage(ChatColor.GRAY + "  2. Crea un Release (ej: v1.1) y adjunta el archivo .jar.");
+                            feedbackSender.sendMessage(ChatColor.GRAY + "  3. ¡El plugin lo detectará y podrás actualizarlo con /lt update install!");
+                            feedbackSender.sendMessage(ChatColor.GOLD + "╚════════════════════════════════════════════════════════════╝");
+                            feedbackSender.sendMessage("");
+                            if (feedbackSender instanceof Player) {
+                                ((Player) feedbackSender).playSound(((Player) feedbackSender).getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1.2f);
+                            }
+                        } else {
+                            plugin.getLogger().info("UpdateChecker: Repositorio " + repository + " verificado. Plugin en versión v" + currentVersion + " (al día).");
+                        }
+                    });
+
+                } else if (code == 403) {
+                    // Límite de la API pública de GitHub alcanzado temporalmente
                     if (feedbackSender != null) {
-                        feedbackSender.sendMessage(ChatColor.YELLOW + "[LivingTools] No se encontraron releases públicas en GitHub (" + repository + ").");
+                        feedbackSender.sendMessage(ChatColor.YELLOW + "[LivingTools] Límite de consultas a la API de GitHub alcanzado temporalmente. Se reintentará más tarde.");
+                    } else {
+                        plugin.getLogger().info("UpdateChecker: Límite de consultas de GitHub alcanzado temporalmente.");
                     }
                 } else {
                     if (feedbackSender != null) {
-                        feedbackSender.sendMessage(ChatColor.RED + "[LivingTools] Error al verificar actualizaciones. Código HTTP: " + code);
+                        feedbackSender.sendMessage(ChatColor.RED + "[LivingTools] Verificación de GitHub completada con código HTTP: " + code);
                     }
                 }
             } catch (Exception e) {
                 if (feedbackSender != null) {
-                    feedbackSender.sendMessage(ChatColor.RED + "[LivingTools] Fallo de conexión con GitHub: " + e.getMessage());
+                    feedbackSender.sendMessage(ChatColor.YELLOW + "[LivingTools] Sin conexión temporal con GitHub: " + e.getMessage());
                 }
-                plugin.getLogger().warning("Error comprobando updates: " + e.getMessage());
+                plugin.getLogger().info("UpdateChecker: Sin conexión con GitHub (" + e.getMessage() + ")");
             }
         });
     }
