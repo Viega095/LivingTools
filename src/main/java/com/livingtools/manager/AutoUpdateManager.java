@@ -336,9 +336,10 @@ public class AutoUpdateManager {
             // 1. Configuración & Mensajes
             ConfigManager.reload();
 
-            // 2. Recetas seguras
+            // 2. Recetas seguras y estructuras desplegadas
             RecipeManager.removeExistingRecipes();
             RecipeManager.registerRecipes();
+            StructureCoreManager.loadStructures();
             StructureCoreManager.registerBukkitRecipes();
 
             // 3. Tablas de clasificación y estados de hermandades

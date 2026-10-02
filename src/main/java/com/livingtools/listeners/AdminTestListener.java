@@ -181,6 +181,20 @@ public class AdminTestListener implements Listener {
                     }
                 }
                 break;
+            case 48:
+                player.closeInventory();
+                org.bukkit.block.Block target = player.getTargetBlockExact(6);
+                if (target == null) {
+                    player.sendMessage(ChatColor.RED + "Mira hacia una estructura desplegada (a menos de 6 bloques) para desmantelarla.");
+                } else {
+                    StructureCoreManager.DeployedStructure struct = StructureCoreManager.getStructureAt(target.getLocation());
+                    if (struct != null) {
+                        StructureCoreManager.dismantleStructure(struct, player, true, true);
+                    } else {
+                        player.sendMessage(ChatColor.RED + "El bloque seleccionado no forma parte de ninguna estructura activa.");
+                    }
+                }
+                break;
             case 49:
                 player.closeInventory();
                 break;

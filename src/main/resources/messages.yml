@@ -88,3 +88,9 @@ update_available: "&6🔔 ¡Nueva versión &e%version% &6disponible! Usa &e/livi
 update_downloading: "&eDescargando actualización en segundo plano..."
 update_success: "&a✔ ¡Actualización descargada con éxito! Usa &e/livingtool reload &apara aplicarla."
 update_failed: "&c❌ Fallo durante la actualización: %error%"
+
+# Structures & Cores
+structure_deployed: "&a¡Estructura %structure% &adesplegada con éxito!"
+structure_dismantled: "&e¡Estructura %structure% &edesmantelada! Se te ha devuelto el Núcleo."
+structure_not_owner: "&c🔒 Esta estructura pertenece a %player%."
+structure_obstructed: "&c❌ No se puede desplegar: el espacio está obstruido o solapa con otra estructura."

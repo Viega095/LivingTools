@@ -35,6 +35,8 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "contratos", "pedestal", "museum", "forjaritmo", "ritmo", "compass", "brujula",
                     "ascend", "ascension", "guild", "clan", "tarot", "cartas", "genesis",
                     "test", "testguide", "pruebas",
+                    "core", "cores", "dismantle", "pack",
+                    "checkrecipes", "auditrecipes", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");
                 subcommands.add("reload");
@@ -83,9 +85,16 @@ public class LivingToolTabCompleter implements TabCompleter {
                     || sub.equals("inspect") || sub.equals("ver")) {
                 return null; // Player names
             }
-            if (sub.equals("structure")) {
-                return filter(Arrays.asList("altar", "assembly", "bossforge", "cursedforge", "forge", "runeforge", "list"),
+            if (sub.equals("structure") || sub.equals("estructuras")) {
+                return filter(Arrays.asList("dismantle", "list", "give", "build", "altar", "assembly", "bossforge", "cursedforge", "forge", "runeforge", "rhythmicforge"),
                         args[1]);
+            }
+        }
+
+        if (args.length == 3 && (args[0].equalsIgnoreCase("structure") || args[0].equalsIgnoreCase("estructuras"))) {
+            String subAction = args[1].toLowerCase();
+            if (subAction.equals("give") || subAction.equals("build")) {
+                return filter(Arrays.asList("assembly", "pedestal", "runeforge", "rhythmicforge", "cursedforge", "fusion", "bossforge", "altar"), args[2]);
             }
         }
 

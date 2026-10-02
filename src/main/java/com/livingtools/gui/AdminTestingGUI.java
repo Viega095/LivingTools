@@ -86,6 +86,15 @@ public class AdminTestingGUI {
                 ChatColor.YELLOW + "► Shift + Click: " + ChatColor.GREEN + "Descargar e Instalar en vivo",
                 ChatColor.YELLOW + "► Click Derecho: " + ChatColor.AQUA + "Hot-Reload completo"));
 
+        gui.setItem(48, GUIBuilder.createGlowingItem(
+                Material.SHEARS,
+                ChatColor.RED + "🧹 " + ChatColor.BOLD + "Probar Auto-Desmantelar Estructura",
+                "",
+                ChatColor.GRAY + "Desmantela la estructura a la que estés mirando y",
+                ChatColor.GRAY + "te devuelve su Núcleo para probar el sistema de refund.",
+                "",
+                ChatColor.YELLOW + "► Click para desmantelar"));
+
         gui.setItem(49, GUIBuilder.createCloseButton());
         gui.setItem(53, GUIBuilder.createItem(Material.COMPASS, ChatColor.AQUA + "🧭 Dar Brújula de Almas", "", ChatColor.GRAY + "Recibe una brújula rastreadora."));
 

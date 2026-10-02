@@ -268,10 +268,10 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.manager.SoulElementalSealManager(), this);
 
-                // StructureCoreListener — deployable structure core auto-construction
+                // StructureCoreListener — deployable structure core auto-construction & dismantle
+                com.livingtools.manager.StructureCoreManager.init(this);
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.listeners.StructureCoreListener(), this);
-                com.livingtools.manager.StructureCoreManager.registerBukkitRecipes();
 
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
@@ -554,6 +554,7 @@ public class LivingToolsPlugin extends JavaPlugin {
 
         @Override
         public void onDisable() {
+                com.livingtools.manager.StructureCoreManager.saveStructures();
                 com.livingtools.manager.SoulGuildManager.save();
                 com.livingtools.manager.LivingRealmManager.saveStoredLocations();
         }

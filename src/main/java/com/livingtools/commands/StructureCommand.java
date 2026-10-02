@@ -59,7 +59,27 @@ public class StructureCommand {
             return true;
         }
 
-        // 3. Guías visuales holográficas clásicas
+        // 3. Comando: /lt structure dismantle o /lt structure pack
+        if (action.equals("dismantle") || action.equals("desmantelar") || action.equals("pack") || action.equals("recoger")) {
+            Block targetBlock = player.getTargetBlockExact(5);
+            if (targetBlock == null) {
+                player.sendMessage(ChatColor.RED + "Debes estar mirando un bloque de la estructura que deseas desmantelar (a menos de 5 bloques).");
+                return true;
+            }
+            StructureCoreManager.DeployedStructure struct = StructureCoreManager.getStructureAt(targetBlock.getLocation());
+            if (struct == null) {
+                player.sendMessage(ChatColor.RED + "El bloque al que estás mirando no pertenece a ninguna estructura activa.");
+                return true;
+            }
+            if (!player.getUniqueId().equals(struct.getOwnerUUID()) && !player.hasPermission("livingtools.admin")) {
+                player.sendMessage(ChatColor.RED + "🔒 Esta estructura fue desplegada por " + struct.getOwnerName() + ".");
+                return true;
+            }
+            StructureCoreManager.dismantleStructure(struct, player, true, true);
+            return true;
+        }
+
+        // 4. Guías visuales holográficas clásicas
         switch (action) {
             case "altar":
                 com.livingtools.visuals.RitualVisualizer.toggleGuide(player);

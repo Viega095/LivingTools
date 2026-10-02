@@ -79,7 +79,18 @@ public class LivingToolCommand implements CommandExecutor {
                 case "admin":
                     return AdminCommand.handle(player, args);
                 case "structure":
+                case "estructuras":
                     return StructureCommand.handle(player, args);
+                case "core":
+                case "cores":
+                case "nucleos":
+                    com.livingtools.gui.category.StructureCoresCategoryGUI.open(player);
+                    return true;
+                case "dismantle":
+                case "desmantelar":
+                case "pack":
+                case "recoger":
+                    return StructureCommand.handle(player, new String[]{"structure", "dismantle"});
                 case "menu":
                     return handleMenuCommand(player);
                 case "stats":
@@ -733,6 +744,8 @@ public class LivingToolCommand implements CommandExecutor {
                 + " - Guía Forja de Jefes (cruz).");
         player.sendMessage(ChatColor.YELLOW + "/livingtool structure list" + ChatColor.WHITE
                 + " - Ver materiales de todas las estructuras.");
+        player.sendMessage(ChatColor.YELLOW + "/livingtool core" + ChatColor.WHITE + " - Menú de Núcleos Desplegables.");
+        player.sendMessage(ChatColor.YELLOW + "/livingtool dismantle" + ChatColor.WHITE + " - Desmantelar estructura y recuperar Núcleo.");
 
         player.sendMessage(ChatColor.AQUA + "-- Gestión --");
         player.sendMessage(ChatColor.YELLOW + "/livingtool bind" + ChatColor.WHITE + " - Dar vida al ítem en mano.");
