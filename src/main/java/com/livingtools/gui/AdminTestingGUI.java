@@ -121,6 +121,15 @@ public class AdminTestingGUI {
                 "",
                 ChatColor.YELLOW + "► Click para alternar"));
 
+        gui.setItem(52, GUIBuilder.createGlowingItem(
+                Material.SHIELD,
+                ChatColor.YELLOW + "⚔ Iniciar Coliseo de Pruebas",
+                "",
+                ChatColor.GRAY + "Inicia el desafío de 5 oleadas de criaturas inteligentes",
+                ChatColor.GRAY + "y jefes para probar el motor táctico.",
+                "",
+                ChatColor.YELLOW + "► Click para iniciar prueba"));
+
         gui.setItem(53, GUIBuilder.createItem(Material.COMPASS, ChatColor.AQUA + "🧭 Dar Brújula de Almas", "", ChatColor.GRAY + "Recibe una brújula rastreadora."));
 
         player.openInventory(gui);

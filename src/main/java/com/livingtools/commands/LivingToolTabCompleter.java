@@ -36,6 +36,7 @@ public class LivingToolTabCompleter implements TabCompleter {
                     "ascend", "ascension", "guild", "clan", "tarot", "cartas", "genesis",
                     "test", "testguide", "pruebas",
                     "core", "cores", "dismantle", "pack",
+                    "trials", "coliseo", "huntgoal", "metacaza",
                     "checkrecipes", "auditrecipes", "library"));
             if (sender.hasPermission("livingtools.admin")) {
                 subcommands.add("admin");

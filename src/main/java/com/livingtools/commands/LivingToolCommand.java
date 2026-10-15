@@ -421,6 +421,26 @@ public class LivingToolCommand implements CommandExecutor {
                     return handleBindCommand(player);
                 case "rename":
                     return handleRenameCommand(player, args);
+                case "trials":
+                case "coliseo":
+                case "trial": {
+                    com.livingtools.manager.ColosseumTrialManager.startTrial(player);
+                    return true;
+                }
+                case "huntgoal":
+                case "metacaza":
+                case "goal": {
+                    player.sendMessage("");
+                    player.sendMessage(ChatColor.GOLD + "🏹 " + ChatColor.BOLD + "META DE CAZA GLOBAL:");
+                    player.sendMessage(ChatColor.YELLOW + "Progreso actual: " + ChatColor.WHITE + com.livingtools.manager.ServerHuntGoalManager.getCurrentProgress() + "/" + com.livingtools.manager.ServerHuntGoalManager.getGoalTarget() + " criaturas abatidas.");
+                    if (com.livingtools.manager.ServerHuntGoalManager.isBlessingActive()) {
+                        player.sendMessage(ChatColor.GREEN + "⚡ Bendición de Almas ACTIVA (" + com.livingtools.manager.ServerHuntGoalManager.getRemainingBlessingMinutes() + " min restantes): Doble XP y fragmentos.");
+                    } else {
+                        player.sendMessage(ChatColor.GRAY + "Al alcanzar 100 bajas colectivas, se activa la Bendición Global de Almas por 30m.");
+                    }
+                    player.sendMessage("");
+                    return true;
+                }
                 case "bestiary":
                 case "bestiario": {
                     com.livingtools.gui.BestiaryGUI.open(player, 0, com.livingtools.gui.BestiaryGUI.BestiaryCategory.ALL);

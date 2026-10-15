@@ -1,5 +1,6 @@
 package com.livingtools.gui;
 
+import com.livingtools.gui.BestiaryGUI.BestiaryDrop;
 import com.livingtools.gui.BestiaryGUI.BestiaryEntry;
 import com.livingtools.gui.utils.GUIBuilder;
 import org.bukkit.Bukkit;
@@ -13,8 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MobDetailGUI — Vista detallada de una criatura individual del Bestiario.
- * Muestra modelo central, estadísticas, habilidades, cuadrícula de drops interactiva y opciones de prueba.
+ * MobDetailGUI — Vista detallada de 54 slots de una criatura individual del Bestiario.
+ * Muestra clasificación (LivingTools / Vanilla), Libro de Invocación/Origen, Esbirros subordinados,
+ * cuadrícula interactiva de Drops con porcentajes explícitos y botón de Contrato de Cacería.
  */
 public class MobDetailGUI {
 
@@ -27,7 +29,7 @@ public class MobDetailGUI {
         }
         Inventory gui = Bukkit.createInventory(null, 54, title);
 
-        // Borde decorativo
+        // Borde decorativo temático
         GUIBuilder.setBorder54(gui, Material.PURPLE_STAINED_GLASS_PANE);
 
         // Slot 4: Cabecera Épica
@@ -37,11 +39,13 @@ public class MobDetailGUI {
                 "",
                 ChatColor.GRAY + entry.getSubtitle(),
                 "",
+                ChatColor.DARK_AQUA + "🏷 " + ChatColor.BOLD + entry.getTierName(),
+                ChatColor.YELLOW + (entry.isCustomPluginMob() ? "✨ Criatura Exclusiva de LivingTools" : "🌿 Vanilla Potenciado con Habilidades Vivas"),
                 ChatColor.YELLOW + "⭐ Dificultad: " + entry.getDifficultyStars(),
-                ChatColor.AQUA + "🌍 Ubicación: " + ChatColor.WHITE + entry.getLocation()
+                ChatColor.AQUA + "🌍 Origen / Entorno: " + ChatColor.WHITE + entry.getLocation()
         ));
 
-        // Slot 13: Modelo / Icono Central del Mob
+        // Slot 13: Modelo / Icono Central de la Criatura
         gui.setItem(13, entry.createItem());
 
         // Slot 19: Estadísticas de Combate
@@ -51,66 +55,126 @@ public class MobDetailGUI {
                 "",
                 ChatColor.RED + "❤ Salud Máxima: " + ChatColor.WHITE + (int) entry.getMaxHealth() + " HP",
                 ChatColor.DARK_RED + "⚔ Daño de Golpe: " + ChatColor.WHITE + (int) entry.getAttackDamage() + " pts",
-                ChatColor.GOLD + "🛡 Tipo: " + (entry.isBoss() ? ChatColor.LIGHT_PURPLE + "Jefe Supremo / Raid" : ChatColor.GRAY + "Esbirro / Invocación"),
+                ChatColor.GOLD + "🛡 Clasificación: " + (entry.isBoss() ? ChatColor.LIGHT_PURPLE + "Jefe Supremo / Raid" : ChatColor.GRAY + "Élite / Invocación / Esbirro"),
                 "",
-                ChatColor.YELLOW + "✦ Requiere estrategia y armas vivientes de alto rango."
+                ChatColor.YELLOW + "✦ Requiere estrategia, movilidad y armas vivientes de alto rango."
         ));
 
-        // Slot 21: Patrones de Ataque & Habilidades
+        // Slot 21: Patrones de Ataque & Comportamiento de IA
         gui.setItem(21, GUIBuilder.createItem(
                 Material.BLAZE_POWDER,
-                ChatColor.GOLD + "⚡ Habilidades Especiales",
+                ChatColor.GOLD + "⚡ Tácticas & Comportamiento de IA",
                 "",
-                ChatColor.YELLOW + "• Ataques telegrafiados en el suelo",
-                ChatColor.YELLOW + "• Invocación periódica de esbirros",
-                ChatColor.YELLOW + "• Resistencia al retroceso e inmunidad elemental",
+                ChatColor.YELLOW + "• IA Inteligente Adaptativa en combate",
+                ChatColor.YELLOW + "• Inmunidad parcial al retroceso y al fuego",
+                ChatColor.YELLOW + "• Habilidades especiales reactivas a la distancia",
                 "",
-                ChatColor.GRAY + "Pasa el cursor sobre los drops para conocer sus usos."
+                ChatColor.GRAY + "Pasa el cursor sobre la cuadrícula inferior para examinar el botín."
         ));
 
-        // Fila 4 (Slots 29, 30, 31, 32, 33): Drops y Recompensas
+        // Slot 23: Libro de Invocación / Método de Obtención
+        List<String> summonLore = new ArrayList<>();
+        summonLore.add(ChatColor.GRAY + "Origen: " + ChatColor.YELLOW + entry.getOriginType());
+        summonLore.add("");
+        if (!entry.getSummonGuide().isEmpty()) {
+            for (String line : entry.getSummonGuide()) {
+                summonLore.add(ChatColor.WHITE + line);
+            }
+        } else {
+            summonLore.add(ChatColor.WHITE + "Se manifiesta naturalmente en el mundo o en eventos sangrientos.");
+        }
+        summonLore.add("");
+        summonLore.add(ChatColor.GOLD + "✦ Consulta este códice antes de partir en expedición.");
+        gui.setItem(23, GUIBuilder.createGlowingItem(
+                Material.BOOK,
+                ChatColor.AQUA + "📖 Códice de Invocación & Origen",
+                summonLore.toArray(new String[0])
+        ));
+
+        // Slot 25: Esbirros / Subordinados
+        if (!entry.getMinionList().isEmpty()) {
+            List<String> minionLore = new ArrayList<>();
+            minionLore.add(ChatColor.GRAY + "Subordinados que acompañan o protegen a esta criatura:");
+            minionLore.add("");
+            for (String m : entry.getMinionList()) {
+                minionLore.add(ChatColor.LIGHT_PURPLE + "  ► " + m);
+            }
+            minionLore.add("");
+            minionLore.add(ChatColor.RED + "⚠ Elimina primero a los subordinados para quebrar su escudo.");
+            gui.setItem(25, GUIBuilder.createItem(
+                    Material.ZOMBIE_HEAD,
+                    ChatColor.LIGHT_PURPLE + "👾 Esbirros Subordinados (" + entry.getMinionList().size() + ")",
+                    minionLore.toArray(new String[0])
+            ));
+        } else {
+            gui.setItem(25, GUIBuilder.createItem(
+                    Material.IRON_HELMET,
+                    ChatColor.GRAY + "👾 Sin Esbirros Subordinados",
+                    "",
+                    ChatColor.GRAY + "Esta criatura combate en solitario sin invocar esbirros."
+            ));
+        }
+
+        // Fila 4 (Slots 29, 30, 31, 32, 33): Cuadrícula de Drops Interactiva con Probabilidades Explícitas
         int[] dropSlots = {29, 30, 31, 32, 33};
-        List<String> drops = entry.getDropList();
+        List<BestiaryDrop> drops = entry.getDrops();
+
         for (int i = 0; i < dropSlots.length; i++) {
             if (i < drops.size()) {
-                String dropText = drops.get(i);
+                BestiaryDrop drop = drops.get(i);
+                gui.setItem(dropSlots[i], GUIBuilder.createGlowingItem(
+                        drop.getIcon(),
+                        ChatColor.GOLD + "✦ " + drop.getName() + " " + ChatColor.GREEN + "[" + drop.getChancePercent() + "%]",
+                        "",
+                        ChatColor.AQUA + "Probabilidad de Caída: " + ChatColor.WHITE + drop.getChancePercent() + "%",
+                        ChatColor.GRAY + "Uso en el Plugin:",
+                        ChatColor.YELLOW + drop.getUsage(),
+                        "",
+                        ChatColor.GRAY + "Presiona para ver recetas relacionadas."
+                ));
+            } else if (i < entry.getDropList().size()) {
+                String dropText = entry.getDropList().get(i);
                 Material dropMat = resolveDropIcon(dropText);
                 gui.setItem(dropSlots[i], GUIBuilder.createGlowingItem(
                         dropMat,
-                        ChatColor.GOLD + "✦ Botín " + (i + 1),
+                        ChatColor.GOLD + "✦ " + dropText,
                         "",
-                        dropText,
-                        "",
-                        ChatColor.AQUA + "Usado en forjas místicas y recetas de ascensión."
+                        ChatColor.GRAY + "Botín garantizado o por probabilidad.",
+                        ChatColor.AQUA + "Usado en forjas místicas y recetas vivientes."
                 ));
             } else {
                 gui.setItem(dropSlots[i], GUIBuilder.createItem(Material.GRAY_STAINED_GLASS_PANE, " "));
             }
         }
 
-        // Slot 25: Esbirros / Invocaciones asociadas
-        if (!entry.getMinionList().isEmpty()) {
-            List<String> minionLore = new ArrayList<>();
-            minionLore.add(ChatColor.GRAY + "Criaturas que lo acompañan en batalla:");
-            minionLore.add("");
-            for (String m : entry.getMinionList()) {
-                minionLore.add(ChatColor.LIGHT_PURPLE + "  ► " + m);
-            }
-            gui.setItem(25, GUIBuilder.createItem(Material.ZOMBIE_HEAD, ChatColor.LIGHT_PURPLE + "👾 Esbirros Subordinados", minionLore.toArray(new String[0])));
-        }
-
         // Slot 45: Botón de Invocar para Pruebas (Admin)
         if (player.hasPermission("livingtools.admin")) {
             gui.setItem(45, GUIBuilder.createGlowingItem(
                     Material.NETHER_STAR,
-                    ChatColor.GREEN + "⚡ [Admin] Probar / Invocar",
+                    ChatColor.GREEN + "⚡ [Admin] Invocar Criatura de Prueba",
                     "",
-                    ChatColor.GRAY + "Invoca a esta criatura en tu posición para",
-                    ChatColor.GRAY + "probar su combate y animaciones.",
+                    ChatColor.GRAY + "Invoca a esta entidad en tu ubicación",
+                    ChatColor.GRAY + "para probar mecánicas y drops en vivo.",
                     "",
                     ChatColor.YELLOW + "► Click para invocar"
             ));
         }
+
+        // Slot 47: Contrato de Cacería Directo
+        gui.setItem(47, GUIBuilder.createGlowingItem(
+                Material.WRITTEN_BOOK,
+                ChatColor.RED + "📜 Iniciar Contrato de Cacería",
+                "",
+                ChatColor.GRAY + "Firma un contrato sagrado para cazar a:",
+                ChatColor.YELLOW + "• " + entry.getName(),
+                "",
+                ChatColor.AQUA + "Recompensa al abatir:",
+                ChatColor.WHITE + "  ► Fragmentos de Alma Viviente",
+                ChatColor.WHITE + "  ► +500 XP para tu arma viviente",
+                ChatColor.WHITE + "  ► Contribución a la Meta del Servidor",
+                "",
+                ChatColor.YELLOW + "► Click para aceptar contrato"
+        ));
 
         // Slot 49: Volver al Bestiario
         gui.setItem(49, GUIBuilder.createItem(
@@ -123,9 +187,9 @@ public class MobDetailGUI {
         // Slot 53: Ver en Recetas
         gui.setItem(53, GUIBuilder.createItem(
                 Material.CRAFTING_TABLE,
-                ChatColor.AQUA + "📖 Ver Crafteos Relacionados",
+                ChatColor.AQUA + "📖 Ver Enciclopedia de Recetas",
                 "",
-                ChatColor.GRAY + "Abre la enciclopedia de recetas.",
+                ChatColor.GRAY + "Abre la guía de crafteos y forjas.",
                 "",
                 ChatColor.YELLOW + "► Click para abrir recetas"
         ));
@@ -148,6 +212,15 @@ public class MobDetailGUI {
         if (lower.contains("gema")) return Material.EMERALD;
         if (lower.contains("diamante")) return Material.DIAMOND;
         if (lower.contains("netherite")) return Material.NETHERITE_INGOT;
+        if (lower.contains("hueso")) return Material.BONE;
+        if (lower.contains("arco")) return Material.BOW;
+        if (lower.contains("carne")) return Material.ROTTEN_FLESH;
+        if (lower.contains("furia")) return Material.REDSTONE_BLOCK;
+        if (lower.contains("telaraña")) return Material.COBWEB;
+        if (lower.contains("ojo") || lower.contains("veneno")) return Material.SPIDER_EYE;
+        if (lower.contains("pólvora")) return Material.GUNPOWDER;
+        if (lower.contains("sísmic") || lower.contains("carga")) return Material.FIRE_CHARGE;
+        if (lower.contains("choque") || lower.contains("sombra")) return Material.ECHO_SHARD;
         return Material.CHEST;
     }
 }

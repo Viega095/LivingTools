@@ -287,6 +287,19 @@ public class LivingToolsPlugin extends JavaPlugin {
                     new com.livingtools.quests.PersonalityQuestManager(), this);
                 com.livingtools.quests.PersonalityQuestManager.startLoop();
 
+                // SmartMobAIEngine — Adaptive combat AI for Gladiators, Berserkers, Spiders & Creepers
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.ai.SmartMobAIEngine(), this);
+                com.livingtools.ai.SmartMobAIEngine.startLoop();
+
+                // ColosseumTrialManager — Wave-based trial arena and boss challenges
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.ColosseumTrialManager(), this);
+
+                // ServerHuntGoalManager — Community-wide elite mob hunting milestone and soul blessing
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.ServerHuntGoalManager(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

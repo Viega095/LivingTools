@@ -8,7 +8,10 @@ import com.livingtools.gui.category.MainCategoryGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,7 +21,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 /**
- * BestiaryListener — Maneja la navegación, filtrado por categorías, paginación y vista detallada en el Bestiario.
+ * BestiaryListener — Maneja la navegación, filtrado por categorías, paginación,
+ * contratos de cacería e invocación de pruebas en el Bestiario y sus fichas.
  */
 public class BestiaryListener implements Listener {
 
@@ -50,26 +54,32 @@ public class BestiaryListener implements Listener {
 
         int slot = event.getRawSlot();
 
-        // Categorías superiores (Slots 1, 2, 6, 7)
-        if (slot == 1) {
+        // Categorías superiores
+        if (slot == 1) { // Todas
             BestiaryGUI.open(player, 0, BestiaryGUI.BestiaryCategory.ALL);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1.2f);
             return;
         }
 
-        if (slot == 2) {
+        if (slot == 2) { // Bosses Tier 5
             BestiaryGUI.open(player, 0, BestiaryGUI.BestiaryCategory.BOSSES);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1.2f);
             return;
         }
 
-        if (slot == 6) {
+        if (slot == 3) { // Blood Moon / Smart Mobs Tier 3
+            BestiaryGUI.open(player, 0, BestiaryGUI.BestiaryCategory.BLOOD_MOON);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1.2f);
+            return;
+        }
+
+        if (slot == 5) { // Minions
             BestiaryGUI.open(player, 0, BestiaryGUI.BestiaryCategory.MINIONS);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1.2f);
             return;
         }
 
-        if (slot == 7) {
+        if (slot == 7) { // Raid
             BestiaryGUI.open(player, 0, BestiaryGUI.BestiaryCategory.RAID);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1.2f);
             return;
@@ -146,10 +156,10 @@ public class BestiaryListener implements Listener {
         if (clicked == null || clicked.getType() == Material.AIR) return;
 
         int slot = event.getRawSlot();
+        String title = event.getView().getTitle();
 
         // Slot 45: Invocar para Pruebas (Admin)
         if (slot == 45 && clicked.getType() == Material.NETHER_STAR && player.hasPermission("livingtools.admin")) {
-            String title = event.getView().getTitle();
             player.closeInventory();
 
             if (title.contains("Smith")) {
@@ -166,9 +176,35 @@ public class BestiaryListener implements Listener {
                 player.performCommand("livingtool admin spawnarena LEVIATHAN");
             } else if (title.contains("Génesis")) {
                 GenesisAvatarBoss.spawn(player.getLocation());
+            } else if (title.contains("Gladiador")) {
+                Skeleton sk = (Skeleton) player.getWorld().spawnEntity(player.getLocation(), EntityType.SKELETON);
+                sk.setCustomName(ChatColor.RED + "☠ Esqueleto Gladiador");
+                sk.setCustomNameVisible(true);
+                player.sendMessage(ChatColor.GOLD + "✦ Esqueleto Gladiador de prueba invocado.");
+            } else if (title.contains("Berserker")) {
+                Zombie zb = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+                zb.setCustomName(ChatColor.DARK_RED + "☠ Zombie Berserker");
+                zb.setCustomNameVisible(true);
+                player.sendMessage(ChatColor.GOLD + "✦ Zombie Berserker de prueba invocado.");
+            } else if (title.contains("Araña")) {
+                player.getWorld().spawnEntity(player.getLocation(), EntityType.CAVE_SPIDER);
+                player.sendMessage(ChatColor.GOLD + "✦ Araña Neurotóxica de prueba invocada.");
+            } else if (title.contains("Creeper")) {
+                player.getWorld().spawnEntity(player.getLocation(), EntityType.CREEPER);
+                player.sendMessage(ChatColor.GOLD + "✦ Creeper Sísmico de prueba invocado.");
             } else {
-                player.sendMessage(ChatColor.GOLD + "✦ Criatura invocada para prueba.");
+                player.sendMessage(ChatColor.GOLD + "✦ Criatura invocada para prueba en tu posición.");
             }
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 1f);
+            return;
+        }
+
+        // Slot 47: Contrato de Cacería Directo
+        if (slot == 47) {
+            player.closeInventory();
+            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.2f);
+            player.sendMessage(ChatColor.GOLD + "⚔ " + ChatColor.BOLD + "¡CONTRATO DE CACERÍA ACEPTADO!");
+            player.sendMessage(ChatColor.YELLOW + "Has firmado la cacería de la criatura. Abátela en el mundo para recibir XP mística y fragmentos de alma.");
             return;
         }
 

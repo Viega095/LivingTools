@@ -237,6 +237,10 @@ public class AdminTestListener implements Listener {
                     AdminTestingGUI.open(player); // Refrescar GUI
                 }
                 break;
+            case 52:
+                player.closeInventory();
+                com.livingtools.manager.ColosseumTrialManager.startTrial(player);
+                break;
             case 53:
                 player.getInventory().addItem(SoulCompassManager.createSoulCompass());
                 player.sendMessage(ChatColor.AQUA + "🧭 Brújula de Almas entregada.");
