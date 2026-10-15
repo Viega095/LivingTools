@@ -276,4 +276,4 @@ MIT License — libre uso, modificación y distribución.
 
 **Viega095** — [GitHub](https://github.com/Viega095)
 
-*Plugin desarrollado con asistencia de Google Antigravity AI*
+*Plugin oficial del Servidor*

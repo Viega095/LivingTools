@@ -328,6 +328,7 @@ public class RhythmicForgeManager {
             player.playSound(loc, Sound.BLOCK_ANVIL_HIT, 0.8f, 0.7f);
             player.sendMessage(ChatColor.GRAY + "🔨 Golpe desalineado (+10% Durabilidad, +25 XP). ¡Apunta al centro!");
         }
+
     }
 
     public static boolean isMasterwork(LivingTool tool) {

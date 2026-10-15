@@ -63,6 +63,8 @@ public class AdminTestingGUI {
         gui.setItem(40, GUIBuilder.createGlowingItem(Material.BLUE_ICE, ChatColor.AQUA + "❄ Sello: Escarcha Glacial", "", ChatColor.GRAY + "Aplica el Sello Criogénico.", "", ChatColor.YELLOW + "► Click para aplicar"));
         gui.setItem(41, GUIBuilder.createGlowingItem(Material.LIGHTNING_ROD, ChatColor.YELLOW + "⚡ Sello: Trueno Celestial", "", ChatColor.GRAY + "Aplica el Sello de Relámpagos.", "", ChatColor.YELLOW + "► Click para aplicar"));
         gui.setItem(42, GUIBuilder.createGlowingItem(Material.ENDER_EYE, ChatColor.DARK_PURPLE + "🌑 Sello: Vórtice del Vacío", "", ChatColor.GRAY + "Aplica el Sello de Succión y Boss-Killer.", "", ChatColor.YELLOW + "► Click para aplicar"));
+        gui.setItem(43, GUIBuilder.createGlowingItem(Material.NETHERITE_HOE, ChatColor.LIGHT_PURPLE + "✦ Dar Hoz Segadora de Almas", "", ChatColor.GRAY + "Cosecha 5x5 automática con re-siembra,", ChatColor.GRAY + "drenaje espiritual de vida y torbellino.", "", ChatColor.YELLOW + "► Click para recibir"));
+        gui.setItem(44, GUIBuilder.createGlowingItem(Material.NETHERITE_PICKAXE, ChatColor.GOLD + "✦ Dar Martillo Tectónico", "", ChatColor.GRAY + "Excavación 3x3x3 y fisura sísmica", ChatColor.GRAY + "que derriba a múltiples enemigos.", "", ChatColor.YELLOW + "► Click para recibir"));
 
         // Fila 6: Controles inferiores
         gui.setItem(45, GUIBuilder.createItem(Material.BOOK, ChatColor.YELLOW + "📋 Auditoría de Recetas", "", ChatColor.GRAY + "Ejecuta /lt checkrecipes."));

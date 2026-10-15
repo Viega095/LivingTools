@@ -16,6 +16,7 @@ public class LivingToolCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        try {
             if (args.length > 0) {
                 String sub = args[0].toLowerCase();
                 if (sub.equals("reload") || sub.equals("recargar")) {

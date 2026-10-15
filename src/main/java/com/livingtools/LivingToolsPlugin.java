@@ -273,6 +273,10 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.listeners.StructureCoreListener(), this);
 
+                // SpecialToolManager — Soul Scythe & Tectonic Hammer mythical weapons
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.SpecialToolManager(), this);
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

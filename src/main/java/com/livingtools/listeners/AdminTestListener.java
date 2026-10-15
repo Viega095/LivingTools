@@ -159,6 +159,16 @@ public class AdminTestListener implements Listener {
                 player.sendMessage(ChatColor.DARK_PURPLE + "🌑 ¡Sello del Vórtice del Vacío aplicado a tu herramienta!");
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 1.2f);
                 break;
+            case 43:
+                player.getInventory().addItem(com.livingtools.manager.SpecialToolManager.createSpecialTool(com.livingtools.manager.SpecialToolManager.SpecialToolType.SOUL_SCYTHE));
+                player.sendMessage(ChatColor.DARK_PURPLE + "✦ ¡Hoz Segadora de Almas entregada a tu inventario!");
+                player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.2f);
+                break;
+            case 44:
+                player.getInventory().addItem(com.livingtools.manager.SpecialToolManager.createSpecialTool(com.livingtools.manager.SpecialToolManager.SpecialToolType.TECTONIC_HAMMER));
+                player.sendMessage(ChatColor.GOLD + "✦ ¡Martillo Tectónico Viviente entregado a tu inventario!");
+                player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.2f);
+                break;
 
             // Fila 6: Herramientas y Controles
             case 45:

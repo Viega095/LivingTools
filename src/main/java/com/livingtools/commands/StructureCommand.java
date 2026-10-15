@@ -3,6 +3,7 @@ package com.livingtools.commands;
 import com.livingtools.gui.category.StructureCoresCategoryGUI;
 import com.livingtools.manager.StructureCoreManager;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
