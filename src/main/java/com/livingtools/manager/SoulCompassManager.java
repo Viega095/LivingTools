@@ -27,7 +27,7 @@ public class SoulCompassManager {
     public static void startEventScheduler() {
         if (meteorEventTask != null) meteorEventTask.cancel();
 
-        // Chequear y lanzar evento cada 30 minutos (36000 ticks)
+        // Chequear y lanzar evento cada 2 horas (144000 ticks), con retraso inicial de 1 hora
         meteorEventTask = new BukkitRunnable() {
             @Override
             public void run() {
@@ -35,7 +35,7 @@ public class SoulCompassManager {
                 Player targetPlayer = new ArrayList<>(Bukkit.getOnlinePlayers()).get(random.nextInt(Bukkit.getOnlinePlayers().size()));
                 spawnMeteorEvent(targetPlayer.getLocation());
             }
-        }.runTaskTimer(LivingToolsPlugin.getInstance(), 1200L, 36000L);
+        }.runTaskTimer(LivingToolsPlugin.getInstance(), 72000L, 144000L);
     }
 
     public static void spawnMeteorEvent(Location nearLoc) {

@@ -13,16 +13,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 /**
- * Eventos de mundo globales que afectan a todos los jugadores.
+ * Eventos de mundo globales con moderación de frecuencia.
  *
- * NOCHE CORRUPTA  → Activo de medianoche (tick 18000) a amanecer (tick 24000)
- *   - Mobs hostiles tienen más HP y +20% daño
- *   - +50% XP de combate
- *   - Chance de drop de Shard of Darkness al matar mobs
- *
- * TORMENTA DE RUNAS → Se activa con tormenta eléctrica
- *   - +300% chance de drop de Geoda Rúnica al minar
- *   - Chance de que runas equipadas ganen un nivel de "resonancia" temporal
+ * NOCHE CORRUPTA  → Ocurre con baja probabilidad (15%) al caer la noche, con un cooldown de 90 minutos.
+ * TORMENTA DE RUNAS → Se activa de forma controlada durante tormentas eléctricas.
  */
 public class ServerEventManager implements Listener {
 
@@ -32,6 +26,9 @@ public class ServerEventManager implements Listener {
 
     // Estado por mundo
     private static final Map<UUID, WorldEvent> activeEvents = new HashMap<>();
+    private static final Map<UUID, Long> lastCorruptedNightTime = new HashMap<>();
+    private static final long CORRUPTED_NIGHT_COOLDOWN_MS = 90 * 60 * 1000L; // 90 minutos
+    private static final Random random = new Random();
 
     // -----------------------------------------------------------------------
     // Tick checker — registrado en onEnable
@@ -47,9 +44,25 @@ public class ServerEventManager implements Listener {
                     boolean nightTime = time >= 13800 && time <= 23000;
                     boolean storming = world.isThundering();
 
-                    WorldEvent desired = storming ? WorldEvent.RUNE_STORM
-                            : nightTime ? WorldEvent.CORRUPTED_NIGHT
-                            : WorldEvent.NONE;
+                    WorldEvent desired = WorldEvent.NONE;
+
+                    if (storming) {
+                        desired = WorldEvent.RUNE_STORM;
+                    } else if (nightTime) {
+                        // Si ya está activa en esta noche, la mantiene
+                        if (current == WorldEvent.CORRUPTED_NIGHT) {
+                            desired = WorldEvent.CORRUPTED_NIGHT;
+                        } else if (time >= 13800 && time <= 14200) {
+                            // Al inicio de la noche, verificar cooldown y probabilidad del 15%
+                            long lastTime = lastCorruptedNightTime.getOrDefault(world.getUID(), 0L);
+                            if (System.currentTimeMillis() - lastTime > CORRUPTED_NIGHT_COOLDOWN_MS) {
+                                if (random.nextDouble() < 0.15) { // 15% de probabilidad
+                                    desired = WorldEvent.CORRUPTED_NIGHT;
+                                    lastCorruptedNightTime.put(world.getUID(), System.currentTimeMillis());
+                                }
+                            }
+                        }
+                    }
 
                     if (desired != current) {
                         onEventChange(world, current, desired);
@@ -57,25 +70,26 @@ public class ServerEventManager implements Listener {
                     }
                 }
             }
-        }.runTaskTimer(com.livingtools.LivingToolsPlugin.getInstance(), 0L, 100L); // cada 5s
+        }.runTaskTimer(com.livingtools.LivingToolsPlugin.getInstance(), 200L, 200L); // cada 10s
     }
 
     private static void onEventChange(World world, WorldEvent old, WorldEvent next) {
         if (next == WorldEvent.NONE) {
             if (old != WorldEvent.NONE) {
                 for (Player p : world.getPlayers()) {
-                    p.sendMessage(ChatColor.GRAY + "[LivingTools] " + ChatColor.RESET
-                            + "El evento de mundo ha terminado.");
+                    p.sendMessage(ChatColor.GRAY + "[LivingTools] El evento " + (old == WorldEvent.CORRUPTED_NIGHT ? "Noche Corrupta" : "Tormenta de Runas") + " ha finalizado.");
                 }
             }
             return;
         }
+
         String[] lines = getEventAnnounce(next);
         for (Player p : world.getPlayers()) {
+            p.sendMessage("");
             for (String l : lines) p.sendMessage(l);
-            p.sendTitle(lines[0], lines[1], 15, 60, 20);
+            p.sendMessage("");
             p.playSound(p.getLocation(), next == WorldEvent.CORRUPTED_NIGHT
-                    ? Sound.AMBIENT_CAVE : Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.5f, 0.8f);
+                    ? Sound.AMBIENT_CAVE : Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.4f, 0.8f);
         }
     }
 
@@ -83,17 +97,15 @@ public class ServerEventManager implements Listener {
         switch (e) {
             case CORRUPTED_NIGHT:
                 return new String[]{
-                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "☠ NOCHE CORRUPTA",
-                    ChatColor.RED + "Los mobs se vuelven más peligrosos — +50% XP de combate",
-                    ChatColor.GRAY + "[LivingTools] " + ChatColor.RED + "☠ Noche Corrupta — "
-                            + ChatColor.WHITE + "+50% XP de combate, mobs más fuertes, drops especiales"
+                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "☠ ¡UNA NOCHE CORRUPTA HA DESCENDIDO! ☠",
+                    ChatColor.RED + "Los monstruos han absorbido energía sombría (+50% XP de combate, mobs hostiles potenciados).",
+                    ChatColor.GRAY + "Aprovecha la penumbra para recolectar Esencias de Oscuridad."
                 };
             case RUNE_STORM:
                 return new String[]{
-                    ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "⚡ TORMENTA DE RUNAS",
-                    ChatColor.AQUA + "+300% chance de Geoda Rúnica al minar",
-                    ChatColor.GRAY + "[LivingTools] " + ChatColor.LIGHT_PURPLE + "⚡ Tormenta de Runas — "
-                            + ChatColor.WHITE + "Mayor chance de Geodas y Resonancia de Runas activa"
+                    ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "⚡ ¡TORMENTA DE RUNAS CELESTIAL! ⚡",
+                    ChatColor.AQUA + "La energía de los rayos potencia la forja (+300% probabilidad de Geodas Rúnicas al minar).",
+                    ChatColor.GRAY + "Tus runas resuenan con el poder de la tormenta."
                 };
             default: return new String[]{"", "", ""};
         }
@@ -121,19 +133,21 @@ public class ServerEventManager implements Listener {
     public static ItemStack createShardOfDarkness() {
         ItemStack shard = new ItemStack(Material.AMETHYST_SHARD);
         org.bukkit.inventory.meta.ItemMeta meta = shard.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "✦ Shard of Darkness");
-        meta.setLore(Arrays.asList(
-                ChatColor.GRAY + "Un fragmento de corrupción pura.",
-                ChatColor.GRAY + "Úsalo en la Forja Maldita para",
-                ChatColor.GRAY + "desbloquear encantamientos oscuros.",
-                "",
-                ChatColor.DARK_RED + "⚠ Corrompido"
-        ));
-        meta.setCustomModelData(9001);
-        NamespacedKey key = new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "shard_of_darkness");
-        meta.getPersistentDataContainer().set(key,
-                org.bukkit.persistence.PersistentDataType.BYTE, (byte) 1);
-        shard.setItemMeta(meta);
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "✦ Shard of Darkness");
+            meta.setLore(Arrays.asList(
+                    ChatColor.GRAY + "Un fragmento de corrupción pura.",
+                    ChatColor.GRAY + "Úsalo en la Forja Maldita para",
+                    ChatColor.GRAY + "desbloquear encantamientos oscuros.",
+                    "",
+                    ChatColor.DARK_RED + "⚠ Corrompido"
+            ));
+            meta.setCustomModelData(9001);
+            NamespacedKey key = new NamespacedKey(com.livingtools.LivingToolsPlugin.getInstance(), "shard_of_darkness");
+            meta.getPersistentDataContainer().set(key,
+                    org.bukkit.persistence.PersistentDataType.BYTE, (byte) 1);
+            shard.setItemMeta(meta);
+        }
         return shard;
     }
 

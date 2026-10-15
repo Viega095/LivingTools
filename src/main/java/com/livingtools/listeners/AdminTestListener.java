@@ -84,6 +84,11 @@ public class AdminTestListener implements Listener {
                 break;
 
             // Fila 4: Pruebas de Animación, Reino y Jefes
+            case 27:
+                SoulEnergyManager.setEnergy(player, 100.0);
+                player.sendMessage(ChatColor.AQUA + "✦ ¡Energía de Alma cargada al 100%! Presiona " + ChatColor.YELLOW + "Shift + F" + ChatColor.AQUA + " para activar Overdrive.");
+                player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1.8f);
+                break;
             case 28:
                 player.closeInventory();
                 player.sendMessage(ChatColor.GOLD + "☄ ¡Lanzando animación de meteorito en tu posición!");
@@ -116,8 +121,14 @@ public class AdminTestListener implements Listener {
                 player.sendMessage(ChatColor.GREEN + "🎁 ¡Kit de pruebas completo entregado con éxito!");
                 player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.2f);
                 break;
+            case 35:
+                ToolGuardianCompanion.toggleCompanion(player);
+                break;
 
             // Fila 5: Nuevas Pruebas de Forja y Utilidades
+            case 36:
+                com.livingtools.quests.PersonalityQuestManager.triggerBondQuest(player, true);
+                break;
             case 37:
                 for (StructureCoreManager.StructureType st : StructureCoreManager.StructureType.values()) {
                     player.getInventory().addItem(StructureCoreManager.createCoreItem(st));
@@ -207,6 +218,24 @@ public class AdminTestListener implements Listener {
                 break;
             case 49:
                 player.closeInventory();
+                break;
+            case 50:
+                player.getInventory().addItem(SleepingManager.createDragonVoidBlade());
+                player.getInventory().addItem(SleepingManager.createWitherScythe());
+                player.getInventory().addItem(SleepingManager.createWardenHammer());
+                player.getInventory().addItem(SleepingManager.createTitanSoulCore());
+                player.sendMessage(ChatColor.GOLD + "👑 ¡Pack completo de Reliquias Titánicas Despiertas entregado!");
+                player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1.2f);
+                break;
+            case 51:
+                AutoUpdateManager aumInstance = AutoUpdateManager.getInstance();
+                if (aumInstance != null) {
+                    boolean nowEn = !aumInstance.isAutoUpdateEnabled();
+                    aumInstance.setAutoUpdateEnabled(nowEn);
+                    player.sendMessage(ChatColor.GOLD + "[LivingTools] Auto-Update Automático: " + (nowEn ? ChatColor.GREEN + "ACTIVADO (ON)" : ChatColor.RED + "DESACTIVADO (OFF)"));
+                    player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 1f, 1.2f);
+                    AdminTestingGUI.open(player); // Refrescar GUI
+                }
                 break;
             case 53:
                 player.getInventory().addItem(SoulCompassManager.createSoulCompass());

@@ -277,6 +277,16 @@ public class LivingToolsPlugin extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(
                     new com.livingtools.manager.SpecialToolManager(), this);
 
+                // SoulEnergyManager — Soul Energy accumulation (0-100%), ActionBar & Overdrive (Shift+F)
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.manager.SoulEnergyManager(), this);
+                com.livingtools.manager.SoulEnergyManager.startLoop();
+
+                // PersonalityQuestManager — Dynamic chat bond quests by weapon personality
+                getServer().getPluginManager().registerEvents(
+                    new com.livingtools.quests.PersonalityQuestManager(), this);
+                com.livingtools.quests.PersonalityQuestManager.startLoop();
+
                 // Metrics
                 new com.livingtools.metrics.Metrics(this, 24321); // Example ID
 

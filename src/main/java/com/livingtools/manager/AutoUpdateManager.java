@@ -51,6 +51,9 @@ public class AutoUpdateManager {
         instance = new AutoUpdateManager(plugin);
         if (ConfigManager.getBoolean("update-checker.enabled")) {
             instance.startAutoCheckTask();
+            if (ConfigManager.getBoolean("update-checker.auto-update-on-restart")) {
+                instance.startAutoUpdateOnStartup();
+            }
         }
     }
 
@@ -543,5 +546,38 @@ public class AutoUpdateManager {
                 ((Player) sender).spigot().sendMessage(net.md_5.bungee.api.ChatMessageType.ACTION_BAR, tc);
             } catch (Throwable ignored) {}
         }
+    }
+
+    public void startAutoUpdateOnStartup() {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+            checkForUpdates(null, false);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                if (updateAvailable && downloadUrl != null && !isDownloading) {
+                    plugin.getLogger().info("[AutoUpdate] Actualización disponible detectada al inicio (v" + latestVersion + "). Descargando automáticamente en vivo...");
+                    downloadAndInstall(Bukkit.getConsoleSender(), false);
+                }
+            }, 60L);
+        }, 100L);
+    }
+
+    public void setAutoUpdateEnabled(boolean enabled) {
+        ConfigManager.setBoolean("update-checker.enabled", enabled);
+        ConfigManager.setBoolean("update-checker.auto-update-on-restart", enabled);
+    }
+
+    public boolean isAutoUpdateEnabled() {
+        return ConfigManager.getBoolean("update-checker.enabled");
+    }
+
+    public void forceUpdate(CommandSender sender) {
+        sender.sendMessage(ChatColor.GOLD + "[LivingTools] " + ChatColor.YELLOW + "Comprobando paquete de actualización en GitHub (" + repository + ")...");
+        checkForUpdates(sender, false);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (downloadUrl != null) {
+                executeDownload(sender, true);
+            } else {
+                sender.sendMessage(ChatColor.RED + "[LivingTools] No se encontró paquete descargable en las releases de GitHub (" + repository + ").");
+            }
+        }, 50L);
     }
 }

@@ -27,7 +27,7 @@ public class LivingToolCommand implements CommandExecutor {
                     com.livingtools.manager.AutoUpdateManager.getInstance().performHotReload(sender);
                     return true;
                 }
-                if (sub.equals("update") || sub.equals("actualizar")) {
+                if (sub.equals("update") || sub.equals("actualizar") || sub.equals("autoupdate")) {
                     if (!sender.hasPermission("livingtools.admin")) {
                         sender.sendMessage(ConfigManager.getMessage("no_permission"));
                         return true;
@@ -190,23 +190,13 @@ public class LivingToolCommand implements CommandExecutor {
                     return true;
                 }
                 case "awaken":
-                case "despertar": {
-                    ItemStack awakenItem = player.getInventory().getItemInMainHand();
-                    if (!com.livingtools.data.LivingTool.isLivingTool(awakenItem)) {
-                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
-                        return true;
+                case "despertar":
+                case "overdrive": {
+                    if (!com.livingtools.manager.SoulEnergyManager.activateOverdrive(player)) {
+                        player.sendMessage(ChatColor.YELLOW + "[LivingTools] Energía de Alma insuficiente: "
+                                + ChatColor.AQUA + String.format("%.0f%%", com.livingtools.manager.SoulEnergyManager.getEnergy(player))
+                                + ChatColor.YELLOW + " / 100%. ¡Mina o combate para cargarla!");
                     }
-                    com.livingtools.data.LivingTool awakenTool = new com.livingtools.data.LivingTool(awakenItem);
-                    if (awakenTool.getData().getLevel() < 100 && awakenTool.getData().getPrestige() < 1) {
-                        player.sendMessage(ChatColor.RED + "Tu herramienta debe ser al menos Nivel 100 o Prestigio 1 para despertar.");
-                        return true;
-                    }
-                    long cd = com.livingtools.manager.ToolAwakeningManager.getCooldownRemainingSeconds(player);
-                    if (cd > 0) {
-                        player.sendMessage(ChatColor.RED + "⏳ Despertar en cooldown: " + ChatColor.YELLOW + cd + "s restantes.");
-                        return true;
-                    }
-                    player.sendMessage(ChatColor.GOLD + "✦ ¡Usa Shift + Click Derecho para activar el Despertar!");
                     return true;
                 }
                 case "reforge":
@@ -241,25 +231,9 @@ public class LivingToolCommand implements CommandExecutor {
                 }
                 case "companion":
                 case "espiritu":
+                case "companero":
                 case "guardian": {
-                    ItemStack compItem = player.getInventory().getItemInMainHand();
-                    if (!com.livingtools.data.LivingTool.isLivingTool(compItem)) {
-                        player.sendMessage(ConfigManager.getMessage("must_hold_tool"));
-                        return true;
-                    }
-                    com.livingtools.data.LivingTool compTool = new com.livingtools.data.LivingTool(compItem);
-                    if (compTool.getData().getLevel() < 50 && compTool.getData().getPrestige() < 1) {
-                        player.sendMessage(ChatColor.RED + "Tu herramienta debe ser al menos Nivel 50 o Prestigio 1 para manifestar un Espíritu Guardián.");
-                        return true;
-                    }
-                    boolean enabled = com.livingtools.manager.ToolGuardianCompanion.toggleCompanion(player);
-                    if (enabled) {
-                        player.sendMessage(ChatColor.AQUA + "✦ ¡Espíritu Guardián invocado y acompañándote! (Radar de diamantes y magnetismo activo)");
-                        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.2f, 1.4f);
-                    } else {
-                        player.sendMessage(ChatColor.GRAY + "✧ Espíritu Guardián retirado a la herramienta.");
-                        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_HIT, 1.0f, 0.8f);
-                    }
+                    com.livingtools.manager.ToolGuardianCompanion.toggleCompanion(player);
                     return true;
                 }
                 case "incursion":
@@ -478,8 +452,13 @@ public class LivingToolCommand implements CommandExecutor {
                     }
                     com.livingtools.manager.AutoUpdateManager.getInstance().performHotReload(player);
                     return true;
+                case "bondquest":
+                case "mision":
+                    com.livingtools.quests.PersonalityQuestManager.triggerBondQuest(player, true);
+                    return true;
                 case "update":
                 case "actualizar":
+                case "autoupdate":
                     if (!player.hasPermission("livingtools.admin")) {
                         player.sendMessage(ConfigManager.getMessage("no_permission"));
                         return true;
@@ -823,17 +802,40 @@ public class LivingToolCommand implements CommandExecutor {
 
         String action = args[1].toLowerCase();
         switch (action) {
+            case "enable":
+            case "on":
+            case "activar":
+                updateManager.setAutoUpdateEnabled(true);
+                sender.sendMessage(ChatColor.GREEN + "[LivingTools] ✔ Auto-Update activado. Se comprobarán y descargarán versiones automáticamente.");
+                return true;
+            case "disable":
+            case "off":
+            case "desactivar":
+                updateManager.setAutoUpdateEnabled(false);
+                sender.sendMessage(ChatColor.YELLOW + "[LivingTools] ✖ Auto-Update desactivado. No se descargarán actualizaciones automáticas.");
+                return true;
+            case "auto":
+                if (args.length > 2 && (args[2].equalsIgnoreCase("off") || args[2].equalsIgnoreCase("disable") || args[2].equalsIgnoreCase("desactivar"))) {
+                    updateManager.setAutoUpdateEnabled(false);
+                    sender.sendMessage(ChatColor.YELLOW + "[LivingTools] ✖ Auto-Update desactivado.");
+                } else {
+                    updateManager.setAutoUpdateEnabled(true);
+                    sender.sendMessage(ChatColor.GREEN + "[LivingTools] ✔ Auto-Update activado.");
+                }
+                return true;
             case "check":
             case "comprobar":
                 updateManager.checkForUpdates(sender, true);
+                return true;
+            case "force":
+            case "forzar":
+                updateManager.forceUpdate(sender);
                 return true;
             case "install":
             case "download":
             case "descargar":
             case "now":
             case "instalar":
-            case "force":
-            case "forzar":
                 updateManager.downloadAndInstall(sender, true);
                 return true;
             case "changelog":
@@ -854,7 +856,7 @@ public class LivingToolCommand implements CommandExecutor {
                 return true;
             }
             default:
-                sender.sendMessage(ChatColor.RED + "Uso: /livingtool update [check|install|changelog|status]");
+                sender.sendMessage(ChatColor.RED + "Uso: /livingtool update [check|install|force|enable|disable|status]");
                 return true;
         }
     }

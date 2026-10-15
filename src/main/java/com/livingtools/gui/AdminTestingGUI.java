@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 /**
- * AdminTestingGUI — Suite completa interactiva para probar y verificar todas las interfaces,
- * arenas, animaciones de meteoritos, forja rítmica y jefes del plugin en 1 click.
+ * AdminTestingGUI — Suite interactiva para probar y verificar todas las interfaces,
+ * arenas, animaciones, armas míticas, auto-update y nuevo contenido del plugin en 1 click.
  */
 public class AdminTestingGUI {
 
@@ -47,7 +47,8 @@ public class AdminTestingGUI {
         gui.setItem(24, GUIBuilder.createItem(Material.BLAZE_POWDER, ChatColor.RED + "13. Estelas Cosméticas", "", ChatColor.GRAY + "Abre el selector de auras y partículas.", "", ChatColor.YELLOW + "► Click para abrir"));
         gui.setItem(25, GUIBuilder.createItem(Material.CHEST, ChatColor.GOLD + "14. Bóveda de Clan", "", ChatColor.GRAY + "Abre la bóveda comunitaria de hermandad.", "", ChatColor.YELLOW + "► Click para abrir"));
 
-        // Fila 4: Pruebas de Animaciones, Reino y Jefes
+        // Fila 4: Pruebas de Animaciones, Reino y Nuevas Mecánicas
+        gui.setItem(27, GUIBuilder.createGlowingItem(Material.SOUL_SAND, ChatColor.LIGHT_PURPLE + "⚡ Cargar Energía de Alma al 100%", "", ChatColor.GRAY + "Llena la barra del ActionBar al 100%", ChatColor.GRAY + "para probar Overdrive (Shift + F).", "", ChatColor.YELLOW + "► Click para recargar"));
         gui.setItem(28, GUIBuilder.createGlowingItem(Material.FIRE_CHARGE, ChatColor.GOLD + "☄ Probar Animación de Meteorito", "", ChatColor.GRAY + "Dispara la caída cinemática diagonal con estela,", ChatColor.GRAY + "destello, mini-explosión y cráter aquí mismo.", "", ChatColor.YELLOW + "► Click para probar en vivo"));
         gui.setItem(29, GUIBuilder.createGlowingItem(Material.OBSIDIAN, ChatColor.DARK_PURPLE + "🌌 Reino: Arena de Grieta Abisal", "", ChatColor.GRAY + "Teletransporte a la arena en livingtools_realm.", "", ChatColor.YELLOW + "► Click para viajar"));
         gui.setItem(30, GUIBuilder.createGlowingItem(Material.GILDED_BLACKSTONE, ChatColor.RED + "👑 Reino: Gran Arena Génesis", "", ChatColor.GRAY + "Teletransporte al altar del Avatar del Génesis.", "", ChatColor.YELLOW + "► Click para viajar"));
@@ -55,8 +56,10 @@ public class AdminTestingGUI {
         gui.setItem(32, GUIBuilder.createGlowingItem(Material.DRAGON_EGG, ChatColor.LIGHT_PURPLE + "🐉 Invocar Mega-Boss Génesis", "", ChatColor.GRAY + "Invoca al Avatar de 3000 HP y 3 fases.", "", ChatColor.YELLOW + "► Click para invocar"));
         gui.setItem(33, GUIBuilder.createGlowingItem(Material.WITHER_SKELETON_SKULL, ChatColor.RED + "👑 Invocar Jefe The Smith", "", ChatColor.GRAY + "Invoca al jefe volcánico y sus esbirros.", "", ChatColor.YELLOW + "► Click para invocar"));
         gui.setItem(34, GUIBuilder.createGlowingItem(Material.DIAMOND_CHESTPLATE, ChatColor.GREEN + "🎁 Dar Kit de Pruebas Máximo", "", ChatColor.GRAY + "Entrega arma Lv.100, armadura completa,", ChatColor.GRAY + "gemas celestiales, runas y tarot.", "", ChatColor.YELLOW + "► Click para recibir kit"));
+        gui.setItem(35, GUIBuilder.createGlowingItem(Material.FEATHER, ChatColor.AQUA + "👼 Alternar Espíritu Guardián", "", ChatColor.GRAY + "Invoca o retira el Espíritu Guardián,", ChatColor.GRAY + "brindando Ángel de la Guarda y radar.", "", ChatColor.YELLOW + "► Click para alternar"));
 
-        // Fila 5: Nuevas Pruebas de Forja y Utilidades
+        // Fila 5: Nuevas Pruebas de Forja, Reliquias y Utilidades
+        gui.setItem(36, GUIBuilder.createGlowingItem(Material.WRITABLE_BOOK, ChatColor.GOLD + "📜 Disparar Misión de Vínculo", "", ChatColor.GRAY + "Inicia una misión inmediata de personalidad en chat.", "", ChatColor.YELLOW + "► Click para iniciar"));
         gui.setItem(37, GUIBuilder.createGlowingItem(Material.BEACON, ChatColor.AQUA + "✦ Dar Pack: 8 Núcleos Desplegables", "", ChatColor.GRAY + "Entrega los 8 núcleos de estructura al inventario", ChatColor.GRAY + "para probar la auto-construcción de todas.", "", ChatColor.YELLOW + "► Click para recibir pack"));
         gui.setItem(38, GUIBuilder.createGlowingItem(Material.DAMAGED_ANVIL, ChatColor.DARK_RED + "💥 Dañar / Romper Herramienta en Mano", "", ChatColor.GRAY + "Pone la durabilidad al 1% o rota para probar", ChatColor.GRAY + "la reparación instantánea en la Forja.", "", ChatColor.YELLOW + "► Click para dañar"));
         gui.setItem(39, GUIBuilder.createGlowingItem(Material.MAGMA_CREAM, ChatColor.RED + "🔥 Sello: Furia Volcánica", "", ChatColor.GRAY + "Aplica el Sello Ígneo a la herramienta.", "", ChatColor.YELLOW + "► Click para aplicar"));
@@ -98,6 +101,26 @@ public class AdminTestingGUI {
                 ChatColor.YELLOW + "► Click para desmantelar"));
 
         gui.setItem(49, GUIBuilder.createCloseButton());
+
+        gui.setItem(50, GUIBuilder.createGlowingItem(
+                Material.NETHER_STAR,
+                ChatColor.LIGHT_PURPLE + "👑 Dar Pack de Reliquias de Jefes",
+                "",
+                ChatColor.GRAY + "Entrega la Cuchilla del Dragón (Lv.20), la Guadaña",
+                ChatColor.GRAY + "Marchita (Lv.20), el Martillo Sísmico (Lv.25) y el Núcleo.",
+                "",
+                ChatColor.YELLOW + "► Click para recibir"));
+
+        boolean autoUpEnabled = aum != null && aum.isAutoUpdateEnabled();
+        gui.setItem(51, GUIBuilder.createGlowingItem(
+                Material.REDSTONE_TORCH,
+                ChatColor.GOLD + "🔄 Auto-Update Automático: " + (autoUpEnabled ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"),
+                "",
+                ChatColor.GRAY + "Alterna la descarga automática de actualizaciones",
+                ChatColor.GRAY + "al iniciar o reiniciar el servidor.",
+                "",
+                ChatColor.YELLOW + "► Click para alternar"));
+
         gui.setItem(53, GUIBuilder.createItem(Material.COMPASS, ChatColor.AQUA + "🧭 Dar Brújula de Almas", "", ChatColor.GRAY + "Recibe una brújula rastreadora."));
 
         player.openInventory(gui);

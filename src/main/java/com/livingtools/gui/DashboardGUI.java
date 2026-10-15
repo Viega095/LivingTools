@@ -92,6 +92,33 @@ public class DashboardGUI {
                 GUIBuilder.INFO + "Corrupcíon: " + ChatColor.DARK_RED + data.getCorruption() + "%");
         gui.setItem(22, soulItem);
 
+        // ── Slot 20: Modo Despertar (Overdrive)
+        double currentEnergy = com.livingtools.manager.SoulEnergyManager.getEnergy(player);
+        boolean inOd = com.livingtools.manager.SoulEnergyManager.isOverdriveActive(player);
+        ItemStack overdriveBtn = GUIBuilder.createGlowingItem(
+                Material.SOUL_CAMPFIRE,
+                ChatColor.GOLD + "" + ChatColor.BOLD + "⚡ Modo Despertar (Overdrive)",
+                "",
+                ChatColor.GRAY + "Carga de Alma: " + ChatColor.AQUA + String.format("%.0f%%", currentEnergy) + " / 100%",
+                "",
+                inOd ? ChatColor.GREEN + "✦ ¡MODO DESPERTAR ACTIVO!" :
+                        (currentEnergy >= 100 ? ChatColor.GREEN + "✦ ¡Listo para activar! (Click o Shift+F)" : ChatColor.RED + "Requiere 100% de Energía de Alma"),
+                "",
+                ChatColor.YELLOW + "► Click para activar Overdrive");
+        gui.setItem(20, overdriveBtn);
+
+        // ── Slot 24: Espíritu Guardián
+        boolean compOn = com.livingtools.manager.ToolGuardianCompanion.isEnabled(player);
+        ItemStack compBtn = GUIBuilder.createGlowingItem(
+                Material.FEATHER,
+                ChatColor.AQUA + "" + ChatColor.BOLD + "👼 Espíritu Guardián: " + (compOn ? ChatColor.GREEN + "ACTIVO" : ChatColor.RED + "INACTIVO"),
+                "",
+                ChatColor.GRAY + "Acompañante wisp con radar de minerales,",
+                ChatColor.GRAY + "recolección y salvación letal (Ángel de la Guarda).",
+                "",
+                ChatColor.YELLOW + "► Click para " + (compOn ? "desactivar" : "invocar"));
+        gui.setItem(24, compBtn);
+
         // ── Slot 31: Estadísticas de combate
         ItemStack combatItem = GUIBuilder.createGlowingItem(Material.IRON_SWORD,
                 ChatColor.RED + "⚔ Estadísticas de Combate",

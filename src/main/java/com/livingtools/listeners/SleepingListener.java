@@ -1,11 +1,16 @@
 package com.livingtools.listeners;
 
+import com.livingtools.data.LivingTool;
 import com.livingtools.manager.SleepingManager;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,61 +20,81 @@ public class SleepingListener implements Listener {
 
     private final Random random = new Random();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDeath(EntityDeathEvent event) {
-        if (event.getEntity().getKiller() == null)
-            return;
+        if (event.getEntity().getKiller() == null) return;
 
         EntityType type = event.getEntityType();
-        double chance = 0.0;
-        Material toolType = Material.DIAMOND_PICKAXE; // Default
 
         if (type == EntityType.WITHER) {
-            chance = 0.50; // 50%
-            Material[] possibleTypes = {
-                    Material.NETHERITE_SWORD, Material.NETHERITE_PICKAXE, Material.NETHERITE_AXE,
-                    Material.NETHERITE_SHOVEL, Material.NETHERITE_HOE,
-                    Material.NETHERITE_HELMET, Material.NETHERITE_CHESTPLATE, Material.NETHERITE_LEGGINGS,
-                    Material.NETHERITE_BOOTS
-            };
-            toolType = possibleTypes[random.nextInt(possibleTypes.length)];
-        } else if (type == EntityType.ENDER_DRAGON) {
-            chance = 1.00; // 100%
-            toolType = Material.NETHERITE_PICKAXE;
-        } else if (type == EntityType.WARDEN) {
-            chance = 0.75; // 75%
-            toolType = Material.NETHERITE_AXE;
-        }
+            // Drop de Núcleo Titánico garantizado
+            event.getDrops().add(SleepingManager.createTitanSoulCore());
 
-        if (random.nextDouble() < chance) {
-            // Randomize Tool Type if not boss specific
-            if (type != EntityType.WITHER && type != EntityType.ENDER_DRAGON && type != EntityType.WARDEN) {
-                Material[] possibleTypes = {
-                        Material.DIAMOND_SWORD, Material.DIAMOND_PICKAXE, Material.DIAMOND_AXE,
-                        Material.DIAMOND_SHOVEL, Material.DIAMOND_HOE,
-                        Material.DIAMOND_HELMET, Material.DIAMOND_CHESTPLATE, Material.DIAMOND_LEGGINGS,
-                        Material.DIAMOND_BOOTS
-                };
-                toolType = possibleTypes[random.nextInt(possibleTypes.length)];
+            // 50% de probabilidad de dropear la Guadaña Marchita despierta
+            if (random.nextDouble() < 0.50) {
+                event.getDrops().add(SleepingManager.createWitherScythe());
             }
+        } else if (type == EntityType.ENDER_DRAGON) {
+            // Drop de Núcleo Titánico garantizado
+            event.getDrops().add(SleepingManager.createTitanSoulCore());
 
-            ItemStack sleepingTool = SleepingManager.createSleepingTool(toolType);
-            event.getDrops().add(sleepingTool);
+            // 100% de probabilidad de dropear la Cuchilla del Vacío despierta
+            event.getDrops().add(SleepingManager.createDragonVoidBlade());
+        } else if (type == EntityType.WARDEN) {
+            // Drop de Núcleo Titánico garantizado
+            event.getDrops().add(SleepingManager.createTitanSoulCore());
+
+            // 75% de probabilidad de dropear el Martillo Sísmico despierto
+            if (random.nextDouble() < 0.75) {
+                event.getDrops().add(SleepingManager.createWardenHammer());
+            }
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onInteract(PlayerInteractEvent event) {
-        if (event.getAction().toString().contains("RIGHT_CLICK")) {
-            ItemStack item = event.getItem();
-            if (SleepingManager.isSleepingTool(item)) {
-                // Awakening is now only possible via Ritual Table
-                // SleepingManager.tryAwaken(event.getPlayer(), item);
-                // event.setCancelled(true);
+        if (!event.getAction().toString().contains("RIGHT_CLICK")) return;
 
-                // Maybe send a message hinting at the ritual?
-                event.getPlayer().sendMessage(org.bukkit.ChatColor.GRAY
-                        + "Esta herramienta duerme profundamente... Quizás un ritual pueda despertarla.");
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+        if (item == null) return;
+
+        // Si es una Herramienta Dormida (antigua)
+        if (SleepingManager.isSleepingTool(item)) {
+            event.setCancelled(true);
+            SleepingManager.tryAwaken(player, item);
+            return;
+        }
+
+        // Si es un Núcleo Titánico
+        if (SleepingManager.isTitanSoulCore(item)) {
+            ItemStack offhand = player.getInventory().getItemInOffHand();
+            if (LivingTool.isLivingTool(offhand)) {
+                event.setCancelled(true);
+                if (SleepingManager.applyTitanSoulCore(player, offhand)) {
+                    item.setAmount(item.getAmount() - 1);
+                }
+            } else {
+                player.sendMessage(ChatColor.GOLD + "[LivingTools] " + ChatColor.YELLOW
+                        + "Para usar el Núcleo Titánico, colócalo sobre una Herramienta Viviente en tu inventario o sostenla en tu mano secundaria (offhand).");
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) return;
+        Player player = (Player) event.getWhoClicked();
+
+        ItemStack cursor = event.getCursor();
+        ItemStack current = event.getCurrentItem();
+
+        if (cursor != null && SleepingManager.isTitanSoulCore(cursor)) {
+            if (current != null && LivingTool.isLivingTool(current)) {
+                event.setCancelled(true);
+                if (SleepingManager.applyTitanSoulCore(player, current)) {
+                    cursor.setAmount(cursor.getAmount() - 1);
+                }
             }
         }
     }

@@ -155,7 +155,8 @@ discord:
     level-up: true
     server-event: true
 
-# Update Checker
+# Update Checker & Auto-Update Engine
 update-checker:
   enabled: true
+  auto-update-on-restart: true
   repository: "Viega095/LivingTools"

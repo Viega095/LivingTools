@@ -389,6 +389,29 @@ public class GUIListener implements Listener {
                 return;
             }
 
+            // Modo Despertar (SOUL_CAMPFIRE)
+            if (m == Material.SOUL_CAMPFIRE) {
+                player.closeInventory();
+                if (!com.livingtools.manager.SoulEnergyManager.activateOverdrive(player)) {
+                    player.sendMessage(ChatColor.YELLOW + "[LivingTools] Energía insuficiente: "
+                            + ChatColor.AQUA + String.format("%.0f%%", com.livingtools.manager.SoulEnergyManager.getEnergy(player))
+                            + ChatColor.YELLOW + " / 100%. ¡Mina o combate para cargarla!");
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 0.8f);
+                }
+                return;
+            }
+
+            // Espíritu Guardián (FEATHER)
+            if (m == Material.FEATHER) {
+                com.livingtools.manager.ToolGuardianCompanion.toggleCompanion(player);
+                if (tool != null) {
+                    com.livingtools.gui.DashboardGUI.open(player, tool);
+                } else {
+                    player.closeInventory();
+                }
+                return;
+            }
+
             // Skills tree (ENCHANTED_BOOK)
             if (m == Material.ENCHANTED_BOOK) {
                 if (tool != null) {

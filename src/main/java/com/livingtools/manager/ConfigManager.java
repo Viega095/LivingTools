@@ -151,6 +151,11 @@ public class ConfigManager {
         LivingToolsPlugin.getInstance().saveConfig();
     }
 
+    public static void setBoolean(String path, boolean value) {
+        config.set(path, value);
+        LivingToolsPlugin.getInstance().saveConfig();
+    }
+
     private static boolean debug = false;
 
     public static void setDebug(boolean value) {
